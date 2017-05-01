@@ -2,7 +2,7 @@ package tennis;
 
 public class PaprikasKrumpli {
 	private final String weight="Sok";
-	private final String delicousness="Jó";
+	private final String taste="Jó";
 	PaprikasKrumpli(){}
 
 	public void getPaprikasKrumpli(){
