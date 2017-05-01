@@ -7,17 +7,19 @@ package tennis;
 
 import java.awt.Point;
 
-/**
- *
- * @author Predi
- */
 class Control {
+	
+	private static final int import_java_tennis_control = 5;
+	
+	void just_do_it(int import_java_tennis_control)
+	{
+			
+	}
 
 	private GUI gui;
 	private Network net = null;
+	
 
-	Control() {
-	}
 
 	void setGUI(GUI g) {
 		//gui = g;
