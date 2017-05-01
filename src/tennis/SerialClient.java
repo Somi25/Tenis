@@ -53,7 +53,6 @@ public class SerialClient extends Network {
 		}
 	}
 
-	@Override
 	void send(Point p) {
 		if (out == null)
 			return;

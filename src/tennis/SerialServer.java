@@ -6,8 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class SerialServer extends Network {
 
@@ -70,19 +73,23 @@ public class SerialServer extends Network {
 		}
 	}
 
-	@Override
-	void send(Point p) {
+	void send(Float ballCoordinates[],Float racketLCoordinates[], Float racketRCoordinates[],Bool gameState) {
 		if (out == null)
 			return;
-		System.out.println("Sending point: " + p + " to Client");
 		try {
-			out.writeObject(p);
+			out.writeObject(ballCoordinates);
+			out.writeObject(racketLCoordinates);
+			out.writeObject(racketRCoordinates);
+			out.writeObject(gameState);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
 	}
-
+	void sendScore(int score[]){
+		
+	}
+	
 	@Override
 	void disconnect() {
 		try {
