@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class SerialServer extends Network {
 
 	private ServerSocket serverSocket = null;
@@ -70,19 +72,28 @@ public class SerialServer extends Network {
 		}
 	}
 
-	@Override
-	void send(Point p) {
+	void send(Ball ball_ins, Racket racketL, Racket racketR, Bool gameState) {
 		if (out == null)
 			return;
-		System.out.println("Sending point: " + p + " to Client");
 		try {
-			out.writeObject(p);
+			out.writeObject(ball_ins);
+			out.writeObject(racketL);
+			out.writeObject(racketR);
+			out.writeObject(gameState);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
 	}
-
+	void sendScore(Scores toSend){
+		try {
+			out.writeObject(toSend);
+			out.flush();
+		} catch (IOException ex) {
+			System.err.println("Send error.");
+		}
+	}
+	
 	@Override
 	void disconnect() {
 		try {

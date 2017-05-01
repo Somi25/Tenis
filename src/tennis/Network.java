@@ -4,8 +4,6 @@
  */
 package tennis;
 
-import java.awt.Point;
-
 /**
  *
  * @author Predi
@@ -22,5 +20,4 @@ abstract class Network {
 
 	abstract void disconnect();
 
-	abstract void send(Point p);
 }

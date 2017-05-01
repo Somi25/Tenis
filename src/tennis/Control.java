@@ -41,7 +41,7 @@ class Control {
 		// gui.addPoint(p); //for drawing locally
 		if (net == null)
 			return;
-		net.send(p);
+		//net.send(p); //kikommenteztem mert nincs már pont! 
 	}
 
 	void clickReceived(Point p) {
