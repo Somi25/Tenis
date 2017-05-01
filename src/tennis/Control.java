@@ -20,7 +20,7 @@ class Control {
 	}
 
 	void setGUI(GUI g) {
-		gui = g;
+		//gui = g;
 	}
 
 	void startServer() {
@@ -47,6 +47,6 @@ class Control {
 	void clickReceived(Point p) {
 		if (gui == null)
 			return;
-		gui.addPoint(p);
+		//gui.addPoint(p);
 	}
 }
