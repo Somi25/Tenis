@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,21 +72,26 @@ public class SerialServer extends Network {
 		}
 	}
 
-	void send(Float ballCoordinates[],Float racketLCoordinates[], Float racketRCoordinates[],Bool gameState) {
+	void send(Ball ball_ins, Racket racketL, Racket racketR, Bool gameState) {
 		if (out == null)
 			return;
 		try {
-			out.writeObject(ballCoordinates);
-			out.writeObject(racketLCoordinates);
-			out.writeObject(racketRCoordinates);
+			out.writeObject(ball_ins);
+			out.writeObject(racketL);
+			out.writeObject(racketR);
 			out.writeObject(gameState);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
 	}
-	void sendScore(int score[]){
-		
+	void sendScore(Scores toSend){
+		try {
+			out.writeObject(toSend);
+			out.flush();
+		} catch (IOException ex) {
+			System.err.println("Send error.");
+		}
 	}
 	
 	@Override
