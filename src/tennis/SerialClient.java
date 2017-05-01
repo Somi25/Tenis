@@ -5,6 +5,8 @@ import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class SerialClient extends Network {
 
 	private Socket socket = null;
@@ -18,11 +20,32 @@ public class SerialClient extends Network {
 	private class ReceiverThread implements Runnable {
 
 		public void run() {
-			System.out.println("Waiting for points...");
 			try {
 				while (true) {
-					Point received = (Point) in.readObject();
-					ctrl.clickReceived(received);
+					Object received = in.readObject();
+					if(received instanceof Ball)
+					 {
+						
+					 }
+					if(received instanceof Scores)
+					 {
+						
+					 }
+					if(received instanceof Racket)
+					 {
+						
+					 }
+					if(received instanceof Racket)
+					 {
+						
+					 }
+					if(received instanceof Boolean)
+					 {
+						
+					 }
+					
+					
+					
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -33,6 +56,17 @@ public class SerialClient extends Network {
 		}
 	}
 
+	void send(Key toSend) {
+		if (out == null)
+			return;
+		try {
+			out.writeObject(toSend);
+			out.flush();
+		} catch (IOException ex) {
+			System.err.println("Send error.");
+		}
+	}
+	
 	@Override
 	void connect(String ip) {
 		disconnect();
@@ -50,18 +84,6 @@ public class SerialClient extends Network {
 		} catch (IOException e) {
 			System.err.println("Couldn't get I/O for the connection. ");
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
-		}
-	}
-
-	void send(Point p) {
-		if (out == null)
-			return;
-		System.out.println("Sending point: " + p + " to Server");
-		try {
-			out.writeObject(p);
-			out.flush();
-		} catch (IOException ex) {
-			System.err.println("Send error.");
 		}
 	}
 
