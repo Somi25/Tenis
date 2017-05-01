@@ -4,8 +4,8 @@ public abstract class GeometricObject {
 	
 private Integer[] colourRGB = new Integer[3];
 private Float[] coordinates = new Float[2];
-private Float direction = null;
-private Float velocity = null;
+private Float direction;
+private Float velocity;
 
 public GeometricObject(Integer Colour[],Float Coord[]) {
 	if(Colour.length==3)
