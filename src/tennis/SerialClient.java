@@ -1,11 +1,8 @@
 package tennis;
 
-import java.awt.Point;
 import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class SerialClient extends Network {
 
@@ -27,19 +24,25 @@ public class SerialClient extends Network {
 					 {
 						
 					 }
-					if(received instanceof Scores)
-					 {
-						
-					 }
 					if(received instanceof Racket)
 					 {
+						if(((Racket) received).getCoordinates()[0]<50)//szebbre!
+						 {
+						
+						 }
+							//(balütõ)
+						if(((Racket) received).getCoordinates()[0]>1220)//szebbre!
+						 {
+							
+						 }
+							//jobbütõ
 						
 					 }
-					if(received instanceof Racket)
+					if(received instanceof Boolean)//game state (paused or not)
 					 {
 						
 					 }
-					if(received instanceof Boolean)
+					if(received instanceof Scores)//pontok
 					 {
 						
 					 }

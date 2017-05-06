@@ -10,16 +10,19 @@ import java.awt.Point;
 class Control {
 	
 	private static final int import_java_tennis_control = 5;
+	private Ball ball_inst;
+	private Racket racketL;
+	private Racket racketR;
+	private Scores score;
+	private Boolean gameState;
+
+	private GUI gui;
+	private Network net = null;
 	
 	void just_do_it(int import_java_tennis_control)
 	{
 			
 	}
-
-	private GUI gui;
-	private Network net = null;
-	
-
 
 	void setGUI(GUI g) {
 		//gui = g;
@@ -43,7 +46,7 @@ class Control {
 		// gui.addPoint(p); //for drawing locally
 		if (net == null)
 			return;
-		//net.send(p); //kikommenteztem mert nincs már pont! 
+		//net.send(p); //kikommenteztem mert nincs már send(p)! 
 	}
 
 	void clickReceived(Point p) {
