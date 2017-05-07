@@ -35,6 +35,7 @@ class Control {
 		this.score = score;
 	}
 	
+	
 	void just_do_it(int import_java_tennis_control)
 	{
 			
@@ -65,6 +66,28 @@ class Control {
 		//net.send(p); //kikommenteztem mert nincs már send(p)! 
 	}
 
+	public void keyReceived(Key e){
+		if(e.getName()=="W")
+		{
+			
+		}
+		if(e.getName()=="S")
+		{
+			
+		}
+		if(e.getName()=="UP")
+		{
+			
+		}
+		if(e.getName()=="DOWN")
+		{
+			
+		}
+		if(e.getName()=="P")
+		{
+			
+		}
+	}
 	void clickReceived(Point p) {
 		if (gui == null)
 			return;
