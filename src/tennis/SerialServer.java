@@ -1,6 +1,7 @@
 package tennis;
 
-import java.awt.Point;
+import static java.lang.Math.pow;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -59,20 +60,7 @@ public class SerialServer extends Network {
 		}
 	}
 
-	@Override
-	void connect(String ip) {
-		disconnect();
-		try {
-			serverSocket = new ServerSocket(10007);
-
-			Thread rec = new Thread(new ReceiverThread());
-			rec.start();
-		} catch (IOException e) {
-			System.err.println("Could not listen on port: 10007.");
-		}
-	}
-
-	void send(Ball ball_ins, Racket racketL, Racket racketR, Bool gameState) {
+	void sendStates(Ball ball_ins, Racket racketL, Racket racketR, Bool gameState) {
 		if (out == null)
 			return;
 		try {
@@ -93,7 +81,36 @@ public class SerialServer extends Network {
 			System.err.println("Send error.");
 		}
 	}
-	
+
+	@Override
+	void connect(String ip) {
+		this.connect(ip,"10007");
+	}
+	@Override
+	void connect(String ip,String port) {
+		disconnect();
+		try {
+			int portInt=10007;
+			if(!port.isEmpty() && port.length()<6)
+			{
+				for(int i=0; i<port.length();i++)
+				{
+					portInt += (Math.round(pow(10,i)))*((int)port.charAt(port.length()-i-1)-(int)'0');
+				}
+			}
+			else
+			{
+				return;
+			}
+			serverSocket = new ServerSocket(portInt);
+
+			Thread rec = new Thread(new ReceiverThread());
+			rec.start();
+		} catch (IOException e) {
+			System.err.println("Could not listen on port: 10007.");
+		}
+	}
+
 	@Override
 	void disconnect() {
 		try {

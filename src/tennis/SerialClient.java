@@ -2,6 +2,7 @@ package tennis;
 
 import java.io.*;
 import java.net.*;
+import static java.lang.Math.pow;
 import javax.swing.JOptionPane;
 
 public class SerialClient extends Network {
@@ -34,7 +35,6 @@ public class SerialClient extends Network {
 						 {
 							ctrl.setRacketR((Racket) received);
 						 }
-						
 					 }
 					if(received instanceof Boolean)//game state (paused or not)
 					 {
@@ -67,21 +67,40 @@ public class SerialClient extends Network {
 	
 	@Override
 	void connect(String ip) {
+		this.connect(ip,"10007");
+	}
+	@Override
+	void connect(String ip, String port) {
 		disconnect();
 		try {
-			socket = new Socket(ip, 10007);
-
+			int portInt=10007;
+			if(!port.isEmpty() && port.length()<6)
+			{
+				for(int i=0; i<port.length();i++)
+				{
+					portInt += (Math.round(pow(10,i)))*((int)port.charAt(port.length()-i-1)-(int)'0');
+				}
+			}
+			else
+			{
+				return;
+			}
+			socket = new Socket(ip,portInt);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			out.flush();
 
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
+		} catch (IllegalArgumentException e) {
+			System.err.println("One of the arguments are illegal");
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host");
 		} catch (IOException e) {
 			System.err.println("Couldn't get I/O for the connection. ");
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
+		} finally{
+			disconnect();
 		}
 	}
 
