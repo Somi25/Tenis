@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package tennis;
 
 /**
@@ -12,6 +7,8 @@ package tennis;
 public class Main {
 
 	public static void main(String[] args) {
-		GUI g = new GUI();
+		Control c = new Control();
+		GUI g = new GUI(c);
+		c.setGUI(g);
 	}
 }

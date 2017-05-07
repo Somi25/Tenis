@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 
 public class GUI extends JFrame implements ActionListener
 {
+	private Control ctrl;
 	private static final int WIDTH_WINDOW = 1280;
 	private static final int HEIGHT_WINDOW = 720;
 	private static final int WIDTH_MENU = 240;
@@ -55,9 +56,10 @@ public class GUI extends JFrame implements ActionListener
 	protected Menu menu;
 	
 	
-	public GUI()
+	public GUI(Control c)
 	{		
 		super("Tenisz");
+		ctrl = c;
 		setSize(WIDTH_WINDOW+6, HEIGHT_WINDOW+30);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);

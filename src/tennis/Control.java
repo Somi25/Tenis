@@ -5,8 +5,6 @@
 
 package tennis;
 
-import java.awt.Point;
-
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 class Control {
@@ -82,11 +80,5 @@ class Control {
 		{
 			
 		}
-	}
-	
-	void clickReceived(Point p) {
-		if (gui == null)
-			return;
-		//gui.addPoint(p);
 	}
 }
