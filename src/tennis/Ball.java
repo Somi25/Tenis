@@ -9,11 +9,22 @@ public class Ball extends GeometricObject{
 	private Racket racketL;
 	private Racket racketR;
 	
-	public Ball(Integer colour[], Float coordinates[], Float rad, Float twi){
+	public Ball(Integer colour[], Float coordinates[], Float rad) throws Exception{
+
+		super(colour);
 		
-		super(colour,coordinates);
-		radius = rad;
-		twist = twi;
+		Exception InvalidParameterException = null;
+		if(rad<100 && rad>0)
+		{
+			this.radius=rad;
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+		this.twist=(float)0;
+		setCoordinates(coordinates);
+		setDirection((float)0);
 		
 	}
 	
@@ -97,5 +108,36 @@ public class Ball extends GeometricObject{
 		
 		
 		return coord;
+	}
+
+	@Override
+	void setCoordinates(Float[] coordinates) throws Exception {
+		
+		Exception InvalidParameterException = null;
+		if(coordinates[0]>this.radius && coordinates[0]<500-this.radius)
+		{
+			this.coordinates[0] = coordinates[0];
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+		if(coordinates[0]>this.radius && coordinates[0]<200-this.radius)
+		{
+			this.coordinates[1] = coordinates[1];
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+	}
+
+	@Override
+	void setDirection(Float Dir) throws Exception {
+		Exception InvalidParameterException = null;
+		if(Dir<0 || Dir>2*Math.PI)
+			throw InvalidParameterException;
+		else
+			this.direction=Dir;
 	}
 }
