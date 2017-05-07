@@ -3,7 +3,7 @@ package tennis;
 public class Ball extends GeometricObject{
 
 	private final Float radius;
-	private final Float twist;		// csavarás mértéke
+	private Float twist;		// csavarás mértéke
 	
 	// ezek nem ide kellenek, csak hogy leforduljon a kód:
 	private Racket racketL;
@@ -14,7 +14,7 @@ public class Ball extends GeometricObject{
 		super(colour);
 		
 		Exception InvalidParameterException = null;
-		if(rad<100 && rad>0)
+		if(rad<yFieldMax/2 && rad>0)
 		{
 			this.radius=rad;
 		}
@@ -31,6 +31,40 @@ public class Ball extends GeometricObject{
 	public Float getRadius() {
 		return radius;
 	}
+
+	public void setTwist(Float twist) {
+		this.twist = twist;
+	}
+	@Override
+	public void setCoordinates(Float[] coordinates) throws Exception {
+		
+		Exception InvalidParameterException = null;
+		if(coordinates[0]>this.radius+xFieldMin && coordinates[0]<xFieldMax-this.radius)
+		{
+			this.coordinates[0] = coordinates[0];
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+		if(coordinates[1]>this.radius+yFieldMin && coordinates[1]<yFieldMin-this.radius)
+		{
+			this.coordinates[1] = coordinates[1];
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+	}
+	@Override
+	public void setDirection(Float Dir) throws Exception {
+		Exception InvalidParameterException = null;
+		if(Dir<0 || Dir>2*Math.PI)
+			throw InvalidParameterException;
+		else
+			this.direction=Dir;
+	}
+
 	
 	public void time(){
 		float x = coordinates[0];
@@ -108,36 +142,5 @@ public class Ball extends GeometricObject{
 		
 		
 		return coord;
-	}
-
-	@Override
-	void setCoordinates(Float[] coordinates) throws Exception {
-		
-		Exception InvalidParameterException = null;
-		if(coordinates[0]>this.radius && coordinates[0]<500-this.radius)
-		{
-			this.coordinates[0] = coordinates[0];
-		}
-		else
-		{
-			throw InvalidParameterException;
-		}
-		if(coordinates[0]>this.radius && coordinates[0]<200-this.radius)
-		{
-			this.coordinates[1] = coordinates[1];
-		}
-		else
-		{
-			throw InvalidParameterException;
-		}
-	}
-
-	@Override
-	void setDirection(Float Dir) throws Exception {
-		Exception InvalidParameterException = null;
-		if(Dir<0 || Dir>2*Math.PI)
-			throw InvalidParameterException;
-		else
-			this.direction=Dir;
 	}
 }

@@ -24,7 +24,6 @@ public abstract class GeometricObject {
 			throw InvalidParameterException;
 		 }
 		velocity = (float)0;
-		direction = (float)0;
 	}
 	
 	public Integer[] getColour() {

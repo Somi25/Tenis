@@ -1,7 +1,5 @@
 package tennis;
 
-import java.security.InvalidParameterException;
-
 public class Racket extends GeometricObject{
 	
 	private final Float width;
@@ -12,15 +10,7 @@ public class Racket extends GeometricObject{
 		super(colour);
 		
 		Exception InvalidParameterException = null;
-		if(wid<250 && wid>1)
-		{
-			this.height=hei;
-		}
-		else
-		{
-			throw InvalidParameterException;
-		}
-		if(hei<100 && hei>1)
+		if(wid<xFieldMax/2 && wid>0)
 		{
 			this.width=wid;
 		}
@@ -28,7 +18,15 @@ public class Racket extends GeometricObject{
 		{
 			throw InvalidParameterException;
 		}
-		if(coordinates[0]>wid/2 && coordinates[0]<500-wid/2)
+		if(hei<yFieldMax && hei>0)
+		{
+			this.height=hei;
+		}
+		else
+		{
+			throw InvalidParameterException;
+		}
+		if(coordinates[0]>wid/2+xFieldMin && coordinates[0]<xFieldMax-wid/2)
 		{
 			this.coordinates[0] = coordinates[0];
 		}
@@ -37,12 +35,12 @@ public class Racket extends GeometricObject{
 			throw InvalidParameterException;
 		}
 		setCoordinates(coordinates);
-		setDirection(null);
+		this.direction=(float) (Math.PI/2);
 	}
 
 	@Override
 	void setCoordinates(Float[] coordinates) throws Exception {
-		if(coordinates[1]<(this.height/2) && coordinates[1]>(200-(this.height/2)))
+		if(coordinates[1]<(this.height/2)+yFieldMin && coordinates[1]>(yFieldMax-(this.height/2)))
 		{
 			this.coordinates[1]=coordinates[1];
 		}
