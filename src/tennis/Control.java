@@ -19,6 +19,22 @@ class Control {
 	private GUI gui;
 	private Network net = null;
 	
+	public void setBall_inst(Ball ball_inst) {
+		this.ball_inst = ball_inst;
+	}
+	public void setGameState(Boolean gameState) {
+		this.gameState = gameState;
+	}
+	public void setRacketL(Racket racketL) {
+		this.racketL = racketL;
+	}
+	public void setRacketR(Racket racketR) {
+		this.racketR = racketR;
+	}
+	public void setScore(Scores score) {
+		this.score = score;
+	}
+	
 	void just_do_it(int import_java_tennis_control)
 	{
 			
