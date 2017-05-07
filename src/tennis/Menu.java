@@ -5,12 +5,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 public class Menu extends JLabel
 {
@@ -27,18 +31,22 @@ public class Menu extends JLabel
 	private JButton load_button;
 	private JButton back_offline_button;
 	private JButton back_online_button;
+	private JButton ok_button;
+	private JButton back_client_button;
 	protected JLabel client_error_label;
 	protected JLabel host_wait_label;
 	protected JPanel menu_main_panel;
 	protected JPanel menu_offline_panel;
 	protected JPanel menu_online_panel;
 	protected JPanel pause_panel;
+	protected JPanel menu_client_panel;
 	private JButton save_button;
 	private JButton back_pause_button;
 	private JButton menu_button;
+	protected JFormattedTextField numPeriodsField;
 	
 	
-	public Menu()
+	public Menu() throws ParseException
 	{		
 		setLayout(null);
 		try {
@@ -59,7 +67,7 @@ public class Menu extends JLabel
 		//Almenü
 		menu_offline_panel = new JPanel();
 		menu_offline_panel.setLayout(null);
-		menu_offline_panel.setBounds(520, 310-40, WIDTH_MENU, HEIGHT_MENU);
+		menu_offline_panel.setBounds(520-98, 310-40, 435, HEIGHT_MENU+54);
 		menu_offline_panel.setBackground(Color.black);
 		menu_offline_panel.setVisible(false);
 		add(menu_offline_panel);
@@ -71,19 +79,26 @@ public class Menu extends JLabel
 		menu_online_panel.setVisible(false);
 		add(menu_online_panel);
 		
+		menu_client_panel = new JPanel();
+		menu_client_panel.setLayout(null);
+		menu_client_panel.setBounds(520-98, 310-40, 435, HEIGHT_MENU+54);
+		menu_client_panel.setBackground(Color.black);
+		menu_client_panel.setVisible(false);
+		add(menu_client_panel);
+		
 		//Szövegek
 		client_error_label = new JLabel("Nem sikerült csatlakozni a szerverhez!");
 		client_error_label.setForeground(Color.WHITE);
 		client_error_label.setFont(new Font("szöveg", Font.BOLD, 24));
 		client_error_label.setBounds(0, 345, 436, 40);
-		menu_online_panel.add(client_error_label);
+		menu_client_panel.add(client_error_label);
 		client_error_label.setVisible(false);
 		
 		host_wait_label = new JLabel("Várakozás a kliensre!");
 		host_wait_label.setForeground(Color.WHITE);
 		host_wait_label.setFont(new Font("szöveg", Font.BOLD, 24));
 		host_wait_label.setBounds(98, 345, 242, 40);
-		menu_online_panel.add(host_wait_label);
+		menu_offline_panel.add(host_wait_label);
 		host_wait_label.setVisible(false);
 		
 		//Nyomógombok
@@ -128,7 +143,7 @@ public class Menu extends JLabel
 		menu_online_panel.add(client_button);
 		
 		game_button = new JButton("Új játék");
-		game_button.setBounds(0, 0, 240, 80);
+		game_button.setBounds(98, 0, 240, 80);
 		game_button.setBackground(Color.WHITE);
 		game_button.setForeground(Color.BLACK);
 		game_button.setFont(new Font("Gomb", Font.BOLD, 24));
@@ -136,7 +151,7 @@ public class Menu extends JLabel
 		menu_offline_panel.add(game_button);
 		
 		load_button = new JButton("Játék betöltése");
-		load_button.setBounds(0, 120, 240, 80);
+		load_button.setBounds(98, 120, 240, 80);
 		load_button.setBackground(Color.WHITE);
 		load_button.setForeground(Color.BLACK);	
 		load_button.setFont(new Font("Gomb", Font.BOLD, 24));
@@ -144,7 +159,7 @@ public class Menu extends JLabel
 		menu_offline_panel.add(load_button);
 		
 		back_offline_button = new JButton("Vissza");
-		back_offline_button.setBounds(0, 240, 240, 80);
+		back_offline_button.setBounds(98, 240, 240, 80);
 		back_offline_button.setBackground(Color.WHITE);
 		back_offline_button.setForeground(Color.BLACK);
 		back_offline_button.setFont(new Font("Gomb", Font.BOLD, 24));
@@ -189,6 +204,29 @@ public class Menu extends JLabel
 		menu_button.setActionCommand("Kilépés a menübe");
 		pause_panel.add(menu_button);
 		
+		MaskFormatter ip = new MaskFormatter("###.###.###.###");
+		numPeriodsField = new JFormattedTextField(ip);
+		numPeriodsField.setBounds(98, 0, 240, 80);
+		numPeriodsField.setHorizontalAlignment(JTextField.CENTER);
+		numPeriodsField.setFont(new Font("Gomb", Font.BOLD, 24));
+		menu_client_panel.add(numPeriodsField);
+		
+		ok_button = new JButton("Csatlakozás");
+		ok_button.setBounds(98, 120, 240, 80);
+		ok_button.setBackground(Color.WHITE);
+		ok_button.setForeground(Color.BLACK);	
+		ok_button.setFont(new Font("Gomb", Font.BOLD, 24));
+		ok_button.setActionCommand("Csatlakozás");
+		menu_client_panel.add(ok_button);
+		
+		back_client_button = new JButton("Vissza");
+		back_client_button.setBounds(98, 240, 240, 80);
+		back_client_button.setBackground(Color.WHITE);
+		back_client_button.setForeground(Color.BLACK);
+		back_client_button.setFont(new Font("Gomb", Font.BOLD, 24));
+		back_client_button.setActionCommand("Vissza - client");
+		menu_client_panel.add(back_client_button);
+		
 		setVisible(true);
 	}
 	
@@ -203,8 +241,10 @@ public class Menu extends JLabel
 		load_button.addActionListener(action);
 		back_offline_button.addActionListener(action);
 		back_online_button.addActionListener(action);
-		save_button.addActionListener(action);;
-		back_pause_button.addActionListener(action);;
-		menu_button.addActionListener(action);;
+		save_button.addActionListener(action);
+		back_pause_button.addActionListener(action);
+		menu_button.addActionListener(action);
+		ok_button.addActionListener(action);
+		back_client_button.addActionListener(action);
 	}	
 }

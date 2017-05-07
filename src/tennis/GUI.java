@@ -1,65 +1,49 @@
 package tennis;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JButton;
+import java.text.ParseException;
+
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import javax.swing.JComponent;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.Timer;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import javax.swing.ImageIcon;
 
 
 public class GUI extends JFrame implements ActionListener
 {
-	private Control ctrl;
 	private static final int WIDTH_WINDOW = 1280;
 	private static final int HEIGHT_WINDOW = 720;
 	private static final int WIDTH_MENU = 240;
 	private static final int HEIGHT_MENU = 320;
+	
+	private static final int TIMER_DELAY = 20;
+	private Timer time;
+	
+	private int	state = 0;
 	private static final int OFFLINE = 1;
 	private static final int ONLINE = 2;
 	private static final int HOST = 3;
 	private static final int CLIENT = 4;
 	private static final int GAME = 5;
-	private static final int TIMER_DELAY = 20;
-	private int	state = 0;
-	private int i = 11;
-	private int j = 11;
+	
 	private boolean pressed_1_up = false;
 	private boolean pressed_1_down = false;
 	private boolean pressed_2_up = false;
 	private boolean pressed_2_down = false;
 	
-	private Timer time;
-
+	private int x = 11;
+	private int y = 11;	
 	
-	private String score = "0 : 0";
-	protected Field field_panel;
-	//protected JPanel score_panel;
-	//private JLabel score_label;
-	
-	protected Menu menu;
+	private Field field_panel;	
+	private Menu menu;
+	private String score;
+	private String winner;
 	
 	
-	public GUI(Control c)
+	public GUI()
 	{		
 		super("Tenisz");
-		ctrl = c;
 		setSize(WIDTH_WINDOW+6, HEIGHT_WINDOW+30);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -67,18 +51,25 @@ public class GUI extends JFrame implements ActionListener
 			
 		time = new Timer(TIMER_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				field_panel.ReFresh(i, j);
-				if(i >= 400)
+				//X Y koordináta beolvasása
+				field_panel.ReFresh(y, x);
+				//Eredményjelző beolvasása
+				winner = "Bal oldali játékos";
+				if(y >= 400)
 				{
-					Object[] button = {"OK"};
-					if(JOptionPane.showOptionDialog(field_panel, "Te nyertél","Vége a játéknak", JOptionPane.OK_OPTION,JOptionPane.PLAIN_MESSAGE, null, button, null) == 0)
+					Object[] button = {"Visszavágó", "Kilépés a menübe"};
+					if(JOptionPane.showOptionDialog(field_panel, "A nyertes:  "+winner,"Vége a játéknak", JOptionPane.OK_OPTION,JOptionPane.PLAIN_MESSAGE, null, button, null) == 1)
 					{
 						time.stop();
 						field_panel.setVisible(false);
 						field_panel.score_panel.setVisible(false);
 						menu.menu_main_panel.setVisible(true);
-						i = 11;
-						j=11;
+						y = 11;
+						x=11;
+					}
+					else
+					{
+						y = 11;
 					}
 				}
 		     }
@@ -100,7 +91,8 @@ public class GUI extends JFrame implements ActionListener
             	{
 	                System.out.println("pressed 1_up");
 	                pressed_1_up = true;
-	                i = i - 30;
+	                y = y - 30;
+	                //
             	}
             }
         };
@@ -120,7 +112,7 @@ public class GUI extends JFrame implements ActionListener
             	{
             		System.out.println("pressed 1_down");
             		pressed_1_down = true;
-            		i = i + 30;
+            		y = y + 30;
             	}
             }
         };
@@ -140,7 +132,7 @@ public class GUI extends JFrame implements ActionListener
             	{
 	                System.out.println("pressed 2_up");
 	                pressed_2_up = true;
-	                j = j - 30;
+	                x = x - 30;
             	}
             }
         };
@@ -160,8 +152,8 @@ public class GUI extends JFrame implements ActionListener
             	{
             		System.out.println("pressed 2_down");
             		pressed_2_down = true;
-            		j = j + 30;
-            		score=ctrl.getScores();
+            		y = y + 30;
+            		score = "0 : 1";
             		field_panel.score_label.setText(score);
             		field_panel.light_1_label.setVisible(true);
             	}
@@ -179,7 +171,12 @@ public class GUI extends JFrame implements ActionListener
 
 		
 		
-		menu = new Menu();
+		try {
+			menu = new Menu();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//main_panel.add(menu);
 		menu.add_action(this);
 		field_panel = new Field();
@@ -216,14 +213,18 @@ public class GUI extends JFrame implements ActionListener
                 break;
             
             case "Host":
-            	menu.host_wait_label.setVisible(true);
-				menu.client_error_label.setVisible(false);
+            	//menu.host_wait_label.setVisible(true);
+				//menu.client_error_label.setVisible(false);
+            	menu.menu_online_panel.setVisible(false);
+				menu.menu_offline_panel.setVisible(true);
 				state = HOST;
                 break;
             
             case "Kliens":
-            	menu.client_error_label.setVisible(true);
+            	//menu.client_error_label.setVisible(true);
 				menu.host_wait_label.setVisible(false);
+				menu.menu_online_panel.setVisible(false);
+				menu.menu_client_panel.setVisible(true);
 				state = CLIENT;
                 break;
             
@@ -258,9 +259,20 @@ public class GUI extends JFrame implements ActionListener
                 break;
 
             case "Vissza - offline":
-				menu.menu_offline_panel.setVisible(false);
-				menu.menu_main_panel.setVisible(true);
-				state = 0;
+            	if(state == OFFLINE)
+				{
+            		menu.menu_offline_panel.setVisible(false);
+    				menu.menu_main_panel.setVisible(true);
+    				state = 0;
+				}
+				if(state == HOST)
+				{
+					menu.menu_offline_panel.setVisible(false);
+					menu.menu_online_panel.setVisible(true);
+					menu.host_wait_label.setVisible(false);
+					menu.client_error_label.setVisible(false);
+				}
+				
                 break;
                 
             case "Vissza - online":
@@ -289,6 +301,18 @@ public class GUI extends JFrame implements ActionListener
 				field_panel.setVisible(false);
 				field_panel.score_panel.setVisible(false);
                 break;
+                
+            case "Csatlakozás":
+            	System.out.println(menu.numPeriodsField.getText());
+            	menu.client_error_label.setVisible(true);
+            	break;
+            	
+            case "Vissza - client":
+            	menu.menu_client_panel.setVisible(false);
+            	menu.menu_online_panel.setVisible(true);
+            	menu.client_error_label.setVisible(false);
+            	state = ONLINE;
+            	break;
             default:
         }
     }
