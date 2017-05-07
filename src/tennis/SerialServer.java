@@ -84,25 +84,9 @@ public class SerialServer extends Network {
 
 	@Override
 	void connect(String ip) {
-		this.connect(ip,"10007");
-	}
-	@Override
-	void connect(String ip,String port) {
 		disconnect();
 		try {
-			int portInt=10007;
-			if(!port.isEmpty() && port.length()<6)
-			{
-				for(int i=0; i<port.length();i++)
-				{
-					portInt += (Math.round(pow(10,i)))*((int)port.charAt(port.length()-i-1)-(int)'0');
-				}
-			}
-			else
-			{
-				return;
-			}
-			serverSocket = new ServerSocket(portInt);
+			serverSocket = new ServerSocket(10007);
 
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();

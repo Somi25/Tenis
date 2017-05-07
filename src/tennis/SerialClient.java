@@ -69,25 +69,9 @@ public class SerialClient extends Network {
 	
 	@Override
 	void connect(String ip) {
-		this.connect(ip,"10007");
-	}
-	@Override
-	void connect(String ip, String port) {
 		disconnect();
 		try {
-			int portInt=10007;
-			if(!port.isEmpty() && port.length()<6)
-			{
-				for(int i=0; i<port.length();i++)
-				{
-					portInt += (Math.round(pow(10,i)))*((int)port.charAt(port.length()-i-1)-(int)'0');
-				}
-			}
-			else
-			{
-				return;
-			}
-			socket = new Socket(ip,portInt);
+			socket = new Socket(ip,10007);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			out.flush();

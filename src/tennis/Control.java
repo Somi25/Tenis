@@ -42,14 +42,14 @@ class Control {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
-		net.connect("localhost","port");//1 v 2 parameteru, portot le lehet vagni!
+		net.connect("localhost");//1 v 2 parameteru, portot le lehet vagni!
 	}
 
 	void startClient() {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
-		net.connect("localhost","port");//1 v 2 parameteru, portot le lehet vagni!
+		net.connect("localhost");//1 v 2 parameteru, portot le lehet vagni!
 	}
 
 	String getScores()

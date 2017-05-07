@@ -9,7 +9,6 @@ abstract class Network {
 	}
 
 	abstract void connect(String ip);
-	abstract void connect(String ip, String port);
 
 	abstract void disconnect();
 
