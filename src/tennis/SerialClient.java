@@ -5,6 +5,8 @@ import java.net.*;
 import static java.lang.Math.pow;
 import javax.swing.JOptionPane;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class SerialClient extends Network {
 
 	private Socket socket = null;
@@ -36,9 +38,9 @@ public class SerialClient extends Network {
 							ctrl.setRacketR((Racket) received);
 						 }
 					 }
-					if(received instanceof Boolean)//game state (paused or not)
+					if(received instanceof Bool)//game state (paused or not)
 					 {
-						ctrl.setGameState((Boolean) received);
+						ctrl.setGameState((Bool) received);
 					 }
 					if(received instanceof Scores)//pontok
 					 {

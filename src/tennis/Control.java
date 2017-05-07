@@ -7,22 +7,23 @@ package tennis;
 
 import java.awt.Point;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 class Control {
-	
-	private static final int import_java_tennis_control = 5;
-	private Ball ball_inst;
-	private Racket racketL;
-	private Racket racketR;
-	private Scores score;
-	private Boolean gameState;
 
 	private GUI gui;
 	private Network net = null;
 	
+	private Ball ball_inst;
+	private Racket racketL;
+	private Racket racketR;
+	private Scores score;
+	private Bool gameState;
+	
 	public void setBall_inst(Ball ball_inst) {
 		this.ball_inst = ball_inst;
 	}
-	public void setGameState(Boolean gameState) {
+	public void setGameState(Bool gameState) {
 		this.gameState = gameState;
 	}
 	public void setRacketL(Racket racketL) {
@@ -34,12 +35,6 @@ class Control {
 	public void setScore(Scores score) {
 		this.score = score;
 	}
-	
-	
-	void just_do_it(int import_java_tennis_control)
-	{
-			
-	}
 
 	void setGUI(GUI g) {
 		//gui = g;
@@ -49,21 +44,21 @@ class Control {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
-		net.connect("localhost");
+		net.connect("localhost","port");//1 v 2 parameteru, portot le lehet vagni!
 	}
 
 	void startClient() {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
-		net.connect("localhost");
+		net.connect("localhost","port");//1 v 2 parameteru, portot le lehet vagni!
 	}
 
-	void sendClick(Point p) {
-		// gui.addPoint(p); //for drawing locally
-		if (net == null)
-			return;
-		//net.send(p); //kikommenteztem mert nincs már send(p)! 
+	void sendState() {
+		((SerialServer)net).sendStates(ball_inst, racketL, racketR, gameState);
+	}
+	void sendScores() {
+		((SerialServer)net).sendScore(score);
 	}
 
 	public void keyReceived(Key e){
@@ -88,6 +83,7 @@ class Control {
 			
 		}
 	}
+	
 	void clickReceived(Point p) {
 		if (gui == null)
 			return;
