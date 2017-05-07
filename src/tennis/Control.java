@@ -52,6 +52,13 @@ class Control {
 		net.connect("localhost","port");//1 v 2 parameteru, portot le lehet vagni!
 	}
 
+	String getScores()
+	{
+		Integer[] scores;
+		scores=score.getScores();
+		return scores[0].toString() + " + " + scores[1].toString();
+	}
+	
 	void sendState() {
 		((SerialServer)net).sendStates(ball_inst, racketL, racketR, gameState);
 	}

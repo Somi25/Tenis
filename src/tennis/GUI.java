@@ -161,7 +161,7 @@ public class GUI extends JFrame implements ActionListener
             		System.out.println("pressed 2_down");
             		pressed_2_down = true;
             		j = j + 30;
-            		score = "0 : 1";
+            		score=ctrl.getScores();
             		field_panel.score_label.setText(score);
             		field_panel.light_1_label.setVisible(true);
             	}

@@ -12,8 +12,8 @@ public void reset()
 	this.scoreR=0;
 	this.scoreL=0; 
 }
-public int[] getScores(){
-	int[] scores=new int[2];
+public Integer[] getScores(){
+	Integer[] scores=new Integer[2];
 	scores[0]=scoreL;
 	scores[1]=scoreR;
 	return scores;
