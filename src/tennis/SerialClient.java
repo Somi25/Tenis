@@ -22,33 +22,28 @@ public class SerialClient extends Network {
 					Object received = in.readObject();
 					if(received instanceof Ball)
 					 {
-						
+						ctrl.setBall_inst((Ball) received); 
 					 }
 					if(received instanceof Racket)
 					 {
 						if(((Racket) received).getCoordinates()[0]<50)//szebbre!
 						 {
-						
+							ctrl.setRacketL((Racket) received); 
 						 }
-							//(balütõ)
 						if(((Racket) received).getCoordinates()[0]>1220)//szebbre!
 						 {
-							
+							ctrl.setRacketR((Racket) received);
 						 }
-							//jobbütõ
 						
 					 }
 					if(received instanceof Boolean)//game state (paused or not)
 					 {
-						
+						ctrl.setGameState((Boolean) received);
 					 }
 					if(received instanceof Scores)//pontok
 					 {
-						
+						ctrl.setScore((Scores) received);
 					 }
-					
-					
-					
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
