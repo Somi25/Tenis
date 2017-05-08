@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
 
-
 public class SerialClient extends Network {
 
 	private Socket socket = null;
