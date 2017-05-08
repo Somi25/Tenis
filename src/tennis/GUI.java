@@ -361,11 +361,12 @@ public class GUI extends JFrame implements ActionListener
             	{
 					try {
 						control = new Control();
-						//control.startClient(menu.ip.getText());
+						control.startClient(menu.ip.getText());
 	            		System.out.println(menu.ip.getText());
 	            		menu.client_error_label.setVisible(false);
 					} catch (Exception  ex) {
 						menu.client_error_label.setVisible(true);
+						System.out.println("pressed 2_down");
 					}					               	
             	}
 			else
