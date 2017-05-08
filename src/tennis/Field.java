@@ -16,10 +16,8 @@ import javax.swing.KeyStroke;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-public class Field extends DrawPanel{
-	
-	private static final int WIDTH_WINDOW = 1280;
-
+public class Field extends DrawPanel
+{
 	
 	private int i = 11;
 	private int j = 11;
@@ -30,15 +28,15 @@ public class Field extends DrawPanel{
 	protected JLabel light_1_label;
 	protected JLabel light_2_label;
 	
-	public Field()
+	public Field(int WIDTH_WINDOW)
 	{
 		//Pálya
-		//field_panel = new DrawPanel();
 		setLayout(null);
 		setBounds(0, 80, WIDTH_WINDOW,640);
 		setBackground(Color.black);
 		setFocusable(true);
 		
+		//Billentyűzet gombok
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pause");
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "pressed 1_up");
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "released 1_up");
@@ -49,7 +47,7 @@ public class Field extends DrawPanel{
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "pressed 2_down");
 		getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "released 2_down");		
 		
-      //Eredményjelzõ
+		//Eredményjelzõ
 		score_panel = new JPanel();
 		score_panel.setLayout(null);
 		score_panel.setBounds(0, 0, WIDTH_WINDOW,80);
@@ -82,6 +80,8 @@ public class Field extends DrawPanel{
         
 		setVisible(false);
 	}
+	
+	//Labda, ütők kirajzolása
     public void ball(int x, int y) {
     	ball.clear();
     	ball.add(new Point(x, y));        	
@@ -100,14 +100,7 @@ public class Field extends DrawPanel{
         repaint();
     }
     
-    protected void ReFresh(int i, int j)
-	{
-		//System.out.println("timer");
-		ball(i+30,i+30);
-		racket_1(30,i);
-		racket_2(WIDTH_WINDOW-10-30,j);
-	}
-    
+    //gomb esemény aktiválás
     protected void add_action(AbstractAction pause_action, AbstractAction pressed_1_up_action, AbstractAction released_1_up_action, AbstractAction pressed_1_down_action, AbstractAction released_1_down_action, AbstractAction pressed_2_up_action, AbstractAction released_2_up_action, AbstractAction pressed_2_down_action, AbstractAction released_2_down_action)
     {
     	getActionMap().put("pause", pause_action);

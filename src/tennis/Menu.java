@@ -17,10 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 public class Menu extends JLabel
-{
-	private static final int WIDTH_MENU = 240;
-	private static final int HEIGHT_MENU = 320;
-	private static final int WIDTH_WINDOW = 1280;
+{	
 	
 	private JButton offline_button;
 	private JButton online_button;
@@ -46,7 +43,7 @@ public class Menu extends JLabel
 	protected JFormattedTextField ip;
 	
 	
-	public Menu() throws ParseException
+	public Menu(int WIDTH_MENU, int HEIGHT_MENU, int WIDTH_WINDOW) throws ParseException
 	{		
 		setLayout(null);
 		try {
@@ -86,7 +83,7 @@ public class Menu extends JLabel
 		menu_client_panel.setVisible(false);
 		add(menu_client_panel);
 		
-		//Szövegek
+		//Szöveg
 		client_error_label = new JLabel("Nem sikerült csatlakozni a szerverhez!");
 		client_error_label.setForeground(Color.WHITE);
 		client_error_label.setFont(new Font("szöveg", Font.BOLD, 24));
@@ -230,6 +227,7 @@ public class Menu extends JLabel
 		setVisible(true);
 	}
 	
+	//gomb esemény aktiválás
 	protected void add_action(GUI action)
 	{
 		offline_button.addActionListener(action);

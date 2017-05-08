@@ -36,6 +36,7 @@ public class GUI extends JFrame implements ActionListener
 	private int x = 11;
 	private int y = 11;	
 	
+	private Control control;
 	private Field field_panel;	
 	private Menu menu;
 	private String score;
@@ -51,11 +52,22 @@ public class GUI extends JFrame implements ActionListener
 		setLayout(null);
 		setResizable(false);		
 			
+		//Pálya kirajzolása 50Hz-el
 		time = new Timer(TIMER_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//X Y koordináta beolvasása
-				field_panel.ReFresh(y, x);
-				//Eredményjelző beolvasása
+				/*
+				 y = control.getRacket1_Height();
+				 x = control.getRacket1_Width();
+				 field.racket_1(x,y);
+				 y = control.getRacket2_Height();
+				 x = control.getRacket2_Width();
+				 field.racket_2(x,y); 
+				 y = control.getBall_Height();
+				 *x = control.getBall_Width();
+				 *field.ball(x,y);
+				*/
+				//score = control.getScores();
+				
 				winner = "Bal oldali játékos";
 				if(y >= 400)
 				{
@@ -77,6 +89,7 @@ public class GUI extends JFrame implements ActionListener
 		     }
 		});	
 		
+		//Billentyűzet esemény kezelés
 		AbstractAction pause_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -91,10 +104,12 @@ public class GUI extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e) {
             	if(pressed_1_up == false)
             	{
-	                System.out.println("pressed 1_up");
-	                pressed_1_up = true;
-	                y = y - 30;
-	                //
+            		if(state == OFFLINE || state == HOST)
+            		{
+		                System.out.println("pressed 1_up");
+		                pressed_1_up = true;
+		                //moveRacket1_up();
+            		}
             	}
             }
         };
@@ -102,8 +117,12 @@ public class GUI extends JFrame implements ActionListener
         AbstractAction released_1_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("released 1_up");
-                pressed_1_up = false;
+            	if(state == OFFLINE || state == HOST)
+        		{
+	            	System.out.println("released 1_up");
+	                pressed_1_up = false;
+	                //stopRacket1_down();
+        		}
             }
         };
 		
@@ -112,9 +131,12 @@ public class GUI extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e) {
             	if(pressed_1_down == false)
             	{
-            		System.out.println("pressed 1_down");
-            		pressed_1_down = true;
-            		y = y + 30;
+            		if(state == OFFLINE || state == HOST)
+            		{
+	            		System.out.println("pressed 1_down");
+	            		pressed_1_down = true;
+	            		//moveRacket1_down();
+            		}
             	}
             }
         };
@@ -122,8 +144,12 @@ public class GUI extends JFrame implements ActionListener
         AbstractAction released_1_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if(state == OFFLINE || state == HOST)
+        		{
             		System.out.println("released 1_down");
             		pressed_1_down = false;
+            		//stopRacket1_down();
+        		}
             }
         };
         
@@ -132,9 +158,12 @@ public class GUI extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e) {
             	if(pressed_2_up == false)
             	{
-	                System.out.println("pressed 2_up");
-	                pressed_2_up = true;
-	                x = x - 30;
+            		if(state == OFFLINE || state == CLIENT)
+            		{
+		                System.out.println("pressed 2_up");
+		                pressed_2_up = true;
+		                //moveRacket2_up();
+            		}
             	}
             }
         };
@@ -142,8 +171,12 @@ public class GUI extends JFrame implements ActionListener
         AbstractAction released_2_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("released 2_up");
-                pressed_2_up = false;
+            	if(state == OFFLINE || state == CLIENT)
+        		{
+	                System.out.println("released 2_up");
+	                pressed_2_up = false;
+	                //stopRacket2_up();
+        		}
             }
         };
         
@@ -152,12 +185,12 @@ public class GUI extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e) {
             	if(pressed_2_down == false)
             	{
-            		System.out.println("pressed 2_down");
-            		pressed_2_down = true;
-            		y = y + 30;
-            		score = "0 : 1";
-            		field_panel.score_label.setText(score);
-            		field_panel.light_1_label.setVisible(true);
+            		if(state == OFFLINE || state == CLIENT)
+            		{
+	            		System.out.println("pressed 2_down");
+	            		pressed_2_down = true;
+	            		//moveRacket2_down();
+            		}
             	}
             }
         };
@@ -165,33 +198,36 @@ public class GUI extends JFrame implements ActionListener
         AbstractAction released_2_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if(state == OFFLINE || state == CLIENT)
+        		{
             		System.out.println("released 2_down");
             		pressed_2_down = false;
-            		field_panel.light_1_label.setVisible(false);
+            		//stopRacket2_down();
+        		}
             }
         };
-
+        
+        //ip cím formátum
+        ip_pattern = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 		
-		
+		//Menü, pálya példányosítás
 		try {
-			menu = new Menu();
+			menu = new Menu(WIDTH_MENU, HEIGHT_MENU, WIDTH_WINDOW);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		//main_panel.add(menu);
 		menu.add_action(this);
-		field_panel = new Field();
+		field_panel = new Field(WIDTH_WINDOW);
 		field_panel.add_action(pause_action, pressed_1_up_action, released_1_up_action, pressed_1_down_action, released_1_down_action, pressed_2_up_action, released_2_up_action, pressed_2_down_action, released_2_down_action);
 		menu.add(field_panel);
 		menu.add(field_panel.score_panel);
 		field_panel.add(menu.pause_panel);
 		setContentPane(menu);
 		
-		ip_pattern = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 		setVisible(true);
 	}
 	
+	//Menügomb esemény kezelés
 	@Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -234,6 +270,7 @@ public class GUI extends JFrame implements ActionListener
             case "Új játék":
             	if(state == OFFLINE)
 				{
+            		control = new Control();
 					menu.menu_offline_panel.setVisible(false);
 					field_panel.setVisible(true);
 					field_panel.score_panel.setVisible(true);
@@ -249,6 +286,8 @@ public class GUI extends JFrame implements ActionListener
             case "Játék betöltése":
             	if(state == OFFLINE)
 				{
+            		control = new Control();
+            		//control.load();
 					menu.menu_offline_panel.setVisible(false);
 					field_panel.setVisible(true);
 					field_panel.score_panel.setVisible(true);
@@ -303,6 +342,7 @@ public class GUI extends JFrame implements ActionListener
 				menu.menu_main_panel.setVisible(true);
 				field_panel.setVisible(false);
 				field_panel.score_panel.setVisible(false);
+				control = null;
                 break;
                 
             case "Csatlakozás":
