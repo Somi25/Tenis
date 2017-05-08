@@ -57,17 +57,27 @@ public class GUI extends JFrame implements ActionListener
 		//Pálya kirajzolása 50Hz-el
 		time = new Timer(TIMER_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 y = control.getRacket1_Height();
-				 x = control.getRacket1_Width();
-				 field.racket_1(x,y);
-				 y = control.getRacket2_Height();
-				 x = control.getRacket2_Width();
-				 field.racket_2(x,y); 
-				 y = control.getBall_Height();
-				 *x = control.getBall_Width();
-				 *field.ball(x,y);
-				*/
+				Integer[] coords = new Integer[2];				
+
+				// bal ütő koordináták megszerzése
+				coords = control.getRacketL().getGUIcoords();
+				x = coords[0];
+				y = coords[1];			
+				field_panel.racket_1(x,y);
+
+				// jobb ütő koordináták megszerzése
+				coords = control.getRacketR().getGUIcoords();
+				x = coords[0];
+				y = coords[1];			
+				field_panel.racket_2(x,y);
+
+				// labda ütő koordináták megszerzése
+				coords = control.getBall().getGUIcoords();
+				x = coords[0];
+				y = coords[1];			
+				field_panel.ball(x,y);
+				
+				
 				//score = control.getScores();
 				
 				winner = "Bal oldali játékos";

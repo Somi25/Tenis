@@ -41,7 +41,24 @@ class Control {
 			ball_inst = new Ball(defColour, new Float[] {(float)xFieldMax/2, (float)yFieldMax/2}, ballRad, racketL, racketR);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+
+       	 System.out.println("valami hiba a konstruktornál");
+         System.out.println(e.getMessage());
 		}
+	}
+	
+	public Racket getRacketL(){
+		return racketL;
+	}
+
+	
+	public Racket getRacketR(){
+		return racketR;
+	}
+
+	
+	public Ball getBall(){
+		return ball_inst;
 	}
 	
 	

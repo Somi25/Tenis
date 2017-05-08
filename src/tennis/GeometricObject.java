@@ -14,15 +14,17 @@ public abstract class GeometricObject {
 	protected Float direction;		// [0, 2*pi) intervallum, 0 irány: D-kr x tengelye (óramutató járásával ellentétes irányú)
 	protected Float velocity;		// "pixel / time_tick" mértékegység
 	
+	
 	public GeometricObject(Integer Colour[]) throws Exception {
 		if(Colour.length == 3 && 0<=Colour[0] && Colour[0]<256 && 0<=Colour[1] && Colour[1]<256 && 0<=Colour[2] && Colour[2]<256)
 			colourRGB = Colour;
 		else 
 		 {
 			Exception InvalidParameterException = null;
-			throw InvalidParameterException;
+			//throw InvalidParameterException;
 		 }
 		velocity = (float)0;
+		
 	}
 	
 	public Integer[] getColour() {
@@ -44,10 +46,17 @@ public abstract class GeometricObject {
 	public Integer[] getGUIcoords (){
 		Integer[] coordsInt = new Integer[2];
 
-		coordsInt[0] = Math.round(coordinates[0]);
-		coordsInt[1] = yFieldMax - Math.round(coordinates[1]);
+		coordsInt[0] = Math.round(this.coordinates[0]);
+		coordsInt[1] = yFieldMax - Math.round(this.coordinates[1]);
 		
 		return coordsInt;		
+	}
+	
+	public Integer[] getasdf(){
+		Integer[] asdf = new Integer[2];
+		asdf[0] = 200;
+		asdf[1] = 500;
+		return asdf;
 	}
 	
 	

@@ -34,7 +34,10 @@ public class Racket extends GeometricObject{
 		{
 			throw InvalidParameterException;
 		}
-		setCoordinates(coordinates);
+		
+		//setCoordinates(coordinates);
+		this.coordinates = coordinates;
+		
 		this.direction=(float) (Math.PI/2);
 	}
 
