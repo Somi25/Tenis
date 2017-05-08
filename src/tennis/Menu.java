@@ -32,6 +32,7 @@ public class Menu extends JLabel
 	private JButton back_client_button;
 	protected JLabel client_error_label;
 	protected JLabel host_wait_label;
+	private JLabel lost_label;
 	protected JPanel menu_main_panel;
 	protected JPanel menu_offline_panel;
 	protected JPanel menu_online_panel;
@@ -41,7 +42,6 @@ public class Menu extends JLabel
 	private JButton back_pause_button;
 	private JButton menu_button;
 	protected JFormattedTextField ip;
-	
 	
 	public Menu(int WIDTH_MENU, int HEIGHT_MENU, int WIDTH_WINDOW) throws ParseException
 	{		
@@ -55,7 +55,7 @@ public class Menu extends JLabel
 		//Fõmenü
 		menu_main_panel = new JPanel();
 		menu_main_panel.setLayout(null);
-		menu_main_panel.setBounds(520, 310-40, WIDTH_MENU,HEIGHT_MENU);
+		menu_main_panel.setBounds(520-98, 310-40, WIDTH_MENU,HEIGHT_MENU);
 		menu_main_panel.setBackground(Color.black);
 		menu_main_panel.setVisible(true);
 		add(menu_main_panel);
@@ -64,21 +64,21 @@ public class Menu extends JLabel
 		//Almenü
 		menu_offline_panel = new JPanel();
 		menu_offline_panel.setLayout(null);
-		menu_offline_panel.setBounds(520-98, 310-40, 435, HEIGHT_MENU+54);
+		menu_offline_panel.setBounds(520-98, 310-40, WIDTH_MENU, HEIGHT_MENU);
 		menu_offline_panel.setBackground(Color.black);
 		menu_offline_panel.setVisible(false);
 		add(menu_offline_panel);
 		
 		menu_online_panel = new JPanel();
 		menu_online_panel.setLayout(null);
-		menu_online_panel.setBounds(520-98, 310-40, 435, HEIGHT_MENU+54);
+		menu_online_panel.setBounds(520-98, 310-40, WIDTH_MENU, HEIGHT_MENU);
 		menu_online_panel.setBackground(Color.black);
 		menu_online_panel.setVisible(false);
 		add(menu_online_panel);
 		
 		menu_client_panel = new JPanel();
 		menu_client_panel.setLayout(null);
-		menu_client_panel.setBounds(520-98, 310-40, 435, HEIGHT_MENU+54);
+		menu_client_panel.setBounds(520-98, 310-40, WIDTH_MENU, HEIGHT_MENU);
 		menu_client_panel.setBackground(Color.black);
 		menu_client_panel.setVisible(false);
 		add(menu_client_panel);
@@ -87,20 +87,27 @@ public class Menu extends JLabel
 		client_error_label = new JLabel("Nem sikerült csatlakozni a szerverhez!");
 		client_error_label.setForeground(Color.WHITE);
 		client_error_label.setFont(new Font("szöveg", Font.BOLD, 24));
-		client_error_label.setBounds(0, 345, 436, 40);
+		client_error_label.setBounds(0, 340, 436, 40);
 		menu_client_panel.add(client_error_label);
 		client_error_label.setVisible(false);
 		
 		host_wait_label = new JLabel("Várakozás a kliensre!");
 		host_wait_label.setForeground(Color.WHITE);
 		host_wait_label.setFont(new Font("szöveg", Font.BOLD, 24));
-		host_wait_label.setBounds(98, 345, 242, 40);
+		host_wait_label.setBounds(98, 340, 242, 40);
 		menu_offline_panel.add(host_wait_label);
 		host_wait_label.setVisible(false);
 		
+		lost_label = new JLabel("A kapcsolat megszakadt!");
+		lost_label.setForeground(Color.WHITE);
+		lost_label.setFont(new Font("szöveg", Font.BOLD, 24));
+		lost_label.setBounds(77, 340, 284, 40);
+		menu_main_panel.add(lost_label);
+		lost_label.setVisible(false);
+		
 		//Nyomógombok
 		offline_button = new JButton("Offline");
-		offline_button.setBounds(0, 0, 240, 80);
+		offline_button.setBounds(98, 0, 240, 80);
 		offline_button.setBackground(Color.WHITE);
 		offline_button.setForeground(Color.BLACK);
 		offline_button.setFont(new Font("Gomb", Font.BOLD, 24));
@@ -108,7 +115,7 @@ public class Menu extends JLabel
 		menu_main_panel.add(offline_button);
 		
 		online_button = new JButton("Online");
-		online_button.setBounds(0, 120, 240, 80);
+		online_button.setBounds(98, 120, 240, 80);
 		online_button.setBackground(Color.WHITE);
 		online_button.setForeground(Color.BLACK);
 		online_button.setFont(new Font("Gomb", Font.BOLD, 24));
@@ -116,7 +123,7 @@ public class Menu extends JLabel
 		menu_main_panel.add(online_button);
 		
 		exit_button = new JButton("Kilépés");
-		exit_button.setBounds(0, 240, 240, 80);
+		exit_button.setBounds(98, 240, 240, 80);
 		exit_button.setBackground(Color.WHITE);
 		exit_button.setForeground(Color.BLACK);
 		exit_button.setFont(new Font("Gomb", Font.BOLD, 24));
