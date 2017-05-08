@@ -7,9 +7,6 @@ public abstract class GeometricObject {
 	protected final Integer xFieldMin	= 0;
 	protected final Integer yFieldMax	= 620;
 	protected final Integer yFieldMin	= 0;
-	protected final Integer racketW		= 10;
-	protected final Integer racketH		= 100;
-	protected final Integer ballRad		= 10;
 	
 	
 	protected Integer[] colourRGB = new Integer[3];

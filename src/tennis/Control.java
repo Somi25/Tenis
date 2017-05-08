@@ -5,22 +5,45 @@
 
 package tennis;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 class Control {
 
 	private GUI gui;
 	private Network net = null;
 	
-	Integer[] colour_ = new Integer[3];
-	Float[] coordinates_ = new Float[2];
-	Float rad_ = 3.2f;
+	// alapértelmezett szín
+	private final Integer[] defColour = {1,2,3};
 	
-	private Ball ball_inst;// = new Ball(colour_, coordinates_, rad_);
+	// paraméterek: pálya méret, ütõ méret, labda méret
+	protected final Integer xFieldMax	= 1280;
+	protected final Integer xFieldMin	= 0;
+	protected final Integer yFieldMax	= 620;
+	protected final Integer yFieldMin	= 0;
+	protected final Float racketW		= 10f;
+	protected final Float racketH		= 100f;
+	protected final Float racketLx0		= (float)xFieldMin + 30;
+	protected final Float racketRx0		= (float)xFieldMax - 30;
+	protected final Float ballRad		= 10f;
+	
+	private Ball ball_inst;
 	private Racket racketL;
 	private Racket racketR;
 	private Scores score;
 	private Boolean gameState;
+
+	
+	// konstruktor
+	public Control(){
+		// objektumok létrehozása
+		try {
+			racketL = new Racket(defColour, new Float[] {racketLx0, (float)yFieldMax/2}, racketW, racketH);
+			racketR = new Racket(defColour, new Float[] {racketRx0, (float)yFieldMax/2}, racketW, racketH);
+			ball_inst = new Ball(defColour, new Float[] {(float)xFieldMax/2, (float)yFieldMax/2}, ballRad, racketL, racketR);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		}
+	}
+	
 	
 	public void setBall_inst(Ball ball_inst) {
 		this.ball_inst = ball_inst;

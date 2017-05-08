@@ -5,14 +5,17 @@ public class Ball extends GeometricObject{
 	private final Float radius;
 	private Float twist;		// csavarás mértéke
 	
-	// ezek nem ide kellenek, csak hogy leforduljon a kód:
+	// ütõk
 	private Racket racketL;
 	private Racket racketR;
 	
 	
-	public Ball(Integer colour[], Float coordinates[], Float rad) throws Exception{
+	public Ball(Integer colour[], Float coordinates[], Float rad, Racket racketL, Racket racketR) throws Exception{
 
 		super(colour);
+
+		this.racketL = racketL;
+		this.racketR = racketR;
 		
 		Exception InvalidParameterException = null;
 		if(rad<yFieldMax/2 && rad>0)
