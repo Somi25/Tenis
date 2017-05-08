@@ -1,6 +1,7 @@
 package tennis;
 // @TODO:
 // pálya méreteket konstruktorba állítani gui fv-nyel
+// hello
 
 public abstract class GeometricObject {
 	
