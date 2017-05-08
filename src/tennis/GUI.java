@@ -2,6 +2,8 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
@@ -227,6 +229,13 @@ public class GUI extends JFrame implements ActionListener
 		setVisible(true);
 	}
 	
+	protected void start()
+	{
+		field_panel.setVisible(true);
+		field_panel.score_panel.setVisible(true);
+		time.start();
+	}
+	
 	//Menügomb esemény kezelés
 	@Override
     public void actionPerformed(ActionEvent e) {
@@ -272,14 +281,18 @@ public class GUI extends JFrame implements ActionListener
 				{
             		control = new Control();
 					menu.menu_offline_panel.setVisible(false);
-					field_panel.setVisible(true);
-					field_panel.score_panel.setVisible(true);
-					time.start();
+					start();
 				}
 				if(state == HOST)
 				{
+					try {
+						control = new Control();
+						//control.startServer();
+						//menu.menu_offline_panel.setVisible(false);
+						//start();
+					} catch (Exception  ex) {
+					}	
 					menu.host_wait_label.setVisible(true);
-					//time.start();
 				}
                 break;
                 
@@ -289,9 +302,7 @@ public class GUI extends JFrame implements ActionListener
             		control = new Control();
             		//control.load();
 					menu.menu_offline_panel.setVisible(false);
-					field_panel.setVisible(true);
-					field_panel.score_panel.setVisible(true);
-					time.start();
+					start();
 				}
 				if(state == HOST)
 				{
@@ -348,10 +359,14 @@ public class GUI extends JFrame implements ActionListener
             case "Csatlakozás":
 			if(ip_pattern.matcher(menu.ip.getText()).matches())
             	{
-					control = new Control();
-					//control.startClient(menu.ip.getText());
-            		System.out.println(menu.ip.getText());
-                	menu.client_error_label.setVisible(true);
+					try {
+						control = new Control();
+						//control.startClient(menu.ip.getText());
+	            		System.out.println(menu.ip.getText());
+	            		menu.client_error_label.setVisible(false);
+					} catch (Exception  ex) {
+						menu.client_error_label.setVisible(true);
+					}					               	
             	}
 			else
             	break;
