@@ -3,6 +3,7 @@ package tennis;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -40,6 +41,7 @@ public class GUI extends JFrame implements ActionListener
 	private String score;
 	private String winner;
 	
+	private Pattern ip_pattern;
 	
 	public GUI()
 	{		
@@ -186,6 +188,7 @@ public class GUI extends JFrame implements ActionListener
 		field_panel.add(menu.pause_panel);
 		setContentPane(menu);
 		
+		ip_pattern = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 		setVisible(true);
 	}
 	
@@ -303,8 +306,11 @@ public class GUI extends JFrame implements ActionListener
                 break;
                 
             case "Csatlakozás":
-            	System.out.println(menu.numPeriodsField.getText());
-            	menu.client_error_label.setVisible(true);
+			if(ip_pattern.matcher(menu.ip.getText()).matches())
+            	{
+            		System.out.println(menu.ip.getText());
+                	menu.client_error_label.setVisible(true);
+            	}
             	break;
             	
             case "Vissza - client":

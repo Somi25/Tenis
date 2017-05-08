@@ -43,7 +43,7 @@ public class Menu extends JLabel
 	private JButton save_button;
 	private JButton back_pause_button;
 	private JButton menu_button;
-	protected JFormattedTextField numPeriodsField;
+	protected JFormattedTextField ip;
 	
 	
 	public Menu() throws ParseException
@@ -204,12 +204,12 @@ public class Menu extends JLabel
 		menu_button.setActionCommand("Kilépés a menübe");
 		pause_panel.add(menu_button);
 		
-		MaskFormatter ip = new MaskFormatter("###.###.###.###");
-		numPeriodsField = new JFormattedTextField(ip);
-		numPeriodsField.setBounds(98, 0, 240, 80);
-		numPeriodsField.setHorizontalAlignment(JTextField.CENTER);
-		numPeriodsField.setFont(new Font("Gomb", Font.BOLD, 24));
-		menu_client_panel.add(numPeriodsField);
+		MaskFormatter ip_format = new MaskFormatter("###.###.###.###");
+		ip = new JFormattedTextField(ip_format);
+		ip.setBounds(98, 0, 240, 80);
+		ip.setHorizontalAlignment(JTextField.CENTER);
+		ip.setFont(new Font("Gomb", Font.BOLD, 24));
+		menu_client_panel.add(ip);
 		
 		ok_button = new JButton("Csatlakozás");
 		ok_button.setBounds(98, 120, 240, 80);
