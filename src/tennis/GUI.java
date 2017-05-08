@@ -270,6 +270,9 @@ public class GUI extends JFrame implements ActionListener
 		field_panel.setVisible(true);
 		field_panel.score_panel.setVisible(true);
 		time.start();
+		// Bence kezd
+		control.startGame();
+		// Bence vége
 	}
 	
 	//Menügomb esemény kezelés

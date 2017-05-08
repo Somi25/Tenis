@@ -28,6 +28,7 @@ class Control {
 	protected final Float racketLx0		= (float)xFieldMin + 30;
 	protected final Float racketRx0		= (float)xFieldMax - 30;
 	protected final Float ballRad		= 10f;
+	private  final int sampleTime		= 100;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -52,7 +53,7 @@ class Control {
 		}
 		
 		//Pálya kirajzolása 50Hz-el
-		timer = new Timer(20, new ActionListener() {
+		timer = new Timer(sampleTime, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				racketL.time();
 				racketR.time();
@@ -60,8 +61,13 @@ class Control {
 			}
 		});
 		
-		timer.start();
 
+	}
+	
+	// játék indítása (minden labdamenetet ez indít)
+	public void startGame(){
+		timer.start();
+		ball_inst.setVelocity(-10f);
 	}
 	
 	public Racket getRacketL(){

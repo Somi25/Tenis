@@ -3,7 +3,7 @@ package tennis;
 public class Ball extends GeometricObject{
 
 	private final Float radius;
-	private Float twist;		// csavarás mértéke
+	private final Float twist = 0.25f;		// csavarás mértéke
 	
 	// ütõk
 	private Racket racketL;
@@ -30,7 +30,6 @@ public class Ball extends GeometricObject{
 		{
 			throw InvalidParameterException;
 		}
-		this.twist=(float)0;
 		setDirection((float)0);
 		
 		
@@ -40,9 +39,7 @@ public class Ball extends GeometricObject{
 		return radius;
 	}
 
-	public void setTwist(Float twist) {
-		this.twist = twist;
-	}
+
 	@Override
 	public void setCoordinates(Float[] coordinates) throws Exception {
 		
@@ -83,13 +80,14 @@ public class Ball extends GeometricObject{
 		y = (float) (y + velocity * Math.sin(direction));
 
 		coordinates[0] = x;
-		coordinates[0] = y;
+		coordinates[1] = y;
 
 		// történt ütközés?
 		coordinates = crashUp(coordinates);
 		coordinates = crashDown(coordinates);
 		coordinates = crashLeft(coordinates);
 		coordinates = crashRight(coordinates);
+      	//System.out.println(velocity);
 		
 	}
 	
