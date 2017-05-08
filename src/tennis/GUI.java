@@ -15,8 +15,8 @@ public class GUI extends JFrame implements ActionListener
 {
 	private static final int WIDTH_WINDOW = 1280;
 	private static final int HEIGHT_WINDOW = 720;
-	private static final int WIDTH_MENU = 240;
-	private static final int HEIGHT_MENU = 320;
+	private static final int WIDTH_MENU = 435;
+	private static final int HEIGHT_MENU = 400;
 	
 	private static final int TIMER_DELAY = 20;
 	private Timer time;
@@ -349,7 +349,7 @@ public class GUI extends JFrame implements ActionListener
 			if(ip_pattern.matcher(menu.ip.getText()).matches())
             	{
 					control = new Control();
-					control.startClient(menu.ip.getText());
+					//control.startClient(menu.ip.getText());
             		System.out.println(menu.ip.getText());
                 	menu.client_error_label.setVisible(true);
             	}
