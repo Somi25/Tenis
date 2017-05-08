@@ -2,8 +2,12 @@ package tennis;
 
 public class Racket extends GeometricObject{
 	
+	// ütõ méretek
 	private final Float width;
 	private final Float height;
+	
+	// ütõ sebesség konstans
+	private final Float speed = 10f;
 	
 	public Racket(Integer colour[],Float coordinates[], Float wid, Float hei) throws Exception{
 
@@ -73,7 +77,7 @@ public class Racket extends GeometricObject{
 		
 		float y;
 
-		y = coordinates[1] + velocity;
+		y = coordinates[1] + velocity * speed;
 		
 		// ütõ max állásban
 		if(y + height/2 > yFieldMax){

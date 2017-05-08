@@ -5,6 +5,10 @@
 
 package tennis;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 class Control {
 
@@ -30,6 +34,7 @@ class Control {
 	private Racket racketR;
 	private Scores score;
 	private Boolean gameState;
+	private Timer timer;
 
 	
 	// konstruktor
@@ -45,6 +50,18 @@ class Control {
        	 System.out.println("valami hiba a konstruktornál");
          System.out.println(e.getMessage());
 		}
+		
+		//Pálya kirajzolása 50Hz-el
+		timer = new Timer(20, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				racketL.time();
+				racketR.time();
+				ball_inst.time();
+			}
+		});
+		
+		timer.start();
+
 	}
 	
 	public Racket getRacketL(){
@@ -65,15 +82,19 @@ class Control {
 	public void setBall_inst(Ball ball_inst) {
 		this.ball_inst = ball_inst;
 	}
+	
 	public void setGameState(Boolean gameState) {
 		this.gameState = gameState;
 	}
+	
 	public void setRacketL(Racket racketL) {
 		this.racketL = racketL;
 	}
+	
 	public void setRacketR(Racket racketR) {
 		this.racketR = racketR;
 	}
+	
 	public void setScore(Scores score) {
 		this.score = score;
 	}
@@ -146,4 +167,5 @@ class Control {
 			
 		}
 	}
+
 }

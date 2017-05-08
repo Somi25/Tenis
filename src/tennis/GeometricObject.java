@@ -47,7 +47,7 @@ public abstract class GeometricObject {
 		Integer[] coordsInt = new Integer[2];
 
 		coordsInt[0] = Math.round(this.coordinates[0]);
-		coordsInt[1] = yFieldMax - Math.round(this.coordinates[1]);
+		coordsInt[1] = yFieldMax - Math.round(this.coordinates[1]) - 40;
 		
 		return coordsInt;		
 	}
