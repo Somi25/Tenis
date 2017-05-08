@@ -9,6 +9,7 @@ public class Ball extends GeometricObject{
 	private Racket racketL;
 	private Racket racketR;
 	
+	
 	public Ball(Integer colour[], Float coordinates[], Float rad) throws Exception{
 
 		super(colour);

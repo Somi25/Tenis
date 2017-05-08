@@ -12,7 +12,11 @@ class Control {
 	private GUI gui;
 	private Network net = null;
 	
-	private Ball ball_inst;
+	Integer[] colour_ = new Integer[3];
+	Float[] coordinates_ = new Float[2];
+	Float rad_ = 3.2f;
+	
+	private Ball ball_inst;// = new Ball(colour_, coordinates_, rad_);
 	private Racket racketL;
 	private Racket racketR;
 	private Scores score;
