@@ -1,7 +1,5 @@
 package tennis;
 
-import static java.lang.Math.pow;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
