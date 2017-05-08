@@ -2,10 +2,8 @@ package tennis;
 
 import java.io.*;
 import java.net.*;
-import static java.lang.Math.pow;
 import javax.swing.JOptionPane;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class SerialClient extends Network {
 
@@ -38,9 +36,9 @@ public class SerialClient extends Network {
 							ctrl.setRacketR((Racket) received);
 						 }
 					 }
-					if(received instanceof Bool)//game state (paused or not)
+					if(received instanceof Boolean)//game state (paused or not)
 					 {
-						ctrl.setGameState((Bool) received);
+						ctrl.setGameState((Boolean) received);
 					 }
 					if(received instanceof Scores)//pontok
 					 {
@@ -68,7 +66,7 @@ public class SerialClient extends Network {
 	}
 	
 	@Override
-	void connect(String ip) {
+	Boolean connect(String ip) {
 		disconnect();
 		try {
 			socket = new Socket(ip,10007);
@@ -78,6 +76,7 @@ public class SerialClient extends Network {
 
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
+			return true;
 		} catch (IllegalArgumentException e) {
 			System.err.println("One of the arguments are illegal");
 		} catch (UnknownHostException e) {
@@ -87,6 +86,7 @@ public class SerialClient extends Network {
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
 		} finally{
 			disconnect();
+			return false;
 		}
 	}
 

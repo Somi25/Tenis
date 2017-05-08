@@ -10,8 +10,6 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 public class SerialServer extends Network {
 
 	private ServerSocket serverSocket = null;
@@ -60,7 +58,7 @@ public class SerialServer extends Network {
 		}
 	}
 
-	void sendStates(Ball ball_ins, Racket racketL, Racket racketR, Bool gameState) {
+	void sendStates(Ball ball_ins, Racket racketL, Racket racketR, Boolean gameState) {
 		if (out == null)
 			return;
 		try {
@@ -83,15 +81,17 @@ public class SerialServer extends Network {
 	}
 
 	@Override
-	void connect(String ip) {
+	Boolean connect(String ip) {
 		disconnect();
 		try {
 			serverSocket = new ServerSocket(10007);
 
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
+			return true;
 		} catch (IOException e) {
 			System.err.println("Could not listen on port: 10007.");
+			return false;
 		}
 	}
 

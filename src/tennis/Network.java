@@ -8,7 +8,7 @@ abstract class Network {
 		ctrl = c;
 	}
 
-	abstract void connect(String ip);
+	abstract Boolean connect(String ip);
 
 	abstract void disconnect();
 

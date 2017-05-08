@@ -348,9 +348,12 @@ public class GUI extends JFrame implements ActionListener
             case "Csatlakozás":
 			if(ip_pattern.matcher(menu.ip.getText()).matches())
             	{
+					control = new Control();
+					control.startClient(menu.ip.getText());
             		System.out.println(menu.ip.getText());
                 	menu.client_error_label.setVisible(true);
             	}
+			else
             	break;
             	
             case "Vissza - client":

@@ -16,12 +16,12 @@ class Control {
 	private Racket racketL;
 	private Racket racketR;
 	private Scores score;
-	private Bool gameState;
+	private Boolean gameState;
 	
 	public void setBall_inst(Ball ball_inst) {
 		this.ball_inst = ball_inst;
 	}
-	public void setGameState(Bool gameState) {
+	public void setGameState(Boolean gameState) {
 		this.gameState = gameState;
 	}
 	public void setRacketL(Racket racketL) {
@@ -42,14 +42,28 @@ class Control {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
-		net.connect("localhost");//1 v 2 parameteru, portot le lehet vagni!
+		if(net.connect("localhost"))
+		{
+			//Hívni a Guiból a játékot 
+		}
+		else
+		{
+			//Hívni a Guiból a hiba fv-t
+		}
 	}
 
-	void startClient() {
+	void startClient(String ip) {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
-		net.connect("localhost");//1 v 2 parameteru, portot le lehet vagni!
+		if(net.connect(ip))
+		{
+			//Hívni a Guiból a játékot 
+		}
+		else
+		{
+			//Hívni a Guiból a hiba fv-t
+		}
 	}
 
 	String getScores()
