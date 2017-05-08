@@ -83,7 +83,10 @@ public class GUI extends JFrame implements ActionListener
 				//score = control.getScores();
 				
 				winner = "Bal oldali játékos";
-				if(y >= 400)
+				// Bence kezd
+				//if(y >= 400)
+				if(false)
+				// Bence vége
 				{
 					Object[] button = {"Visszavágó", "Kilépés a menübe"};
 					if(JOptionPane.showOptionDialog(field_panel, "A nyertes:  "+winner,"Vége a játéknak", JOptionPane.OK_OPTION,JOptionPane.PLAIN_MESSAGE, null, button, null) == 1)
