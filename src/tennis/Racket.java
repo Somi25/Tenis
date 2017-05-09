@@ -82,11 +82,13 @@ public class Racket extends GeometricObject{
 		// ütõ max állásban
 		if(y + height/2 > yFieldMax){
 			y = yFieldMax - height/2;
+			velocity = 0.0f;
 		}
 		
 		// ütõ min állásban
 		if(y - height/2 < yFieldMin){
 			y = yFieldMin + height/2;
+			velocity = 0.0f;
 		}
 		
 		coordinates[1] = y;
