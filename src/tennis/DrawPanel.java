@@ -37,7 +37,7 @@ abstract class DrawPanel extends JPanel
         
         for (Point ball : ball)
         {
-        	g.fillRect(ball.x-5, ball.y-50, 20, 20);
+        	g.fillRect(ball.x-10, ball.y-10, 20, 20);
         }
         
         for (Point racket_1 : racket_1)
