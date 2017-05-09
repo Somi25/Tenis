@@ -2,10 +2,10 @@ package tennis;
 
 abstract class Network {
 
-	protected Control ctrl;
+	protected Control control;
 
 	Network(Control c) {
-		ctrl = c;
+		control = c;
 	}
 
 	abstract Boolean connect(String ip);

@@ -22,29 +22,30 @@ public class SerialClient extends Network {
 					Object received = in.readObject();
 					if(received instanceof Ball)
 					 {
-						ctrl.setBall_inst((Ball) received); 
+						control.setBall_inst((Ball) received); 
 					 }
 					if(received instanceof Racket)
 					 {
 						if(((Racket) received).getCoordinates()[0]<50)//szebbre!
 						 {
-							ctrl.setRacketL((Racket) received); 
+							control.setRacketL((Racket) received); 
 						 }
 						if(((Racket) received).getCoordinates()[0]>1220)//szebbre!
 						 {
-							ctrl.setRacketR((Racket) received);
+							control.setRacketR((Racket) received);
 						 }
 					 }
 					if(received instanceof Boolean)//game state (paused or not)
 					 {
-						ctrl.setGameState((Boolean) received);
+						control.setGameState((Boolean) received);
 					 }
 					if(received instanceof Scores)//pontok
 					 {
-						ctrl.setScore((Scores) received);
+						control.setScore((Scores) received);
 					 }
 				}
 			} catch (Exception ex) {
+				control.networkError(ex,"CLIENT_READOBJECT");
 				System.out.println(ex.getMessage());
 				System.err.println("Server disconnected!");
 			} finally {
@@ -60,6 +61,7 @@ public class SerialClient extends Network {
 			out.writeObject(toSend);
 			out.flush();
 		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
 		}
 	}
@@ -76,11 +78,14 @@ public class SerialClient extends Network {
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException ex) {
+			control.networkError(ex,"CLIENT_CONSTRUCT");
 			System.err.println("One of the arguments are illegal");
-		} catch (UnknownHostException e) {
+		} catch (UnknownHostException ex) {
+			control.networkError(ex,"CLIENT_CONNECT");
 			System.err.println("Don't know about host");
-		} catch (IOException e) {
+		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_CONNECT");
 			System.err.println("Couldn't get I/O for the connection. ");
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
 		} finally{
@@ -99,6 +104,7 @@ public class SerialClient extends Network {
 			if (socket != null)
 				socket.close();
 		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_DISCONNECT");
 			System.err.println("Error while closing conn.");
 		}
 	}

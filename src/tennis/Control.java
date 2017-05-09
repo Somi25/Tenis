@@ -7,6 +7,7 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.InvalidParameterException;
 
 import javax.swing.Timer;
 
@@ -45,10 +46,8 @@ class Control {
 			racketL = new Racket(defColour, new Float[] {racketLx0, (float)yFieldMax/2}, racketW, racketH);
 			racketR = new Racket(defColour, new Float[] {racketRx0, (float)yFieldMax/2}, racketW, racketH);
 			ball_inst = new Ball(defColour, new Float[] {(float)xFieldMax/2, (float)yFieldMax/2}, ballRad, racketL, racketR);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-
-       	 System.out.println("valami hiba a konstruktornál");
+		} catch (InvalidParameterException e) {
+       	 System.out.println("Paraméterhiba a konstruktornál");
          System.out.println(e.getMessage());
 		}
 		
@@ -70,7 +69,7 @@ class Control {
 		//ball_inst.setVelocity(-10f);
 		try {
 			ball_inst.setDirection(3*(float)Math.PI/2+0.3f);
-		} catch (Exception e) {
+		} catch (InvalidParameterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -143,6 +142,11 @@ class Control {
 		}
 	}
 
+	void networkError(Exception ex,String where) {
+		//TOVABBADHATO A GUINAK MINDEN,
+		//még nem töröltem a kiíratásokat (error message)
+	}
+	
 	String getScores()
 	{
 		Integer[] scores;

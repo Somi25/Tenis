@@ -26,7 +26,8 @@ public class SerialServer extends Network {
 				System.out.println("Waiting for Client");
 				clientSocket = serverSocket.accept();
 				System.out.println("Client connected.");
-			} catch (IOException e) {
+			} catch (IOException ex) {
+				control.networkError(ex,"SERVER_WAITING");
 				System.err.println("Accept failed.");
 				disconnect();
 				return;
@@ -36,7 +37,8 @@ public class SerialServer extends Network {
 				out = new ObjectOutputStream(clientSocket.getOutputStream());
 				in = new ObjectInputStream(clientSocket.getInputStream());
 				out.flush();
-			} catch (IOException e) {
+			} catch (IOException ex) {
+				control.networkError(ex,"SERVER_CONSTRUCTOR");
 				System.err.println("Error while getting streams.");
 				disconnect();
 				return;
@@ -45,9 +47,10 @@ public class SerialServer extends Network {
 			try {
 				while (true) {
 					Key received = (Key) in.readObject();
-					ctrl.keyReceived(received);
+					control.keyReceived(received);
 				}
 			} catch (Exception ex) {
+				control.networkError(ex,"SERVER_READOBJECT");
 				System.out.println(ex.getMessage());
 				System.err.println("Client disconnected!");
 			} finally {
@@ -66,6 +69,7 @@ public class SerialServer extends Network {
 			out.writeObject(gameState);
 			out.flush();
 		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_SENDSTATES");
 			System.err.println("Send error.");
 		}
 	}
@@ -74,6 +78,7 @@ public class SerialServer extends Network {
 			out.writeObject(toSend);
 			out.flush();
 		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_SENDSCORE");
 			System.err.println("Send error.");
 		}
 	}
@@ -87,7 +92,8 @@ public class SerialServer extends Network {
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 			return true;
-		} catch (IOException e) {
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_CONNECT");
 			System.err.println("Could not listen on port: 10007.");
 			return false;
 		}
@@ -105,8 +111,8 @@ public class SerialServer extends Network {
 			if (serverSocket != null)
 				serverSocket.close();
 		} catch (IOException ex) {
-			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,
-					null, ex);
+			control.networkError(ex,"SERVER_DISCONNECT");
+			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
 		}
 	}
 }
