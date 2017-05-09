@@ -41,6 +41,7 @@ class Control {
 	private Timer timer;
 	
 	private int whoStart = 0;
+	private int pause = 0;
 
 	
 	// konstruktor
@@ -61,13 +62,15 @@ class Control {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(goal.isGoal(ball_inst) == -1){
+					stopGame();
 					score.incScoreR();
-					pauseGame();
+					serveR();
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
+					stopGame();
 					score.incScoreL();
-					pauseGame();
+					serveL();
 				}
 				
 				racketL.time();
@@ -75,13 +78,13 @@ class Control {
 				ball_inst.time();
 				
 				if(goal.isGoal(ball_inst) == -1){
-					pauseGame();
+					stopGame();
 					score.incScoreR();
 					serveR();
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
-					pauseGame();
+					stopGame();
 					score.incScoreL();
 					serveL();
 				}
@@ -93,7 +96,7 @@ class Control {
 	
 	// játék indítása (minden labdamenetet ez indít)
 	public void startGame(int whoPressed){
-		if(whoStart != 0 && whoPressed != whoStart){
+		if(whoStart != 0 && whoPressed != whoStart || pause == 1){
 			return;
 		}
 		
@@ -137,10 +140,12 @@ class Control {
 	
 	public void pauseGame(){
 		timer.stop();
+		pause = 1;
 	}
 	
 	public void continueGame(){
 		timer.start();
+		pause = 0;
 	}
 	
 	public void stopGame(){
