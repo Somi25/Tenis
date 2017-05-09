@@ -206,8 +206,8 @@ public class Menu extends JLabel
 		menu_button.setActionCommand("Kilépés a menübe");
 		pause_panel.add(menu_button);
 		
-		MaskFormatter ip_format = new MaskFormatter("###.###.###.###");
-		ip = new JFormattedTextField(ip_format);
+		//MaskFormatter ip_format = new MaskFormatter("###.###.###.###");
+		ip = new JFormattedTextField(/*ip_format*/);
 		ip.setBounds(98, 0, 240, 80);
 		ip.setHorizontalAlignment(JTextField.CENTER);
 		ip.setFont(new Font("Gomb", Font.BOLD, 24));

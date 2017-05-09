@@ -2,12 +2,15 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 
@@ -421,10 +424,16 @@ public class GUI extends JFrame implements ActionListener
             case "Csatlakozás":
 			if(ip_pattern.matcher(menu.ip.getText()).matches())
             	{
-					control = new Control();
-					//control.startClient(menu.ip.getText());
-            		//System.out.println(menu.ip.getText());
-            		menu.client_error_label.setVisible(false);               	
+					try {
+						control = new Control();
+						control.startClient(menu.ip.getText());
+					 } catch (Exception exp) {
+						 menu.client_error_label.setVisible(true);
+						 System.out.println("meg vagy");
+			         }
+					
+            		
+            		               	
             	}
 			else
             	break;
