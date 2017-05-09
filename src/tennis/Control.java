@@ -29,7 +29,8 @@ class Control {
 	protected final Float racketLx0		= (float)xFieldMin + 30;
 	protected final Float racketRx0		= (float)xFieldMax - 30;
 	protected final Float ballRad		= 10f;
-	private  final int sampleTime		= 4;
+	private  final int sampleTime		= 20;
+	private final Float ballDefVel		= -7f;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -81,7 +82,7 @@ class Control {
 	// játék indítása (minden labdamenetet ez indít)
 	public void startGame(){
 		timer.start();
-		ball_inst.setVelocity(-2.5f);
+		ball_inst.setVelocity(ballDefVel);
 		try {
 			//ball_inst.setDirection(3*(float)Math.PI/2+0.3f);
 			ball_inst.setDirection(0.0f);

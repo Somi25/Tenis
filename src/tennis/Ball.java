@@ -126,28 +126,93 @@ public class Ball extends GeometricObject{
 	}
 	
 	private Float[] crashRight(Float[] coord){
+		
 		// ütközés jobb oldali ütõvel
-   	 //System.out.println("crashRiht");
+		Float[] racketCoord = racketR.getCoordinates();
+		float dif = -((racketCoord[0] - racketR.getWidth() / 2) - (coord[0] + radius));
+		
+		// ütközés vizsgálata
+		if(		(dif >= 0) &&
+				(coord[1] <= (racketCoord[1] + racketR.getHeight() / 2)) && 
+				(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2))
+		){
+			// "normál" ütközés történt
+			
+			// új x koordináta
+			//coord[0] = coord[0] - 2*dif;
+			
+			// új irány (tükrözés y tengelyre + csavarás)
+			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity();
+	    	System.out.println("crashRight normal");
+		}else if(	(dif >= 0) &&
+					(coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius / 2)) && 
+					(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius / 2))
+		){
+			// "sarok" ütközés történt
+			
+			Float cornerDir = 0f;
+			
+			// ferde pattanás -> melyik sarokról pattant
+			if(coord[1] >= (racketCoord[1] + racketR.getHeight() / 2)){
+				// felsõ sarok
+				cornerDir = + (float)(Math.PI / 8);
+			}else{
+				// alsó sarok
+				cornerDir = - (float)(Math.PI / 8);
+			}
+			
+			// új x koordináta
+			coord[0] = coord[0] - 2*dif;
+			
+			// új irány (tükrözés y tengelyre + csavarás)
+			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir;
+	    	System.out.println("crashRight corner");
+		}
+		
 		return coord;
 	}
 	
 	private Float[] crashLeft(Float[] coord){
 		// ütközés bal oldali ütõvel
-		Float[] racketCoord = racketL.getCoordinates();		// ez még így nem jó -> "igazi ütõ" koordinátája kell
+		Float[] racketCoord = racketL.getCoordinates();
 		float dif = (racketCoord[0] + racketL.getWidth() / 2) - (coord[0] - radius);
 		
+		// ütközés vizsgálata
 		if(		(dif >= 0) &&
-				(coord[1] <= (racketCoord[1] + racketL.getHeight())) && 
-				(coord[1] >= (racketCoord[1] - racketL.getHeight()))
+				(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2)) && 
+				(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2))
 		){
-			// ütközés történt
+			// "normál" ütközés történt
 			
 			// új x koordináta
 			coord[0] = coord[0] + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity();
-	    	 System.out.println("crashLeft");
+	    	System.out.println("crashLeft normal");
+		}else if(	(dif >= 0) &&
+					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius / 2)) && 
+					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius / 2))
+		){
+			// "sarok" ütközés történt
+			
+			Float cornerDir = 0f;
+			
+			// ferde pattanás -> melyik sarokról pattant
+			if(coord[1] >= (racketCoord[1] + racketL.getHeight() / 2)){
+				// felsõ sarok
+				cornerDir = + (float)(Math.PI / 8);
+			}else{
+				// alsó sarok
+				cornerDir = - (float)(Math.PI / 8);
+			}
+			
+			// új x koordináta
+			coord[0] = coord[0] + 2*dif;
+			
+			// új irány (tükrözés y tengelyre + csavarás)
+			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir;
+	    	System.out.println("crashLeft corner");
 		}
 		
 		
