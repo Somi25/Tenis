@@ -143,7 +143,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity();
-	    	System.out.println("crashRight normal");
+	    	System.out.println("crashRight normal, velo: " + racketR.getVelocity());
 		}else if(	(dif >= 0) &&
 					(coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius / 2)) && 
 					(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius / 2))
@@ -166,7 +166,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir;
-	    	System.out.println("crashRight corner");
+	    	System.out.println("crashRight corner, velo: " + racketR.getVelocity());
 		}
 		
 		return coord;
@@ -189,7 +189,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity();
-	    	System.out.println("crashLeft normal");
+	    	System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
 		}else if(	(dif >= 0) &&
 					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius / 2)) && 
 					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius / 2))
@@ -212,7 +212,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir;
-	    	System.out.println("crashLeft corner");
+	    	System.out.println("crashLeft corner, velo: " + racketL.getVelocity());
 		}
 		
 		
