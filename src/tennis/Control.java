@@ -26,11 +26,11 @@ class Control {
 	protected final Integer yFieldMin	= 0;
 	protected final Float racketW		= 10f;
 	protected final Float racketH		= 100f;
-	protected final Float racketLx0		= (float)xFieldMin + 30;
-	protected final Float racketRx0		= (float)xFieldMax - 30;
+	protected final Float racketLx0		= (float)xFieldMin + 15;
+	protected final Float racketRx0		= (float)xFieldMax - 15;
 	protected final Float ballRad		= 10f;
-	private  final int sampleTime		= 20;
-	private final Float ballDefVel		= -7f;
+	private  final int sampleTime		= 4;
+	private final Float ballDefVel		= -1.5f;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -55,9 +55,22 @@ class Control {
          System.out.println(e.getMessage());
 		}
 		
-		//Pálya kirajzolása 50Hz-el
+		// objektumok mozgatása 10 Hz-el
 		timer = new Timer(sampleTime, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				if(goal.isGoal(ball_inst) == -1){
+					score.incScoreR();
+					//startGame();
+					timer.stop();
+				}
+				
+				if(goal.isGoal(ball_inst) == +1){
+					score.incScoreL();
+					//startGame();	
+					timer.stop();	
+				}
+				
 				racketL.time();
 				racketR.time();
 				ball_inst.time();
@@ -175,6 +188,7 @@ class Control {
 		((SerialServer)net).sendScore(score);
 	}
 
+	
 	public void keyReceived(Key e){
 		if(e.getName()=="W")
 		{
@@ -197,5 +211,6 @@ class Control {
 			
 		}
 	}
+	
 
 }
