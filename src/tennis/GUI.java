@@ -149,7 +149,9 @@ public class GUI extends JFrame implements ActionListener
 	                pressed_1_up = false;
 	                //stopRacket1_down();
 	                // Bence kezd
-	                control.getRacketL().setVelocity(0f);
+	                if(!pressed_1_down){
+	                	control.getRacketL().setVelocity(0f);
+	                }
 	                // Bence vége
         		}
             }
@@ -183,7 +185,9 @@ public class GUI extends JFrame implements ActionListener
             		pressed_1_down = false;
             		//stopRacket1_down();
 	                // Bence kezd
-	                control.getRacketL().setVelocity(0f);
+	                if(!pressed_1_up){
+	                	control.getRacketL().setVelocity(0f);
+	                }
 	                // Bence vége
         		}
             }
@@ -217,7 +221,9 @@ public class GUI extends JFrame implements ActionListener
 	                pressed_2_up = false;
 	                //stopRacket2_up();
 	                // Bence kezd
-	                control.getRacketR().setVelocity(0f);
+	                if(!pressed_2_down){
+	                	control.getRacketR().setVelocity(0f);
+	                }
 	                // Bence vége
         		}
             }
@@ -251,7 +257,9 @@ public class GUI extends JFrame implements ActionListener
             		pressed_2_down = false;
             		//stopRacket2_down();
 	                // Bence kezd
-	                control.getRacketR().setVelocity(0f);
+	                if(!pressed_2_up){
+	                	control.getRacketR().setVelocity(0f);
+	                }
 	                // Bence vége
         		}
             }
