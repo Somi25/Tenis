@@ -42,21 +42,21 @@ public class Ball extends GeometricObject{
 	@Override
 	public void setCoordinates(Float[] coordinates) throws InvalidParameterException {
 		
-		if(coordinates[0]>this.radius+xFieldMin && coordinates[0]<xFieldMax-this.radius)
+		//if(coordinates[0]>this.radius+xFieldMin && coordinates[0]<xFieldMax-this.radius)
 		{
 			this.coordinates[0] = coordinates[0];
 		}
-		else
+		//else
 		{
-			throw new InvalidParameterException();
+			//throw new InvalidParameterException();
 		}
-		if(coordinates[1]>this.radius+yFieldMin && coordinates[1]<yFieldMin-this.radius)
+		//if(coordinates[1]>this.radius+yFieldMin && coordinates[1]<yFieldMin-this.radius)
 		{
 			this.coordinates[1] = coordinates[1];
 		}
-		else
+		//else
 		{
-			throw new InvalidParameterException();
+			//throw new InvalidParameterException();
 		}
 	}
 	@Override
@@ -139,7 +139,7 @@ public class Ball extends GeometricObject{
 			// "normál" ütközés történt
 			
 			// új x koordináta
-			//coord[0] = coord[0] - 2*dif;
+			coord[0] = coord[0] - 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity();

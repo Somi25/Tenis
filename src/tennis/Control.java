@@ -30,7 +30,7 @@ class Control {
 	protected final Float racketRx0		= (float)xFieldMax - 15;
 	protected final Float ballRad		= 10f;
 	private  final int sampleTime		= 4;
-	private final Float ballDefVel		= -1.5f / 10;
+	private final Float ballDefVel		= 1.5f;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -39,6 +39,8 @@ class Control {
 	private Goal goal;
 	private Boolean gameState;
 	private Timer timer;
+	
+	private int whoStart = 0;
 
 	
 	// konstruktor
@@ -51,7 +53,6 @@ class Control {
 			goal = new Goal(xFieldMax, xFieldMin, ballRad);
 			score = new Scores();
 		} catch (InvalidParameterException e) {
-       	 System.out.println("Paraméterhiba a konstruktornál");
          System.out.println(e.getMessage());
 		}
 		
@@ -61,14 +62,12 @@ class Control {
 				
 				if(goal.isGoal(ball_inst) == -1){
 					score.incScoreR();
-					//startGame();
-					timer.stop();
+					pauseGame();
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
 					score.incScoreL();
-					//startGame();	
-					timer.stop();	
+					pauseGame();
 				}
 				
 				racketL.time();
@@ -76,15 +75,15 @@ class Control {
 				ball_inst.time();
 				
 				if(goal.isGoal(ball_inst) == -1){
+					pauseGame();
 					score.incScoreR();
-					//startGame();
-					timer.stop();
+					serveR();
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
+					pauseGame();
 					score.incScoreL();
-					//startGame();	
-					timer.stop();	
+					serveL();
 				}
 			}
 		});
@@ -94,15 +93,68 @@ class Control {
 	
 	// játék indítása (minden labdamenetet ez indít)
 	public void startGame(){
-		timer.start();
-		ball_inst.setVelocity(ballDefVel);
-		try {
-			//ball_inst.setDirection(3*(float)Math.PI/2+0.3f);
-			ball_inst.setDirection(0.0f);
-		} catch (InvalidParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(!timer.isRunning()){
+			try {
+				// labda irányának beállítása
+				if(whoStart == 0){
+					// állás: 0:0 véletlen kezdés
+					if(Math.random() < 0.5){
+						ball_inst.setDirection(0.0f);
+						System.out.println("rand jobb");
+					}else{
+						ball_inst.setDirection((float)Math.PI);
+						System.out.println("rand bal");
+					}
+					
+				}else if(whoStart == +1){
+					// bal oldali játékos kezd
+					ball_inst.setDirection(0.0f);
+					System.out.println("szerva jobb");
+					
+				}else if(whoStart == -1){
+					// jobb oldali játékos kezd
+					ball_inst.setDirection((float)Math.PI);
+					System.out.println("szerva bal");
+					
+				}
+				
+			} catch (InvalidParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// labda sebesség beállítása
+			ball_inst.setVelocity(ballDefVel);
+			
+			// idõzítõ indítása
+			timer.start();
 		}
+	}
+	
+	public void pauseGame(){
+		timer.stop();
+	}
+	
+	public void continueGame(){
+		timer.start();
+	}
+	
+	public void stopGame(){
+		timer.stop();
+	}
+	
+	public void serveL(){
+		whoStart = -1;
+		racketL.setCoordinates(new Float[] {racketLx0, (float)yFieldMax/2});
+		racketR.setCoordinates(new Float[] {racketRx0, (float)yFieldMax/2});
+		ball_inst.setCoordinates(new Float[] {racketLx0 + racketW/2 + ballRad, (float)yFieldMax/2});
+	}
+	
+	public void serveR(){
+		whoStart = +1;
+		racketL.setCoordinates(new Float[] {racketLx0, (float)yFieldMax/2});
+		racketR.setCoordinates(new Float[] {racketRx0, (float)yFieldMax/2});
+		ball_inst.setCoordinates(new Float[] {racketRx0 - racketW/2 - ballRad, (float)yFieldMax/2});
 	}
 	
 	public Racket getRacketL(){

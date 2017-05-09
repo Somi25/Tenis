@@ -91,6 +91,9 @@ public class GUI extends JFrame implements ActionListener
 					if(JOptionPane.showOptionDialog(field_panel, "A nyertes:  "+winner,"Vége a játéknak", JOptionPane.OK_OPTION,JOptionPane.PLAIN_MESSAGE, null, button, null) == 1)
 					{
 						time.stop();
+						// Bence
+						control.stopGame();
+						// vége
 						field_panel.setVisible(false);
 						field_panel.score_panel.setVisible(false);
 						menu.menu_main_panel.setVisible(true);
@@ -111,6 +114,9 @@ public class GUI extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e) {
             	 System.out.println("pause");
                  time.stop();
+ 				// Bence
+ 				control.pauseGame();
+ 				// vége
                  menu.pause_panel.setVisible(true);
             }
         };
@@ -127,6 +133,7 @@ public class GUI extends JFrame implements ActionListener
 		                //moveRacket1_up();
 		                // Bence kezd
 		                control.getRacketL().setVelocity(1f);
+		        		control.startGame();
 		                // Bence vége
             		}
             	}
@@ -160,6 +167,7 @@ public class GUI extends JFrame implements ActionListener
 	            		//moveRacket1_down();
 		                // Bence kezd
 		                control.getRacketL().setVelocity(-1f);
+		        		control.startGame();
 		                // Bence vége
             		}
             	}
@@ -193,6 +201,7 @@ public class GUI extends JFrame implements ActionListener
 		                //moveRacket2_up();
 		                // Bence kezd
 		                control.getRacketR().setVelocity(1f);
+		        		control.startGame();
 		                // Bence vége
             		}
             	}
@@ -226,6 +235,7 @@ public class GUI extends JFrame implements ActionListener
 	            		//moveRacket2_down();
 		                // Bence kezd
 		                control.getRacketR().setVelocity(-1f);
+		        		control.startGame();
 		                // Bence vége
             		}
             	}
@@ -272,9 +282,6 @@ public class GUI extends JFrame implements ActionListener
 		field_panel.setVisible(true);
 		field_panel.score_panel.setVisible(true);
 		time.start();
-		// Bence kezd
-		control.startGame();
-		// Bence vége
 	}
 	
 	//Menügomb esemény kezelés
@@ -377,15 +384,24 @@ public class GUI extends JFrame implements ActionListener
             case "Játék mentése":
             	menu.pause_panel.setVisible(false);
 				time.start();
+				// Bence
+				control.continueGame();
+				// vége
                 break;
                 
             case "Vissza - pause":
             	menu.pause_panel.setVisible(false);
 				time.start();
+				// Bence
+				control.continueGame();
+				// vége
                 break;
                 
             case "Kilépés a menübe":
             	time.stop();
+				// Bence
+				control.stopGame();
+				// vége
 				state = 0;
 				menu.pause_panel.setVisible(false);
 				menu.menu_main_panel.setVisible(true);
