@@ -144,7 +144,6 @@ class Control {
 	}
 	
 	public void continueGame(){
-		timer.start();
 		pause = 0;
 	}
 	
