@@ -1,5 +1,7 @@
 package tennis;
 
+import java.security.InvalidParameterException;
+
 public class Ball extends GeometricObject{
 
 	private final Float radius;
@@ -11,7 +13,7 @@ public class Ball extends GeometricObject{
 	
 	
 	
-	public Ball(Integer colour[], Float coordinates[], Float rad, Racket racketL, Racket racketR) throws Exception{
+	public Ball(Integer colour[], Float coordinates[], Float rad, Racket racketL, Racket racketR) throws InvalidParameterException{
 
 		super(colour);
 
@@ -19,16 +21,13 @@ public class Ball extends GeometricObject{
 		this.racketR = racketR;
 		this.coordinates = coordinates;
 
-		
-		Exception InvalidParameterException = null;
-		//if(rad<yFieldMax/2 && rad>0)
-		if(true)
+		if(rad<Math.min(yFieldMax,xFieldMax)/2 && rad>0)
 		{
 			this.radius=rad;
 		}
 		else
 		{
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 		setDirection((float)0);
 		
@@ -41,16 +40,15 @@ public class Ball extends GeometricObject{
 
 
 	@Override
-	public void setCoordinates(Float[] coordinates) throws Exception {
+	public void setCoordinates(Float[] coordinates) throws InvalidParameterException {
 		
-		Exception InvalidParameterException = null;
 		if(coordinates[0]>this.radius+xFieldMin && coordinates[0]<xFieldMax-this.radius)
 		{
 			this.coordinates[0] = coordinates[0];
 		}
 		else
 		{
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 		if(coordinates[1]>this.radius+yFieldMin && coordinates[1]<yFieldMin-this.radius)
 		{
@@ -58,14 +56,14 @@ public class Ball extends GeometricObject{
 		}
 		else
 		{
-			//throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 	}
 	@Override
-	public void setDirection(Float Dir) throws Exception {
-		Exception InvalidParameterException = null;
+	public void setDirection(Float Dir) throws InvalidParameterException {
+		
 		if(Dir<0 || Dir>2*Math.PI){
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}else{
 			this.direction=Dir;
 		}

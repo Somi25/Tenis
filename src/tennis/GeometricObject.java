@@ -1,5 +1,7 @@
 package tennis;
 
+import java.security.InvalidParameterException;
+
 public abstract class GeometricObject {
 	
 	// pálya méretek
@@ -15,13 +17,12 @@ public abstract class GeometricObject {
 	protected Float velocity;		// "pixel / time_tick" mértékegység
 	
 	
-	public GeometricObject(Integer Colour[]) throws Exception {
+	public GeometricObject(Integer Colour[]) throws InvalidParameterException {
 		if(Colour.length == 3 && 0<=Colour[0] && Colour[0]<256 && 0<=Colour[1] && Colour[1]<256 && 0<=Colour[2] && Colour[2]<256)
 			colourRGB = Colour;
 		else 
 		 {
-			Exception InvalidParameterException = null;
-			//throw InvalidParameterException;
+			throw new InvalidParameterException();
 		 }
 		velocity = (float)0;
 		
@@ -60,8 +61,8 @@ public abstract class GeometricObject {
 	}
 	
 	
-	abstract void setCoordinates(Float[] coordinates) throws Exception;
-	abstract void setDirection(Float Dir) throws Exception;
+	abstract void setCoordinates(Float[] coordinates) throws InvalidParameterException;
+	abstract void setDirection(Float Dir) throws InvalidParameterException;
 	public void setVelocity(Float Vel){
 		velocity = Vel;
 	}

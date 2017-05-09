@@ -1,5 +1,7 @@
 package tennis;
 
+import java.security.InvalidParameterException;
+
 public class Racket extends GeometricObject{
 	
 	// ütõ méretek
@@ -9,18 +11,17 @@ public class Racket extends GeometricObject{
 	// ütõ sebesség konstans
 	private final Float speed = 10f;
 	
-	public Racket(Integer colour[],Float coordinates[], Float wid, Float hei) throws Exception{
-
+	public Racket(Integer colour[],Float coordinates[], Float wid, Float hei) throws InvalidParameterException{
+		
 		super(colour);
 		
-		Exception InvalidParameterException = null;
 		if(wid<xFieldMax/2 && wid>0)
 		{
 			this.width=wid;
 		}
 		else
 		{
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 		if(hei<yFieldMax && hei>0)
 		{
@@ -28,7 +29,7 @@ public class Racket extends GeometricObject{
 		}
 		else
 		{
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 		if(coordinates[0]>wid/2+xFieldMin && coordinates[0]<xFieldMax-wid/2)
 		{
@@ -36,7 +37,7 @@ public class Racket extends GeometricObject{
 		}
 		else
 		{
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		}
 		
 		//setCoordinates(coordinates);
@@ -46,20 +47,19 @@ public class Racket extends GeometricObject{
 	}
 
 	@Override
-	void setCoordinates(Float[] coordinates) throws Exception {
+	void setCoordinates(Float[] coordinates) throws InvalidParameterException {
 		if(coordinates[1]<(this.height/2)+yFieldMin && coordinates[1]>(yFieldMax-(this.height/2)))
-		{
+		 {
 			this.coordinates[1]=coordinates[1];
-		}
+		 }
 		else 
 		 {
-			Exception InvalidParameterException = null;
-			throw InvalidParameterException;
+			throw new InvalidParameterException();
 		 }
 		
 	}
 	@Override
-	void setDirection(Float Dir) throws Exception {
+	void setDirection(Float Dir) throws InvalidParameterException {
 		this.direction=(float) (Math.PI/2);
 	}
 	
