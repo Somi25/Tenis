@@ -30,7 +30,7 @@ class Control {
 	protected final Float racketRx0		= (float)xFieldMax - 15;
 	protected final Float ballRad		= 10f;
 	private  final int sampleTime		= 4;
-	private final Float ballDefVel		= -1.5f;
+	private final Float ballDefVel		= -1.5f / 10;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -55,7 +55,7 @@ class Control {
          System.out.println(e.getMessage());
 		}
 		
-		// objektumok mozgatása 10 Hz-el
+		// objektumok mozgatása 250 Hz-el
 		timer = new Timer(sampleTime, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
