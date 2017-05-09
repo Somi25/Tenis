@@ -9,7 +9,7 @@ public class Racket extends GeometricObject{
 	private final Float height;
 	
 	// ütõ sebesség konstans
-	private final Float speed = 10f;
+	private final Float speed = 2.5f;
 	
 	public Racket(Integer colour[],Float coordinates[], Float wid, Float hei) throws InvalidParameterException{
 		

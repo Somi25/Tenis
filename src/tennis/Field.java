@@ -98,6 +98,10 @@ public class Field extends DrawPanel
         repaint();
     }
     
+    public void setScore(String score){
+    	score_label.setText(score);
+    }
+    
     //gomb esemény aktiválás
     protected void add_action(AbstractAction pause_action, AbstractAction pressed_1_up_action, AbstractAction released_1_up_action, AbstractAction pressed_1_down_action, AbstractAction released_1_down_action, AbstractAction pressed_2_up_action, AbstractAction released_2_up_action, AbstractAction pressed_2_down_action, AbstractAction released_2_down_action)
     {

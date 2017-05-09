@@ -75,10 +75,11 @@ public class GUI extends JFrame implements ActionListener
 				x = coords[0];
 				y = coords[1];			
 				field_panel.ball(x,y);
+				
+				
+				field_panel.setScore(control.getScores()[0] + " : " + control.getScores()[1]);
 				// Bence vége
 				
-				
-				//score = control.getScores();
 				
 				winner = "Bal oldali játékos";
 				// Bence kezd

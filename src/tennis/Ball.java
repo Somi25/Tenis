@@ -101,6 +101,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés x tengelyre)
 			direction = (float) (-direction % (2*Math.PI));
+	      	 System.out.println("crashUp");
 		}
 		
 		return coord;
@@ -118,12 +119,15 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés x tengelyre)
 			direction = (float) (-direction % (2*Math.PI));
+	     	 System.out.println("crashDown");
 		}
+     	 
 		return coord;
 	}
 	
 	private Float[] crashRight(Float[] coord){
 		// ütközés jobb oldali ütõvel
+   	 //System.out.println("crashRiht");
 		return coord;
 	}
 	
@@ -143,6 +147,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity();
+	    	 System.out.println("crashLeft");
 		}
 		
 		

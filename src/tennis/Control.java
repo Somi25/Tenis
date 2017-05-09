@@ -29,12 +29,13 @@ class Control {
 	protected final Float racketLx0		= (float)xFieldMin + 30;
 	protected final Float racketRx0		= (float)xFieldMax - 30;
 	protected final Float ballRad		= 10f;
-	private  final int sampleTime		= 20;
+	private  final int sampleTime		= 4;
 	
 	private Ball ball_inst;
 	private Racket racketL;
 	private Racket racketR;
 	private Scores score;
+	private Goal goal;
 	private Boolean gameState;
 	private Timer timer;
 
@@ -46,6 +47,8 @@ class Control {
 			racketL = new Racket(defColour, new Float[] {racketLx0, (float)yFieldMax/2}, racketW, racketH);
 			racketR = new Racket(defColour, new Float[] {racketRx0, (float)yFieldMax/2}, racketW, racketH);
 			ball_inst = new Ball(defColour, new Float[] {(float)xFieldMax/2, (float)yFieldMax/2}, ballRad, racketL, racketR);
+			goal = new Goal(xFieldMax, xFieldMin, ballRad);
+			score = new Scores();
 		} catch (InvalidParameterException e) {
        	 System.out.println("Paraméterhiba a konstruktornál");
          System.out.println(e.getMessage());
@@ -57,6 +60,18 @@ class Control {
 				racketL.time();
 				racketR.time();
 				ball_inst.time();
+				
+				if(goal.isGoal(ball_inst) == -1){
+					score.incScoreR();
+					//startGame();
+					timer.stop();
+				}
+				
+				if(goal.isGoal(ball_inst) == +1){
+					score.incScoreL();
+					//startGame();	
+					timer.stop();	
+				}
 			}
 		});
 		
@@ -66,9 +81,10 @@ class Control {
 	// játék indítása (minden labdamenetet ez indít)
 	public void startGame(){
 		timer.start();
-		//ball_inst.setVelocity(-10f);
+		ball_inst.setVelocity(-2.5f);
 		try {
-			ball_inst.setDirection(3*(float)Math.PI/2+0.3f);
+			//ball_inst.setDirection(3*(float)Math.PI/2+0.3f);
+			ball_inst.setDirection(0.0f);
 		} catch (InvalidParameterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,11 +163,8 @@ class Control {
 		//még nem töröltem a kiíratásokat (error message)
 	}
 	
-	String getScores()
-	{
-		Integer[] scores;
-		scores=score.getScores();
-		return scores[0].toString() + " + " + scores[1].toString();
+	Integer[] getScores(){
+		return score.getScores();
 	}
 	
 	void sendState() {
