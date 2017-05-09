@@ -92,7 +92,11 @@ class Control {
 	}
 	
 	// játék indítása (minden labdamenetet ez indít)
-	public void startGame(){
+	public void startGame(int whoPressed){
+		if(whoStart != 0 && whoPressed != whoStart){
+			return;
+		}
+		
 		if(!timer.isRunning()){
 			try {
 				// labda irányának beállítása

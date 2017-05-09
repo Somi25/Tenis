@@ -136,7 +136,7 @@ public class GUI extends JFrame implements ActionListener
 		                //moveRacket1_up();
 		                // Bence kezd
 		                control.getRacketL().setVelocity(1f);
-		        		control.startGame();
+		        		control.startGame(-1);
 		                // Bence vége
             		}
             	}
@@ -172,7 +172,7 @@ public class GUI extends JFrame implements ActionListener
 	            		//moveRacket1_down();
 		                // Bence kezd
 		                control.getRacketL().setVelocity(-1f);
-		        		control.startGame();
+		        		control.startGame(-1);
 		                // Bence vége
             		}
             	}
@@ -208,7 +208,7 @@ public class GUI extends JFrame implements ActionListener
 		                //moveRacket2_up();
 		                // Bence kezd
 		                control.getRacketR().setVelocity(1f);
-		        		control.startGame();
+		        		control.startGame(+1);
 		                // Bence vége
             		}
             	}
@@ -244,7 +244,7 @@ public class GUI extends JFrame implements ActionListener
 	            		//moveRacket2_down();
 		                // Bence kezd
 		                control.getRacketR().setVelocity(-1f);
-		        		control.startGame();
+		        		control.startGame(+1);
 		                // Bence vége
             		}
             	}
