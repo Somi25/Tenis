@@ -2,8 +2,6 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
@@ -327,13 +325,10 @@ public class GUI extends JFrame implements ActionListener
 				}
 				if(state == HOST)
 				{
-					try {
-						control = new Control();
-						//control.startServer();
-						//menu.menu_offline_panel.setVisible(false);
-						//start();
-					} catch (Exception  ex) {
-					}	
+					control = new Control();
+					control.startServer();
+					menu.menu_offline_panel.setVisible(false);
+					start();
 					menu.host_wait_label.setVisible(true);
 				}
                 break;
@@ -401,15 +396,10 @@ public class GUI extends JFrame implements ActionListener
             case "Csatlakozás":
 			if(ip_pattern.matcher(menu.ip.getText()).matches())
             	{
-					try {
-						control = new Control();
-						control.startClient(menu.ip.getText());
-	            		System.out.println(menu.ip.getText());
-	            		menu.client_error_label.setVisible(false);
-					} catch (Exception  ex) {
-						menu.client_error_label.setVisible(true);
-						System.out.println("pressed 2_down");
-					}					               	
+					control = new Control();
+					//control.startClient(menu.ip.getText());
+            		//System.out.println(menu.ip.getText());
+            		menu.client_error_label.setVisible(false);               	
             	}
 			else
             	break;
