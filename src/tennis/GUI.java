@@ -49,7 +49,6 @@ public class GUI extends JFrame implements ActionListener
 			public void actionPerformed(ActionEvent e) {
 				Integer[] coords = new Integer[2];				
 
-				// Bence kezd
 				// bal ütő koordináták megszerzése
 				coords = control.getRacketL().getGUIcoords();		
 				field_panel.racket_1(coords[0],coords[1]);
@@ -64,7 +63,6 @@ public class GUI extends JFrame implements ActionListener
 				
 				
 				field_panel.setScore(control.getScores()[0] + " : " + control.getScores()[1]);
-				// Bence vége
 				winner = null;
 				if(control.getScores()[0] == 5)
 					{
@@ -76,18 +74,13 @@ public class GUI extends JFrame implements ActionListener
 					winner = "Jobb oldali játékos";
 				}
 
-				// Bence kezd
-				//if(y >= 400)
 				if(winner != null)
-				// Bence vége
 				{
 					Object[] button = {"Visszavágó", "Kilépés a menübe"};
 					if(JOptionPane.showOptionDialog(field_panel, "A nyertes:  "+winner,"Vége a játéknak", JOptionPane.OK_OPTION,JOptionPane.PLAIN_MESSAGE, null, button, null) == 1)
 					{
 						time.stop();
-						// Bence
 						control.stopGame();
-						// vége
 						field_panel.setVisible(false);
 						field_panel.score_panel.setVisible(false);
 						menu.menu_main_panel.setVisible(true);
@@ -205,17 +198,14 @@ public class GUI extends JFrame implements ActionListener
 		
 	    switch (command) {
 
-        //Display panel one when I select the option on the menu bar
         case "Offline":
         	state = OFFLINE;
-        	//showOfflineMenu();
         	menu.menu_main_panel.setVisible(false);
         	menu.menu_offline_panel.setVisible(true);
             break;
         
         case "Online":
 			state = ONLINE;
-        	//showOnlineMenu();
 			menu.menu_main_panel.setVisible(false);
 			menu.menu_online_panel.setVisible(true);
             break;
@@ -226,7 +216,6 @@ public class GUI extends JFrame implements ActionListener
         
         case "Host":
 			state = HOST;
-        	//showHostMenu();
 			control.resetGame();		// lehet hogy nem kell
 			menu.menu_online_panel.setVisible(false);
 			menu.menu_offline_panel.setVisible(true);
@@ -234,7 +223,6 @@ public class GUI extends JFrame implements ActionListener
         
         case "Kliens":
 			state = CLIENT;
-			//showClientMenu();
 			control.resetGame();		// lehet hogy nem kell
 			menu.host_wait_label.setVisible(false);
 			menu.menu_online_panel.setVisible(false);
@@ -244,15 +232,12 @@ public class GUI extends JFrame implements ActionListener
         case "Új játék":
         	if(state == OFFLINE)
 			{
-        		//showGame();
     			control.resetGame();		// lehet hogy nem kell
         		menu.menu_offline_panel.setVisible(false);
 				start();
 			}
 			if(state == HOST)
 			{
-				//showGame();
-				//showWaitingForConnect();
 				menu.host_wait_label.setVisible(true);
 				control.startServer();
 				menu.menu_offline_panel.setVisible(false);
@@ -263,7 +248,6 @@ public class GUI extends JFrame implements ActionListener
         case "Játék betöltése":
         	if(state == OFFLINE)
 			{
-				//showGame();
     			control.resetGame();		// lehet hogy nem kell
         		//control.load();
 				menu.menu_offline_panel.setVisible(false);
@@ -271,9 +255,7 @@ public class GUI extends JFrame implements ActionListener
 			}
 			if(state == HOST)
 			{
-				//showGame();
 				control.resetGame();		// lehet hogy nem kell
-				//showWaitingForConnect();
 				menu.host_wait_label.setVisible(true);
 				//time.start();
 			}
@@ -282,14 +264,12 @@ public class GUI extends JFrame implements ActionListener
         case "Vissza - offline":
         	if(state == OFFLINE)
 			{
-        		//showMainMenu();
         		menu.menu_offline_panel.setVisible(false);
 				menu.menu_main_panel.setVisible(true);
 				state = 0;
 			}
 			if(state == HOST)
 			{
-				//showOnlineMenu();
 				menu.menu_offline_panel.setVisible(false);
 				menu.menu_online_panel.setVisible(true);
 				menu.host_wait_label.setVisible(false);
@@ -299,7 +279,6 @@ public class GUI extends JFrame implements ActionListener
             break;
             
         case "Vissza - online":
-        	//showMainMenu();
         	menu.menu_online_panel.setVisible(false);
 			menu.menu_main_panel.setVisible(true);
 			menu.host_wait_label.setVisible(false);
@@ -312,7 +291,6 @@ public class GUI extends JFrame implements ActionListener
             break;
             
         case "Vissza - pause":
-        	//showGame();
         	menu.pause_panel.setVisible(false);
         	control.continueGame();
 			time.start();
@@ -327,14 +305,12 @@ public class GUI extends JFrame implements ActionListener
 			menu.menu_main_panel.setVisible(true);
 			field_panel.setVisible(false);
 			field_panel.score_panel.setVisible(false);
-			//showMainMenu();
             break;
             
         case "Csatlakozás":
         	if(ip_pattern.matcher(menu.ip.getText()).matches())
 	        	{
 					try {
-						//control = new Control();
 						control.startClient(menu.ip.getText());
 					 } catch (Exception exp) {
 						 //guibol hivni errort
@@ -343,15 +319,13 @@ public class GUI extends JFrame implements ActionListener
         	break;
         	
         case "Vissza - client":
-        	//showOnlineMenu();
         	menu.menu_client_panel.setVisible(false);
         	menu.menu_online_panel.setVisible(true);
         	menu.client_error_label.setVisible(false);
         	state = ONLINE;
         	break;
         default:
-    }
-  
+    }  
     }
 	
 	public void showPauseMenu()
