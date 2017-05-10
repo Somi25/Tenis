@@ -227,7 +227,9 @@ public class Ball extends GeometricObject{
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
-		}else if(	(dif >= 0) &&
+		//}else if(	(dif >= 0) &&
+		}else if(  ((difCoords(new Float[] {racketCoord[0] + racketL.getWidth(), racketCoord[1] + racketL.getHeight()}, coord) <= radius) ||
+				    (difCoords(new Float[] {racketCoord[0] + racketL.getWidth(), racketCoord[1] - racketL.getHeight()}, coord) <= radius))&&
 					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius / 2)) && 
 					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius / 2))
 		){
@@ -254,5 +256,15 @@ public class Ball extends GeometricObject{
 		
 		
 		return coord;
+	}
+	
+	public Float difCoords(Float[] a, Float[] b){
+		Float dif = 0f;
+		Float dX = a[0] - b[0];
+		Float dY = a[1] - b[1];
+		
+		dif = (float)Math.sqrt(dX*dX + dY*dY);
+		
+		return dif;
 	}
 }

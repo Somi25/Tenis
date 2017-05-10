@@ -30,15 +30,17 @@ abstract class DrawPanel extends JPanel
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, WIDTH_WINDOW, 10);
         g.fillRect(0, 630, WIDTH_WINDOW, 10);
-       /* for (Point ball : ball)
+        for (Point ball : ball)
         {
         	g.fillOval(ball.x-10, ball.y-10, 20, 20);
-        }*/
+        }
         
+        /*
         for (Point ball : ball)
         {
         	g.fillRect(ball.x-10, ball.y-10, 20, 20);
         }
+        */
         
         for (Point racket_1 : racket_1)
         {
