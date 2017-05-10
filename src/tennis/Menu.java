@@ -231,7 +231,19 @@ public class Menu extends JLabel
 		
 		setVisible(true);
 	}
-	
+	public void setMenuVisibilityToFalse()
+	{
+		menu_main_panel.setVisible(false);
+		menu_offline_panel.setVisible(false);
+		menu_online_panel.setVisible(false);
+		menu_client_panel.setVisible(false);
+	}
+	public void setLabelVisibilityToFalse()
+	{
+		client_error_label.setVisible(false);
+		host_wait_label.setVisible(false);
+		lost_label.setVisible(false);
+	}
 	//gomb esemény aktiválás
 	protected void add_action(GUI action)
 	{

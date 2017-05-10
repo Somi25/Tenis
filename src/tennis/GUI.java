@@ -24,18 +24,6 @@ public class GUI extends JFrame implements ActionListener
 	private static final int TIMER_DELAY = 20;
 	private Timer time;
 	
-	private int	state = 0;
-	private static final int OFFLINE = 1;
-	private static final int ONLINE = 2;
-	private static final int HOST = 3;
-	private static final int CLIENT = 4;
-	private static final int GAME = 5;
-	
-	private boolean pressed_1_up = false;
-	private boolean pressed_1_down = false;
-	private boolean pressed_2_up = false;
-	private boolean pressed_2_down = false;
-	
 	private Control control;
 	private Field field_panel;	
 	private Menu menu;
@@ -44,9 +32,10 @@ public class GUI extends JFrame implements ActionListener
 	
 	private Pattern ip_pattern;
 	
-	public GUI()
+	public GUI(Control c)
 	{		
 		super("Tenisz");
+		control=c;
 		setSize(WIDTH_WINDOW+6, HEIGHT_WINDOW+30);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
@@ -304,163 +293,70 @@ public class GUI extends JFrame implements ActionListener
 		setVisible(true);
 	}
 	
-	protected void start()
+	/*protected void start()
 	{
 		field_panel.setVisible(true);
 		field_panel.score_panel.setVisible(true);
 		time.start();
-	}
+	}*/
 	
 	//Menügomb esemény kezelés
 	@Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-
-        switch (command) {
-
-            //Display panel one when I select the option on the menu bar
-            case "Offline":
-            	menu.menu_main_panel.setVisible(false);
-            	menu.menu_offline_panel.setVisible(true);
-            	state = OFFLINE;
-                break;
-            
-            case "Online":
-            	menu.menu_main_panel.setVisible(false);
-				menu.menu_online_panel.setVisible(true);
-				state = ONLINE;
-                break;
-                
-            case "Kilépés":
-            	System.exit(0);
-                break;
-            
-            case "Host":
-            	//menu.host_wait_label.setVisible(true);
-				//menu.client_error_label.setVisible(false);
-            	menu.menu_online_panel.setVisible(false);
-				menu.menu_offline_panel.setVisible(true);
-				state = HOST;
-                break;
-            
-            case "Kliens":
-            	//menu.client_error_label.setVisible(true);
-				menu.host_wait_label.setVisible(false);
-				menu.menu_online_panel.setVisible(false);
-				menu.menu_client_panel.setVisible(true);
-				state = CLIENT;
-                break;
-            
-            case "Új játék":
-            	if(state == OFFLINE)
-				{
-            		control = new Control();
-					menu.menu_offline_panel.setVisible(false);
-					start();
-				}
-				if(state == HOST)
-				{
-					control = new Control();
-					control.startServer();
-					menu.menu_offline_panel.setVisible(false);
-					start();
-					menu.host_wait_label.setVisible(true);
-				}
-                break;
-                
-            case "Játék betöltése":
-            	if(state == OFFLINE)
-				{
-            		control = new Control();
-            		//control.load();
-					menu.menu_offline_panel.setVisible(false);
-					start();
-				}
-				if(state == HOST)
-				{
-					menu.host_wait_label.setVisible(true);
-					//time.start();
-				}
-                break;
-
-            case "Vissza - offline":
-            	if(state == OFFLINE)
-				{
-            		menu.menu_offline_panel.setVisible(false);
-    				menu.menu_main_panel.setVisible(true);
-    				state = 0;
-				}
-				if(state == HOST)
-				{
-					menu.menu_offline_panel.setVisible(false);
-					menu.menu_online_panel.setVisible(true);
-					menu.host_wait_label.setVisible(false);
-					menu.client_error_label.setVisible(false);
-				}
-				
-                break;
-                
-            case "Vissza - online":
-            	menu.menu_online_panel.setVisible(false);
-				menu.menu_main_panel.setVisible(true);
-				menu.host_wait_label.setVisible(false);
-				menu.client_error_label.setVisible(false);
-				state = 0;
-                break;
-                
-            case "Játék mentése":
-            	menu.pause_panel.setVisible(false);
-				time.start();
-				// Bence
-				control.continueGame();
-				// vége
-                break;
-                
-            case "Vissza - pause":
-            	menu.pause_panel.setVisible(false);
-				time.start();
-				// Bence
-				control.continueGame();
-				// vége
-                break;
-                
-            case "Kilépés a menübe":
-            	time.stop();
-				// Bence
-				control.stopGame();
-				// vége
-				state = 0;
-				menu.pause_panel.setVisible(false);
-				menu.menu_main_panel.setVisible(true);
-				field_panel.setVisible(false);
-				field_panel.score_panel.setVisible(false);
-				control = null;
-                break;
-                
-            case "Csatlakozás":
-			if(ip_pattern.matcher(menu.ip.getText()).matches())
-            	{
-					try {
-						control = new Control();
-						control.startClient(menu.ip.getText());
-					 } catch (Exception exp) {
-						 menu.client_error_label.setVisible(true);
-						 System.out.println("meg vagy");
-			         }
-					
-            		
-            		               	
-            	}
-			else
-            	break;
-            	
-            case "Vissza - client":
-            	menu.menu_client_panel.setVisible(false);
-            	menu.menu_online_panel.setVisible(true);
-            	menu.client_error_label.setVisible(false);
-            	state = ONLINE;
-            	break;
-            default:
-        }
+		control.buttonStroke(e.getActionCommand());
+  
     }
+	public void showPauseMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+        menu.pause_panel.setVisible(true);
+	}
+	public void showOfflineMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+    	menu.menu_offline_panel.setVisible(true);
+	}
+	public void showOnlineMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+		menu.menu_online_panel.setVisible(true);
+	}
+	public void showHostMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+		menu.menu_offline_panel.setVisible(true);
+	}
+	public void showClientMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+		menu.menu_client_panel.setVisible(true);
+	}
+	public void showGame(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		field_panel.setVisible(true);
+		field_panel.score_panel.setVisible(true);
+		time.start();
+	}
+	public void showWaitingForConnect(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+		
+		menu.host_wait_label.setVisible(true);
+	}
+	public void showMainMenu(){
+		menu.setMenuVisibilityToFalse();
+		menu.setLabelVisibilityToFalse();
+
+		menu.menu_main_panel.setVisible(true);
+	}
+	public void showError(Exception ex, String Description)
+	{
+		
+	}
 }

@@ -54,6 +54,14 @@ class Control {
 	
 	private int whoStart = 0;
 	private int pause = 0;
+	
+
+	private int	state = 0;
+	private static final int OFFLINE = 1;
+	private static final int ONLINE = 2;
+	private static final int HOST = 3;
+	private static final int CLIENT = 4;
+	private static final int GAME = 5;
 
 	
 	// konstruktor
@@ -223,7 +231,7 @@ class Control {
 
 	
 	void setGUI(GUI g) {
-		//gui = g;
+		gui = g;
 	}
 
 	void startServer() {
@@ -306,7 +314,8 @@ class Control {
 							else		{}
 		break;
 		
-		case "Pause": 		if(pressed) {} 
+		case "Pause": 		if(pressed) {
+            gui.showPauseMenu();} 
 							else		{}
 		break;
 
@@ -318,4 +327,118 @@ class Control {
 		break;
 		}
 	}
+	public void buttonStroke(String command)
+	{
+    switch (command) {
+
+        //Display panel one when I select the option on the menu bar
+        case "Offline":
+        	state = OFFLINE;
+        	gui.showOfflineMenu();
+            break;
+        
+        case "Online":
+			state = ONLINE;
+        	gui.showOnlineMenu();
+            break;
+            
+        case "Kilépés":
+        	System.exit(0);
+            break;
+        
+        case "Host":
+			state = HOST;
+        	gui.showHostMenu();
+            break;
+        
+        case "Kliens":
+			state = CLIENT;
+			gui.showClientMenu();
+            break;
+        
+        case "Új játék":
+        	if(state == OFFLINE)
+			{
+        		gui.showGame();
+				//start();
+			}
+			if(state == HOST)
+			{
+				gui.showGame();
+				gui.showWaitingForConnect();
+				startServer();
+				//start();
+			}
+            break;
+            
+        case "Játék betöltése":
+        	if(state == OFFLINE)
+			{
+				gui.showGame();
+				//start();
+			}
+			if(state == HOST)
+			{
+				gui.showGame();
+				gui.showWaitingForConnect();
+			}
+            break;
+
+        case "Vissza - offline":
+        	if(state == OFFLINE)
+			{
+        		gui.showMainMenu();
+				state = 0;
+			}
+			if(state == HOST)
+			{
+				gui.showOnlineMenu();
+			}
+			
+            break;
+            
+        case "Vissza - online":
+        	gui.showMainMenu();
+			state = 0;
+            break;
+            
+        case "Játék mentése":
+        	gui.showGame();
+			//time.start();
+			continueGame();
+            break;
+            
+        case "Vissza - pause":
+        	gui.showGame();
+			//time.start();
+			continueGame();
+            break;
+            
+        case "Kilépés a menübe":
+        	//time.stop();
+        	stopGame();
+			state = 0;
+			gui.showMainMenu();
+            break;
+            
+        case "Csatlakozás":
+		/*if(ip_pattern.matcher(menu.ip.getText()).matches())
+        	{
+				try {
+					//control = new Control();
+					startClient(menu.ip.getText());
+				 } catch (Exception exp) {
+					 //guibol hivni errort
+		         }       	
+        	}*/
+        	break;
+        	
+        case "Vissza - client":
+        	gui.showOnlineMenu();
+        	state = ONLINE;
+        	break;
+        default:
+    }
+	}
 }
+
