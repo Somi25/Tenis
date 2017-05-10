@@ -182,9 +182,9 @@ public class Ball extends GeometricObject{
 			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashRight normal, velo: " + racketR.getVelocity());
 		}else if(  ((difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] + racketR.getHeight()/2}, coord) <= (radius - 0.01f)) ||
-			    (difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] - racketR.getHeight()/2}, coord) <= (radius - 0.01f)))&&
-			   ((coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius)) &&
-				(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius)))
+			    	(difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] - racketR.getHeight()/2}, coord) <= (radius - 0.01f)))&&
+				   ((coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius)) &&
+					(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius)))
 		){
 			// "sarok" ütközés történt
 			
@@ -200,7 +200,8 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			coord[0] = coord[0];// - 2*dif;
+			// ha sokkal szarabb lett a sarok bug, akkor a következõ sort kommentezd ki:
+			coord[0] = coord[0] - 2*(radius - (difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] + racketR.getHeight()/2}, coord)));
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir + maxRand*((float)Math.random()-0.5f);
@@ -247,7 +248,8 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			coord[0] = coord[0];// + 2*dif;
+			// ha sokkal szarabb lett a sarok bug, akkor a következõ sort kommentezd ki:
+			coord[0] = coord[0] + 2*(radius - difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] + racketL.getHeight()/2}, coord));
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir + maxRand*((float)Math.random()-0.5f);
