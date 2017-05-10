@@ -100,29 +100,29 @@ public class Ball extends GeometricObject{
 		// nagyobb mint 45 fok ÉS kisebb mint 90 -> legyen 45 fok
 		if(direction > (float)(Math.PI / 4) && direction <= (float)(Math.PI / 2)){
 			direction = (float)(Math.PI / 4) + maxRand*((float)Math.random()-0.5f);
-			System.out.println("old: " + dirX / Math.PI * 180);
-			System.out.println("new: " + direction / Math.PI * 180);
+			//System.out.println("old: " + dirX / Math.PI * 180);
+			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// kisebb mint -45 fok (315 fok) ÉS kisebb mint -90 (270) -> legyen -45 fok (315 fok)
 		if(direction < (float)(Math.PI * 7/4) && direction >= (float)(Math.PI * 3/2)){
 			direction = (float)(Math.PI * 7/4) + maxRand*((float)Math.random()-0.5f);
-			System.out.println("old: " + dirX / Math.PI * 180);
-			System.out.println("new: " + direction / Math.PI * 180);
+			//System.out.println("old: " + dirX / Math.PI * 180);
+			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// ha kisebb mint 135 fok ÉS nagyobb mint 90 fok -> legyen 135 fok
 		if(direction < (float)(Math.PI * 3/4) && direction > (float)(Math.PI / 2)){
 			direction = (float)(Math.PI * 3/4) + maxRand*((float)Math.random()-0.5f);
-			System.out.println("old: " + dirX / Math.PI * 180);
-			System.out.println("new: " + direction / Math.PI * 180);
+			//System.out.println("old: " + dirX / Math.PI * 180);
+			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// ha nagyobb mint 225 fok ÉS kisebb mint 270 fok -> legyen 225 fok
 		if(direction > (float)(Math.PI * 5/4) && direction < (float)(Math.PI * 3/2)){
 			direction = (float)(Math.PI * 5/4) + maxRand*((float)Math.random()-0.5f);
-			System.out.println("old: " + dirX / Math.PI * 180);
-			System.out.println("new: " + direction / Math.PI * 180);
+			//System.out.println("old: " + dirX / Math.PI * 180);
+			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 	}
@@ -181,9 +181,10 @@ public class Ball extends GeometricObject{
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashRight normal, velo: " + racketR.getVelocity());
-		}else if(	(dif >= 0) &&
-					(coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius / 2)) && 
-					(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius / 2))
+		}else if(  ((difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] + racketR.getHeight()/2}, coord) <= (radius - 0.01f)) ||
+			    (difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] - racketR.getHeight()/2}, coord) <= (radius - 0.01f)))&&
+			   ((coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius)) &&
+				(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius)))
 		){
 			// "sarok" ütközés történt
 			
@@ -199,7 +200,7 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			coord[0] = coord[0] - 2*dif;
+			coord[0] = coord[0];// - 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir + maxRand*((float)Math.random()-0.5f);
@@ -222,16 +223,15 @@ public class Ball extends GeometricObject{
 			// "normál" ütközés történt
 			
 			// új x koordináta
-			coord[0] = coord[0] + 2*dif;
+			coord[0] = coord[0];// + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
-		//}else if(	(dif >= 0) &&
-		}else if(  ((difCoords(new Float[] {racketCoord[0] + racketL.getWidth(), racketCoord[1] + racketL.getHeight()}, coord) <= radius) ||
-				    (difCoords(new Float[] {racketCoord[0] + racketL.getWidth(), racketCoord[1] - racketL.getHeight()}, coord) <= radius))&&
-					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius / 2)) && 
-					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius / 2))
+		}else if(  ((difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] + racketL.getHeight()/2}, coord) <= (radius - 0.01f)) ||
+				    (difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] - racketL.getHeight()/2}, coord) <= (radius - 0.01f)))&&
+				   ((coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius)) ||
+					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius)))
 		){
 			// "sarok" ütközés történt
 			
@@ -264,7 +264,7 @@ public class Ball extends GeometricObject{
 		Float dY = a[1] - b[1];
 		
 		dif = (float)Math.sqrt(dX*dX + dY*dY);
-		
+
 		return dif;
 	}
 }

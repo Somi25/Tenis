@@ -1,20 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
-
- * 
- * and open the template in the editor.
- */
-
-/* @todo:
- ++mentés
- kerek labda ?
- netes gombnyomás
- easter egg?
- ai?
- ++szög túlfordulás 
- * */
- 
-
 package tennis;
 
 import java.awt.event.ActionEvent;
@@ -44,7 +27,7 @@ class Control {
 	protected final Float racketRx0		= (float)xFieldMax - 15;
 	protected final Float ballRad		= 10f;
 	private  final int sampleTime		= 4;
-	private final Float ballDefVel		= 1.5f / 5;
+	private final Float ballDefVel		= 1.5f;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -442,7 +425,7 @@ class Control {
 	}
 
 	public void saveFile(){
-		System.out.println("save file");
+		//System.out.println("save file");
 	
 		FileWriter writeObj;
 		PrintWriter printObj;
@@ -450,10 +433,6 @@ class Control {
 		try{	
 			writeObj = new FileWriter("savefile.txt" , false);
 			printObj = new PrintWriter(writeObj);
-			printObj.println("Save Tennis game");
-			printObj.println(whoStart);
-			printObj.println(score.getScores()[0]);
-			printObj.println(score.getScores()[1]);
 			printObj.close();
            
 		}catch(Exception ex){
@@ -463,7 +442,7 @@ class Control {
 	}
 
 	public void loadFile() throws IOException{
-		System.out.println("load file");
+		//System.out.println("load file");
 
 		//String myDirectory = System.getProperty("user.dir");
 		String fullDirectory = "savefile.txt";
@@ -487,7 +466,6 @@ class Control {
 			scoreRead[0] = Integer.parseInt(textItems.get(2).trim());
 			scoreRead[1] = Integer.parseInt(textItems.get(3).trim());
 			score.setScores(scoreRead);
-			System.out.println();
 		}
 		
 		if(whoStart == -1){
