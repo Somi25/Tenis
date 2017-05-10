@@ -2,15 +2,13 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.text.ParseException;
+
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 
@@ -27,7 +25,6 @@ public class GUI extends JFrame implements ActionListener
 	private Control control;
 	private Field field_panel;	
 	private Menu menu;
-	private String score;
 	private String winner;
 	
 	private Pattern ip_pattern;
@@ -37,7 +34,6 @@ public class GUI extends JFrame implements ActionListener
 	private static final int ONLINE = 2;
 	private static final int HOST = 3;
 	private static final int CLIENT = 4;
-	private static final int GAME = 5;
 	
 	public GUI(Control c)
 	{		
@@ -358,59 +354,8 @@ public class GUI extends JFrame implements ActionListener
   
     }
 	
-	public void showPauseMenu(){
-		//menu.setMenuVisibilityToFalse();
-		//menu.setLabelVisibilityToFalse();
-		
+	public void showPauseMenu()
+	{
         menu.pause_panel.setVisible(true);
 	}
-	/*public void showOfflineMenu(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-    	menu.menu_offline_panel.setVisible(true);
-	}
-	public void showOnlineMenu(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-		menu.menu_online_panel.setVisible(true);
-	}
-	public void showHostMenu(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-		menu.menu_offline_panel.setVisible(true);
-	}
-	public void showClientMenu(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-		menu.menu_client_panel.setVisible(true);
-	}
-	public void showGame(){
-		menu.pause_panel.setVisible(false);
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		field_panel.setVisible(true);
-		field_panel.score_panel.setVisible(true);
-		time.start();
-	}
-	public void showWaitingForConnect(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-		menu.host_wait_label.setVisible(true);
-	}
-	public void showMainMenu(){
-		menu.setMenuVisibilityToFalse();
-		menu.setLabelVisibilityToFalse();
-		
-		menu.pause_panel.setVisible(false);
-		menu.menu_main_panel.setVisible(true);
-	}
-	public void showError(Exception ex, String Description)
-	{
-		
-	}*/
 }

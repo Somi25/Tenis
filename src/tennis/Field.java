@@ -15,16 +15,10 @@ import javax.swing.KeyStroke;
 import javax.swing.ImageIcon;
 
 public class Field extends DrawPanel
-{
-	
-	private int i = 11;
-	private int j = 11;
-	
+{	
 	protected DrawPanel field_panel;
 	protected JPanel score_panel;
 	protected JLabel score_label;
-	protected JLabel light_1_label;
-	protected JLabel light_2_label;
 	
 	public Field(int WIDTH_WINDOW)
 	{
@@ -56,25 +50,7 @@ public class Field extends DrawPanel
 		score_label.setBounds(WIDTH_WINDOW/2-81, 0, 162, 80);
 		score_label.setFont(new Font("0 : 0", Font.BOLD, 80));
 		score_label.setForeground(Color.WHITE);
-		score_panel.add(score_label);
-		
-		try {
-			light_1_label = new JLabel(new ImageIcon(ImageIO.read( Thread.currentThread().getContextClassLoader().getResourceAsStream("light.png"))));
-		 } catch (IOException exp) {
-	           exp.printStackTrace();
-	       }
-		
-		try {
-			light_2_label = new JLabel(new ImageIcon(ImageIO.read( Thread.currentThread().getContextClassLoader().getResourceAsStream("light.png"))));
-		 } catch (IOException exp) {
-	           exp.printStackTrace();
-	       }
-		light_1_label.setBounds(315, 0, 20, 80);
-		light_2_label.setBounds(945, 0, 20, 80);
-		light_1_label.setVisible(false);
-		light_2_label.setVisible(false);
-		score_panel.add(light_1_label);
-		score_panel.add(light_2_label);	
+		score_panel.add(score_label);	
         
 		setVisible(false);
 	}
