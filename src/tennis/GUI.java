@@ -254,13 +254,14 @@ public class GUI extends JFrame implements ActionListener
         	if(state == OFFLINE)
 			{
     			control.resetGame();		// lehet hogy nem kell
-        		//control.load();
+        		control.loadFile();
 				menu.menu_offline_panel.setVisible(false);
 				start();
 			}
 			if(state == HOST)
 			{
 				control.resetGame();		// lehet hogy nem kell
+        		control.loadFile();
 				menu.host_wait_label.setVisible(true);
 				try {
 					control.startServer();
@@ -300,6 +301,7 @@ public class GUI extends JFrame implements ActionListener
             
         case "Játék mentése":
         	//showGame();
+        	control.saveFile();
             break;
             
         case "Vissza - pause":
