@@ -6,7 +6,7 @@
  */
 
 /* @todo:
- mentés
+ ++mentés
  kerek labda ?
  netes gombnyomás
  easter egg?
@@ -20,11 +20,8 @@ package tennis;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.InvalidParameterException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.*; //import classes
+import java.io.*;
 import java.util.ArrayList; 
-import java.util.Iterator;
 
 import javax.swing.Timer;
 
@@ -465,7 +462,7 @@ class Control {
 		
 	}
 
-	public void loadFile(){
+	public void loadFile() throws IOException{
 		System.out.println("load file");
 
 		//String myDirectory = System.getProperty("user.dir");
@@ -473,20 +470,16 @@ class Control {
 		String input_line = null;
 		
 		ArrayList<String> textItems = new ArrayList<String>(); //create array         list
-		
-		try{
-			BufferedReader re = new BufferedReader(new FileReader(fullDirectory));
-			while((input_line = re.readLine()) != null){
-				textItems.add(input_line); //add item to array list
-			}
-			re.close();
-			
-		}catch(Exception ex){
-			System.out.println("Error: " + ex);
+
+		BufferedReader re = new BufferedReader(new FileReader(fullDirectory));
+		while((input_line = re.readLine()) != null){
+			textItems.add(input_line); //add item to array list
 		}
+		re.close();
+			
 		
 		if(textItems.size() != 4 || !textItems.get(0).equals("Save Tennis game")){
-			//throw
+			throw new IOException(new Throwable("rossz a fájl tartalma"));
 		}else{
 			Integer[] scoreRead = new Integer[2];
 			

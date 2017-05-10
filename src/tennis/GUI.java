@@ -2,6 +2,7 @@ package tennis;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.ParseException;
 
 import java.util.regex.Pattern;
@@ -254,14 +255,24 @@ public class GUI extends JFrame implements ActionListener
         	if(state == OFFLINE)
 			{
     			control.resetGame();		// lehet hogy nem kell
-        		control.loadFile();
+        		try {
+					control.loadFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				menu.menu_offline_panel.setVisible(false);
 				start();
 			}
 			if(state == HOST)
 			{
 				control.resetGame();		// lehet hogy nem kell
-        		control.loadFile();
+        		try {
+					control.loadFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				menu.host_wait_label.setVisible(true);
 				try {
 					control.startServer();
