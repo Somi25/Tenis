@@ -20,9 +20,11 @@ package tennis;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.InvalidParameterException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.*; //import classes
+import java.util.ArrayList; 
+import java.util.Iterator;
 
 import javax.swing.Timer;
 
@@ -444,46 +446,64 @@ class Control {
 
 	public void saveFile(){
 		System.out.println("save file");
-		FileOutputStream fop = null;
-		File file;
-		String content = "This is the text content";
+	
+		FileWriter writeObj;
+		PrintWriter printObj;
 
-		try {
-
-			file = new File("savefile.txt");
-			fop = new FileOutputStream(file);
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			// get the content in bytes
-			byte[] contentInBytes = content.getBytes();
-
-			fop.write(contentInBytes);
-			fop.flush();
-			fop.close();
-
-			System.out.println("Done");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (fop != null) {
-					fop.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try{	
+			writeObj = new FileWriter("savefile.txt" , false);
+			printObj = new PrintWriter(writeObj);
+			printObj.println("Save Tennis game");
+			printObj.println(whoStart);
+			printObj.println(score.getScores()[0]);
+			printObj.println(score.getScores()[1]);
+			printObj.close();
+           
+		}catch(Exception ex){
+			System.out.println("Error: " + ex);
 		}
 		
 	}
 
 	public void loadFile(){
 		System.out.println("load file");
+
+		//String myDirectory = System.getProperty("user.dir");
+		String fullDirectory = "savefile.txt";
+		String input_line = null;
 		
+		ArrayList<String> textItems = new ArrayList<String>(); //create array         list
+		
+		try{
+			BufferedReader re = new BufferedReader(new FileReader(fullDirectory));
+			while((input_line = re.readLine()) != null){
+				textItems.add(input_line); //add item to array list
+			}
+			re.close();
+			
+		}catch(Exception ex){
+			System.out.println("Error: " + ex);
+		}
+		
+		if(textItems.size() != 4 || !textItems.get(0).equals("Save Tennis game")){
+			//throw
+		}else{
+			Integer[] scoreRead = new Integer[2];
+			
+			whoStart = Integer.parseInt(textItems.get(1).trim());
+			scoreRead[0] = Integer.parseInt(textItems.get(2).trim());
+			scoreRead[1] = Integer.parseInt(textItems.get(3).trim());
+			score.setScores(scoreRead);
+			System.out.println();
+		}
+		
+		if(whoStart == -1){
+			serveL();
+		}
+		
+		if(whoStart == +1){
+			serveR();
+		}
 	}
 }
 

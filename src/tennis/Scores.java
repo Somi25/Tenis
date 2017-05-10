@@ -28,5 +28,11 @@ public class Scores {
 	public void incScoreR(){
 		scoreR++;
 	}
+	
+	public void setScores(Integer[] scores){
+		scoreL = scores[0];
+		scoreR = scores[1];
+		
+	}
 
 }
