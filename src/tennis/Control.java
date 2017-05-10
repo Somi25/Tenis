@@ -1,7 +1,19 @@
 /*
  * To change this template, choose Tools | Templates
+
+ * 
  * and open the template in the editor.
  */
+
+/* @todo:
+ mentés
+ kerek labda ?
+ netes gombnyomás
+ easter egg?
+ ai?
+ szög túlfordulás 
+ * */
+ 
 
 package tennis;
 
