@@ -204,7 +204,7 @@ public class GUI extends JFrame implements ActionListener
 	//Menügomb esemény kezelés
 	@Override
     public void actionPerformed(ActionEvent e) {
-		control.buttonStroke(e.getActionCommand());
+		//control.buttonStroke(e.getActionCommand());
 		String command = e.getActionCommand();
 		
 	    switch (command) {
@@ -231,6 +231,7 @@ public class GUI extends JFrame implements ActionListener
         case "Host":
 			state = HOST;
         	//showHostMenu();
+			control.resetGame();		// lehet hogy nem kell
 			menu.menu_online_panel.setVisible(false);
 			menu.menu_offline_panel.setVisible(true);
             break;
@@ -238,6 +239,7 @@ public class GUI extends JFrame implements ActionListener
         case "Kliens":
 			state = CLIENT;
 			//showClientMenu();
+			control.resetGame();		// lehet hogy nem kell
 			menu.host_wait_label.setVisible(false);
 			menu.menu_online_panel.setVisible(false);
 			menu.menu_client_panel.setVisible(true);
@@ -247,6 +249,7 @@ public class GUI extends JFrame implements ActionListener
         	if(state == OFFLINE)
 			{
         		//showGame();
+    			control.resetGame();		// lehet hogy nem kell
         		menu.menu_offline_panel.setVisible(false);
 				start();
 			}
@@ -265,6 +268,7 @@ public class GUI extends JFrame implements ActionListener
         	if(state == OFFLINE)
 			{
 				//showGame();
+    			control.resetGame();		// lehet hogy nem kell
         		//control.load();
 				menu.menu_offline_panel.setVisible(false);
 				start();
@@ -272,6 +276,7 @@ public class GUI extends JFrame implements ActionListener
 			if(state == HOST)
 			{
 				//showGame();
+				control.resetGame();		// lehet hogy nem kell
 				//showWaitingForConnect();
 				menu.host_wait_label.setVisible(true);
 				//time.start();
@@ -320,12 +325,12 @@ public class GUI extends JFrame implements ActionListener
         case "Kilépés a menübe":
         	time.stop();
 			control.stopGame();
+			control.resetGame();
 			state = 0;
 			menu.pause_panel.setVisible(false);
 			menu.menu_main_panel.setVisible(true);
 			field_panel.setVisible(false);
 			field_panel.score_panel.setVisible(false);
-			control = null;
 			//showMainMenu();
             break;
             

@@ -119,10 +119,13 @@ class Control {
 	}
 	
 	public void resetGame(){
+		if(timer.isRunning()){
+			timer.stop();
+		}
 		score.reset();
 		whoStart = 0;
 		pause = 0;
-		System.out.println("reset");
+		System.out.println("reset Game");
 		racketL.setCoordinates(new Float[] {racketLx0, (float)yFieldMax/2});
 		racketR.setCoordinates(new Float[] {racketRx0, (float)yFieldMax/2});
 		ball_inst.setCoordinates(new Float[] {(float)xFieldMax/2, (float)yFieldMax/2});
