@@ -39,6 +39,7 @@ class Control {
 	
 	private int whoStart = 0;
 	private int pause = 0;
+	private int continueBallDir = 0;
 
 	private static final int OFFLINE = 1;
 	private static final int ONLINE = 2;
@@ -126,7 +127,9 @@ class Control {
 		if(!timer.isRunning()){
 			try {
 				// labda irányának beállítása
-				if(whoStart == 0){
+				if(continueBallDir == 1){
+					// nem kell irányt változtatni
+				}else if(whoStart == 0){
 					// állás: 0:0 véletlen kezdés
 					if(Math.random() < 0.5){
 						ball_inst.setDirection(0.0f);
@@ -167,6 +170,7 @@ class Control {
 	
 	public void continueGame(){
 		pause = 0;
+		continueBallDir = 1;
 	}
 	
 	public void stopGame(){

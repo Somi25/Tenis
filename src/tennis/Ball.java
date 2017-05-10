@@ -223,15 +223,15 @@ public class Ball extends GeometricObject{
 			// "normál" ütközés történt
 			
 			// új x koordináta
-			coord[0] = coord[0];// + 2*dif;
+			coord[0] = coord[0] + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
 		}else if(  ((difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] + racketL.getHeight()/2}, coord) <= (radius - 0.01f)) ||
 				    (difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] - racketL.getHeight()/2}, coord) <= (radius - 0.01f)))&&
-				   ((coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius)) ||
-					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius)))
+					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius)) &&
+					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius))
 		){
 			// "sarok" ütközés történt
 			
@@ -247,7 +247,7 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			coord[0] = coord[0] + 2*dif;
+			coord[0] = coord[0];// + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir + maxRand*((float)Math.random()-0.5f);
