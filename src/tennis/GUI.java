@@ -36,9 +36,6 @@ public class GUI extends JFrame implements ActionListener
 	private boolean pressed_2_up = false;
 	private boolean pressed_2_down = false;
 	
-	private int x = 11;
-	private int y = 11;	
-	
 	private Control control;
 	private Field field_panel;	
 	private Menu menu;
@@ -62,22 +59,16 @@ public class GUI extends JFrame implements ActionListener
 
 				// Bence kezd
 				// bal ütő koordináták megszerzése
-				coords = control.getRacketL().getGUIcoords();
-				x = coords[0];
-				y = coords[1];			
-				field_panel.racket_1(x,y);
+				coords = control.getRacketL().getGUIcoords();		
+				field_panel.racket_1(coords[0],coords[1]);
 
 				// jobb ütő koordináták megszerzése
 				coords = control.getRacketR().getGUIcoords();
-				x = coords[0];
-				y = coords[1];			
-				field_panel.racket_2(x,y);
+				field_panel.racket_2(coords[0],coords[1]);
 
 				// labda ütő koordináták megszerzése
 				coords = control.getBall().getGUIcoords();
-				x = coords[0];
-				y = coords[1];			
-				field_panel.ball(x,y);
+				field_panel.ball(coords[0],coords[1]);
 				
 				
 				field_panel.setScore(control.getScores()[0] + " : " + control.getScores()[1]);
@@ -121,11 +112,12 @@ public class GUI extends JFrame implements ActionListener
 		AbstractAction pause_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
-            	 System.out.println("pause");
-                 time.stop();
+        		control.keyStroke(new Key("Pause",true));
+            	/* System.out.println("pause");
+                 //time.stop();
  				// Bence
  				control.pauseGame();
- 				// vége
+ 				// vége*/
                  menu.pause_panel.setVisible(true);
             }
         };
@@ -133,6 +125,8 @@ public class GUI extends JFrame implements ActionListener
         AbstractAction pressed_1_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("UP_Left",true));
+        		/*
             	if(pressed_1_up == false)
             	{
             		if(state == OFFLINE || state == HOST)
@@ -146,12 +140,15 @@ public class GUI extends JFrame implements ActionListener
 		                // Bence vége
             		}
             	}
+            		*/
             }
         };
 		
         AbstractAction released_1_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("UP_Left",false));
+        		/*
             	if(state == OFFLINE || state == HOST)
         		{
 	            	System.out.println("released 1_up");
@@ -163,12 +160,15 @@ public class GUI extends JFrame implements ActionListener
 	                }
 	                // Bence vége
         		}
+        		*/
             }
         };
 		
         AbstractAction pressed_1_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("DOWN_Left",true));
+        		/*
             	if(pressed_1_down == false)
             	{
             		if(state == OFFLINE || state == HOST)
@@ -182,12 +182,15 @@ public class GUI extends JFrame implements ActionListener
 		                // Bence vége
             		}
             	}
+            	*/
             }
         };
         
         AbstractAction released_1_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("DOWN_Left",false));
+        		/*
             	if(state == OFFLINE || state == HOST)
         		{
             		System.out.println("released 1_down");
@@ -199,12 +202,15 @@ public class GUI extends JFrame implements ActionListener
 	                }
 	                // Bence vége
         		}
+        		*/
             }
         };
         
         AbstractAction pressed_2_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("UP_Right",true));
+        		/*
             	if(pressed_2_up == false)
             	{
             		if(state == OFFLINE || state == CLIENT)
@@ -217,13 +223,15 @@ public class GUI extends JFrame implements ActionListener
 		        		control.startGame(+1);
 		                // Bence vége
             		}
-            	}
+            	}*/
             }
         };
 		
         AbstractAction released_2_up_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("UP_Right",false));
+        		/*
             	if(state == OFFLINE || state == CLIENT)
         		{
 	                System.out.println("released 2_up");
@@ -234,13 +242,14 @@ public class GUI extends JFrame implements ActionListener
 	                	control.getRacketR().setVelocity(0f);
 	                }
 	                // Bence vége
-        		}
+        		}*/
             }
         };
         
         AbstractAction pressed_2_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("DOWN_Right",true));/*
             	if(pressed_2_down == false)
             	{
             		if(state == OFFLINE || state == CLIENT)
@@ -253,13 +262,14 @@ public class GUI extends JFrame implements ActionListener
 		        		control.startGame(+1);
 		                // Bence vége
             		}
-            	}
+            	}*/
             }
         };
         
         AbstractAction released_2_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
+        		control.keyStroke(new Key("DOWN_Right",false));/*
             	if(state == OFFLINE || state == CLIENT)
         		{
             		System.out.println("released 2_down");
@@ -270,7 +280,7 @@ public class GUI extends JFrame implements ActionListener
 	                	control.getRacketR().setVelocity(0f);
 	                }
 	                // Bence vége
-        		}
+        		}*/
             }
         };
         

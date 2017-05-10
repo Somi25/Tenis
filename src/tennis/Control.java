@@ -192,11 +192,9 @@ class Control {
 		return racketL;
 	}
 
-	
 	public Racket getRacketR(){
 		return racketR;
 	}
-
 	
 	public Ball getBall(){
 		return ball_inst;
@@ -223,6 +221,7 @@ class Control {
 		this.score = score;
 	}
 
+	
 	void setGUI(GUI g) {
 		//gui = g;
 	}
@@ -295,5 +294,28 @@ class Control {
 		}
 	}
 	
+	public void keyStroke(Key e)
+	{
+		Boolean pressed=e.getState();
+		switch(e.getName())
+		{
+		case "UP_Left": 	if(pressed) {} 
+							else		{}
+		break;
+		case "DOWN_Left": 	if(pressed) {}
+							else		{}
+		break;
+		
+		case "Pause": 		if(pressed) {} 
+							else		{}
+		break;
 
+		case "UP_Right": 	if(pressed) {} 
+							else		{}
+		break;
+		case "DOWN_Right": 	if(pressed) {}
+							else		{}
+		break;
+		}
+	}
 }
