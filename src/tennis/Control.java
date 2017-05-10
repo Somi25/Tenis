@@ -125,7 +125,7 @@ class Control {
 		score.reset();
 		whoStart = 0;
 		pause = 0;
-		System.out.println("reset Game");
+		//System.out.println("reset Game");
 		racketL.setCoordinates(new Float[] {racketLx0, (float)yFieldMax/2});
 		racketR.setCoordinates(new Float[] {racketRx0, (float)yFieldMax/2});
 		ball_inst.setCoordinates(new Float[] {(float)xFieldMax/2, (float)yFieldMax/2});
@@ -136,7 +136,7 @@ class Control {
 		if(whoStart != 0 && whoPressed != whoStart || pause == 1){
 			return;
 		}
-		System.out.println("start" );
+		//System.out.println("start" );
 		
 		if(!timer.isRunning()){
 			try {
@@ -145,22 +145,21 @@ class Control {
 					// állás: 0:0 véletlen kezdés
 					if(Math.random() < 0.5){
 						ball_inst.setDirection(0.0f);
-						System.out.println("rand jobb");
+						//System.out.println("rand jobb");
 					}else{
 						ball_inst.setDirection((float)Math.PI);
-						System.out.println("rand bal");
+						//System.out.println("rand bal");
 					}
 					
 				}else if(whoStart == +1){
 					// bal oldali játékos kezd
 					ball_inst.setDirection(0.0f);
-					System.out.println("szerva jobb");
+					//System.out.println("szerva jobb");
 					
 				}else if(whoStart == -1){
 					// jobb oldali játékos kezd
 					ball_inst.setDirection((float)Math.PI);
-					System.out.println("szerva bal");
-					
+					//System.out.println("szerva bal");
 				}
 				
 			} catch (InvalidParameterException e) {
@@ -318,7 +317,7 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
 					        		{
-						                System.out.println("pressed 1_up");
+						                //System.out.println("pressed 1_up");
 						                pressed_1_up = true;
 						                //moveRacket1_up();
 						                // Bence kezd
@@ -330,7 +329,7 @@ class Control {
 							}else{
 				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
 				        		{
-					            	System.out.println("released 1_up");
+					            	//System.out.println("released 1_up");
 					                pressed_1_up = false;
 					                //stopRacket1_down();
 					                // Bence kezd
@@ -347,7 +346,7 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
 					        		{
-					            		System.out.println("pressed 1_down");
+					            		//System.out.println("pressed 1_down");
 					            		pressed_1_down = true;
 					            		//moveRacket1_down();
 						                // Bence kezd
@@ -359,7 +358,7 @@ class Control {
 							}else{
 				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
 				        		{
-				            		System.out.println("released 1_down");
+				            		//System.out.println("released 1_down");
 				            		pressed_1_down = false;
 				            		//stopRacket1_down();
 					                // Bence kezd
@@ -384,7 +383,7 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
 					        		{
-						                System.out.println("pressed 2_up");
+						                //System.out.println("pressed 2_up");
 						                pressed_2_up = true;
 						                //moveRacket2_up();
 						                // Bence kezd
@@ -396,7 +395,7 @@ class Control {
 							}else{
 								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
 				        		{
-					                System.out.println("released 2_up");
+					                //System.out.println("released 2_up");
 					                pressed_2_up = false;
 					                //stopRacket2_up();
 					                // Bence kezd
@@ -413,7 +412,7 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
 					        		{
-					            		System.out.println("pressed 2_down");
+					            		//System.out.println("pressed 2_down");
 					            		pressed_2_down = true;
 					            		//moveRacket2_down();
 						                // Bence kezd
@@ -425,7 +424,7 @@ class Control {
 							}else{
 								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
 				        		{
-				            		System.out.println("released 2_down");
+				            		//System.out.println("released 2_down");
 				            		pressed_2_down = false;
 				            		//stopRacket2_down();
 					                // Bence kezd

@@ -5,7 +5,8 @@ import java.security.InvalidParameterException;
 public class Ball extends GeometricObject{
 
 	private final Float radius;
-	private final Float twist = 0.25f;		// csavarás mértéke
+	private final Float twist = 0.25f;							// csavarás mértéke
+	public static final Float maxRand = (float)(5 / 180 * Math.PI);	// random szög mértéke: 5 fok
 	
 	// ütõk
 	private Racket racketL;
@@ -87,6 +88,43 @@ public class Ball extends GeometricObject{
 		coordinates = crashRight(coordinates);
       	//System.out.println(velocity);
 		
+		
+		// maximális irány szög beállítása
+		maxDir();
+	}
+	
+	private void maxDir(){
+		float dirX = (float)direction;
+		
+		
+		// nagyobb mint 45 fok ÉS kisebb mint 90 -> legyen 45 fok
+		if(direction > (float)(Math.PI / 4) && direction <= (float)(Math.PI / 2)){
+			direction = (float)(Math.PI / 4) + maxRand*((float)Math.random()-0.5f);
+			System.out.println("old: " + dirX / Math.PI * 180);
+			System.out.println("new: " + direction / Math.PI * 180);
+		}
+		
+		// kisebb mint -45 fok (315 fok) ÉS kisebb mint -90 (270) -> legyen -45 fok (315 fok)
+		if(direction < (float)(Math.PI * 7/4) && direction >= (float)(Math.PI * 3/2)){
+			direction = (float)(Math.PI * 7/4) + maxRand*((float)Math.random()-0.5f);
+			System.out.println("old: " + dirX / Math.PI * 180);
+			System.out.println("new: " + direction / Math.PI * 180);
+		}
+		
+		// ha kisebb mint 135 fok ÉS nagyobb mint 90 fok -> legyen 135 fok
+		if(direction < (float)(Math.PI * 3/4) && direction > (float)(Math.PI / 2)){
+			direction = (float)(Math.PI * 3/4) + maxRand*((float)Math.random()-0.5f);
+			System.out.println("old: " + dirX / Math.PI * 180);
+			System.out.println("new: " + direction / Math.PI * 180);
+		}
+		
+		// ha nagyobb mint 225 fok ÉS kisebb mint 270 fok -> legyen 225 fok
+		if(direction > (float)(Math.PI * 5/4) && direction < (float)(Math.PI * 3/2)){
+			direction = (float)(Math.PI * 5/4) + maxRand*((float)Math.random()-0.5f);
+			System.out.println("old: " + dirX / Math.PI * 180);
+			System.out.println("new: " + direction / Math.PI * 180);
+		}
+		
 	}
 	
 	private Float[] crashUp(Float[] coord){
@@ -101,7 +139,7 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés x tengelyre)
 			direction = (float) (-direction % (2*Math.PI));
-	      	 System.out.println("crashUp");
+	      	 //System.out.println("crashUp");
 		}
 		
 		return coord;
@@ -119,14 +157,13 @@ public class Ball extends GeometricObject{
 			
 			// új irány (tükrözés x tengelyre)
 			direction = (float) (-direction % (2*Math.PI));
-	     	 System.out.println("crashDown");
+	     	 //System.out.println("crashDown");
 		}
      	 
 		return coord;
 	}
 	
 	private Float[] crashRight(Float[] coord){
-		
 		// ütközés jobb oldali ütõvel
 		Float[] racketCoord = racketR.getCoordinates();
 		float dif = -((racketCoord[0] - racketR.getWidth() / 2) - (coord[0] + radius));
@@ -142,8 +179,8 @@ public class Ball extends GeometricObject{
 			coord[0] = coord[0] - 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
-			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity();
-	    	System.out.println("crashRight normal, velo: " + racketR.getVelocity());
+			direction = (float)((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() + maxRand*((float)Math.random()-0.5f);
+	    	//System.out.println("crashRight normal, velo: " + racketR.getVelocity());
 		}else if(	(dif >= 0) &&
 					(coord[1] <= (racketCoord[1] + racketR.getHeight() / 2 + radius / 2)) && 
 					(coord[1] >= (racketCoord[1] - racketR.getHeight() / 2 - radius / 2))
@@ -165,8 +202,8 @@ public class Ball extends GeometricObject{
 			coord[0] = coord[0] - 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
-			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir;
-	    	System.out.println("crashRight corner, velo: " + racketR.getVelocity());
+			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir + maxRand*((float)Math.random()-0.5f);
+	    	//System.out.println("crashRight corner, velo: " + racketR.getVelocity());
 		}
 		
 		return coord;
@@ -188,8 +225,8 @@ public class Ball extends GeometricObject{
 			coord[0] = coord[0] + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
-			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity();
-	    	System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
+			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + maxRand*((float)Math.random()-0.5f);
+	    	//System.out.println("crashLeft normal, velo: " + racketL.getVelocity());
 		}else if(	(dif >= 0) &&
 					(coord[1] <= (racketCoord[1] + racketL.getHeight() / 2 + radius / 2)) && 
 					(coord[1] >= (racketCoord[1] - racketL.getHeight() / 2 - radius / 2))
@@ -211,8 +248,8 @@ public class Ball extends GeometricObject{
 			coord[0] = coord[0] + 2*dif;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
-			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir;
-	    	System.out.println("crashLeft corner, velo: " + racketL.getVelocity());
+			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir + maxRand*((float)Math.random()-0.5f);
+	    	//System.out.println("crashLeft corner, velo: " + racketL.getVelocity());
 		}
 		
 		
