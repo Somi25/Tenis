@@ -11,7 +11,7 @@
  netes gombnyomás
  easter egg?
  ai?
- szög túlfordulás 
+ ++szög túlfordulás 
  * */
  
 
@@ -438,9 +438,13 @@ class Control {
 		
 		}
 	}
-	public void buttonStroke(String command)
-	{
 
+	public void saveFile(){
+		
+	}
+
+	public void loadFile(){
+		
 	}
 }
 
