@@ -94,11 +94,22 @@ class Control {
 
 	}
 	
+	public void resetGame(){
+		score.reset();
+		whoStart = 0;
+		pause = 0;
+		System.out.println("reset");
+		racketL.setCoordinates(new Float[] {racketLx0, (float)yFieldMax/2});
+		racketR.setCoordinates(new Float[] {racketRx0, (float)yFieldMax/2});
+		ball_inst.setCoordinates(new Float[] {(float)xFieldMax/2, (float)yFieldMax/2});
+	}
+	
 	// játék indítása (minden labdamenetet ez indít)
 	public void startGame(int whoPressed){
 		if(whoStart != 0 && whoPressed != whoStart || pause == 1){
 			return;
 		}
+		System.out.println("start" );
 		
 		if(!timer.isRunning()){
 			try {

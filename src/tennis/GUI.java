@@ -82,12 +82,20 @@ public class GUI extends JFrame implements ActionListener
 				
 				field_panel.setScore(control.getScores()[0] + " : " + control.getScores()[1]);
 				// Bence vége
+				winner = null;
+				if(control.getScores()[0] == 5)
+					{
+						winner = "Bal oldali játékos";
+					}
 				
-				
-				winner = "Bal oldali játékos";
+				if(control.getScores()[1] == 5)
+				{
+					winner = "Jobb oldali játékos";
+				}
+
 				// Bence kezd
 				//if(y >= 400)
-				if(false)
+				if(winner != null)
 				// Bence vége
 				{
 					Object[] button = {"Visszavágó", "Kilépés a menübe"};
@@ -100,12 +108,10 @@ public class GUI extends JFrame implements ActionListener
 						field_panel.setVisible(false);
 						field_panel.score_panel.setVisible(false);
 						menu.menu_main_panel.setVisible(true);
-						y = 11;
-						x=11;
 					}
 					else
 					{
-						y = 11;
+						control.resetGame();
 					}
 				}
 		     }
