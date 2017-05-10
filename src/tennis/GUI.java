@@ -32,6 +32,13 @@ public class GUI extends JFrame implements ActionListener
 	
 	private Pattern ip_pattern;
 	
+	private int	state = 0;
+	private static final int OFFLINE = 1;
+	private static final int ONLINE = 2;
+	private static final int HOST = 3;
+	private static final int CLIENT = 4;
+	private static final int GAME = 5;
+	
 	public GUI(Control c)
 	{		
 		super("Tenisz");
@@ -88,6 +95,7 @@ public class GUI extends JFrame implements ActionListener
 						field_panel.setVisible(false);
 						field_panel.score_panel.setVisible(false);
 						menu.menu_main_panel.setVisible(true);
+						control.resetGame();
 					}
 					else
 					{
@@ -95,19 +103,15 @@ public class GUI extends JFrame implements ActionListener
 					}
 				}
 		     }
-		});	
+		});
 		
 		//Billentyűzet esemény kezelés
 		AbstractAction pause_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("Pause",true));
-            	/* System.out.println("pause");
-                 //time.stop();
- 				// Bence
- 				control.pauseGame();
- 				// vége*/
-                 menu.pause_panel.setVisible(true);
+                time.stop();
+                menu.pause_panel.setVisible(true);
             }
         };
         
@@ -115,21 +119,6 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("UP_Left",true));
-        		/*
-            	if(pressed_1_up == false)
-            	{
-            		if(state == OFFLINE || state == HOST)
-            		{
-		                System.out.println("pressed 1_up");
-		                pressed_1_up = true;
-		                //moveRacket1_up();
-		                // Bence kezd
-		                control.getRacketL().setVelocity(1f);
-		        		control.startGame(-1);
-		                // Bence vége
-            		}
-            	}
-            		*/
             }
         };
 		
@@ -137,19 +126,6 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("UP_Left",false));
-        		/*
-            	if(state == OFFLINE || state == HOST)
-        		{
-	            	System.out.println("released 1_up");
-	                pressed_1_up = false;
-	                //stopRacket1_down();
-	                // Bence kezd
-	                if(!pressed_1_down){
-	                	control.getRacketL().setVelocity(0f);
-	                }
-	                // Bence vége
-        		}
-        		*/
             }
         };
 		
@@ -157,21 +133,6 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("DOWN_Left",true));
-        		/*
-            	if(pressed_1_down == false)
-            	{
-            		if(state == OFFLINE || state == HOST)
-            		{
-	            		System.out.println("pressed 1_down");
-	            		pressed_1_down = true;
-	            		//moveRacket1_down();
-		                // Bence kezd
-		                control.getRacketL().setVelocity(-1f);
-		        		control.startGame(-1);
-		                // Bence vége
-            		}
-            	}
-            	*/
             }
         };
         
@@ -179,19 +140,6 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("DOWN_Left",false));
-        		/*
-            	if(state == OFFLINE || state == HOST)
-        		{
-            		System.out.println("released 1_down");
-            		pressed_1_down = false;
-            		//stopRacket1_down();
-	                // Bence kezd
-	                if(!pressed_1_up){
-	                	control.getRacketL().setVelocity(0f);
-	                }
-	                // Bence vége
-        		}
-        		*/
             }
         };
         
@@ -199,20 +147,6 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("UP_Right",true));
-        		/*
-            	if(pressed_2_up == false)
-            	{
-            		if(state == OFFLINE || state == CLIENT)
-            		{
-		                System.out.println("pressed 2_up");
-		                pressed_2_up = true;
-		                //moveRacket2_up();
-		                // Bence kezd
-		                control.getRacketR().setVelocity(1f);
-		        		control.startGame(+1);
-		                // Bence vége
-            		}
-            	}*/
             }
         };
 		
@@ -220,56 +154,20 @@ public class GUI extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e) {
         		control.keyStroke(new Key("UP_Right",false));
-        		/*
-            	if(state == OFFLINE || state == CLIENT)
-        		{
-	                System.out.println("released 2_up");
-	                pressed_2_up = false;
-	                //stopRacket2_up();
-	                // Bence kezd
-	                if(!pressed_2_down){
-	                	control.getRacketR().setVelocity(0f);
-	                }
-	                // Bence vége
-        		}*/
             }
         };
         
         AbstractAction pressed_2_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
-        		control.keyStroke(new Key("DOWN_Right",true));/*
-            	if(pressed_2_down == false)
-            	{
-            		if(state == OFFLINE || state == CLIENT)
-            		{
-	            		System.out.println("pressed 2_down");
-	            		pressed_2_down = true;
-	            		//moveRacket2_down();
-		                // Bence kezd
-		                control.getRacketR().setVelocity(-1f);
-		        		control.startGame(+1);
-		                // Bence vége
-            		}
-            	}*/
+        		control.keyStroke(new Key("DOWN_Right",true));
             }
         };
         
         AbstractAction released_2_down_action = new AbstractAction (){
             @Override
             public void actionPerformed(ActionEvent e) {
-        		control.keyStroke(new Key("DOWN_Right",false));/*
-            	if(state == OFFLINE || state == CLIENT)
-        		{
-            		System.out.println("released 2_down");
-            		pressed_2_down = false;
-            		//stopRacket2_down();
-	                // Bence kezd
-	                if(!pressed_2_up){
-	                	control.getRacketR().setVelocity(0f);
-	                }
-	                // Bence vége
-        		}*/
+        		control.keyStroke(new Key("DOWN_Right",false));
             }
         };
         
@@ -300,12 +198,131 @@ public class GUI extends JFrame implements ActionListener
 		time.start();
 	}*/
 	
+
+	public int getState(){
+		return state;
+	}
+	
 	//Menügomb esemény kezelés
 	@Override
     public void actionPerformed(ActionEvent e) {
 		control.buttonStroke(e.getActionCommand());
+		String command = e.getActionCommand();
+		
+	    switch (command) {
+
+        //Display panel one when I select the option on the menu bar
+        case "Offline":
+        	state = OFFLINE;
+        	showOfflineMenu();
+            break;
+        
+        case "Online":
+			state = ONLINE;
+        	showOnlineMenu();
+            break;
+            
+        case "Kilépés":
+        	System.exit(0);
+            break;
+        
+        case "Host":
+			state = HOST;
+        	showHostMenu();
+            break;
+        
+        case "Kliens":
+			state = CLIENT;
+			showClientMenu();
+            break;
+        
+        case "Új játék":
+        	if(state == OFFLINE)
+			{
+        		showGame();
+				//start();
+			}
+			if(state == HOST)
+			{
+				showGame();
+				showWaitingForConnect();
+				control.startServer();
+				//start();
+			}
+            break;
+            
+        case "Játék betöltése":
+        	if(state == OFFLINE)
+			{
+				showGame();
+				//start();
+			}
+			if(state == HOST)
+			{
+				showGame();
+				showWaitingForConnect();
+			}
+            break;
+
+        case "Vissza - offline":
+        	if(state == OFFLINE)
+			{
+        		showMainMenu();
+				state = 0;
+			}
+			if(state == HOST)
+			{
+				showOnlineMenu();
+			}
+			
+            break;
+            
+        case "Vissza - online":
+        	showMainMenu();
+			state = 0;
+            break;
+            
+        case "Játék mentése":
+        	showGame();
+			//time.start();
+			control.continueGame();
+            break;
+            
+        case "Vissza - pause":
+        	showGame();
+			//time.start();
+        	control.continueGame();
+			System.out.println("vissza pause");
+            break;
+            
+        case "Kilépés a menübe":
+        	time.stop();
+        	control.stopGame();
+			state = 0;
+			showMainMenu();
+            break;
+            
+        case "Csatlakozás":
+		/*if(ip_pattern.matcher(menu.ip.getText()).matches())
+        	{
+				try {
+					//control = new Control();
+					startClient(menu.ip.getText());
+				 } catch (Exception exp) {
+					 //guibol hivni errort
+		         }       	
+        	}*/
+        	break;
+        	
+        case "Vissza - client":
+        	showOnlineMenu();
+        	state = ONLINE;
+        	break;
+        default:
+    }
   
     }
+	
 	public void showPauseMenu(){
 		menu.setMenuVisibilityToFalse();
 		menu.setLabelVisibilityToFalse();

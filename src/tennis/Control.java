@@ -54,14 +54,18 @@ class Control {
 	
 	private int whoStart = 0;
 	private int pause = 0;
-	
 
-	private int	state = 0;
 	private static final int OFFLINE = 1;
 	private static final int ONLINE = 2;
 	private static final int HOST = 3;
 	private static final int CLIENT = 4;
 	private static final int GAME = 5;
+	
+
+	private boolean pressed_1_up = false;
+	private boolean pressed_1_down = false;
+	private boolean pressed_2_up = false;
+	private boolean pressed_2_down = false;
 
 	
 	// konstruktor
@@ -305,140 +309,136 @@ class Control {
 	public void keyStroke(Key e)
 	{
 		Boolean pressed=e.getState();
-		switch(e.getName())
-		{
-		case "UP_Left": 	if(pressed) {} 
-							else		{}
-		break;
-		case "DOWN_Left": 	if(pressed) {}
-							else		{}
+		switch(e.getName()){
+		case "UP_Left": 	if(pressed){
+					        	if(pressed_1_up == false)
+					        	{
+					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
+					        		{
+						                System.out.println("pressed 1_up");
+						                pressed_1_up = true;
+						                //moveRacket1_up();
+						                // Bence kezd
+						                getRacketL().setVelocity(1f);
+						        		startGame(-1);
+						                // Bence vége
+					        		}
+					        	}
+							}else{
+				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
+				        		{
+					            	System.out.println("released 1_up");
+					                pressed_1_up = false;
+					                //stopRacket1_down();
+					                // Bence kezd
+					                if(!pressed_1_down){
+					                	getRacketL().setVelocity(0f);
+					                }
+					                // Bence vége
+				        		}
+							}
 		break;
 		
-		case "Pause": 		if(pressed) {
-            gui.showPauseMenu();} 
-							else		{}
+		case "DOWN_Left": 	if(pressed){
+					        	if(pressed_1_down == false)
+					        	{
+					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
+					        		{
+					            		System.out.println("pressed 1_down");
+					            		pressed_1_down = true;
+					            		//moveRacket1_down();
+						                // Bence kezd
+						                getRacketL().setVelocity(-1f);
+						        		startGame(-1);
+						                // Bence vége
+					        		}
+					        	}
+							}else{
+				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
+				        		{
+				            		System.out.println("released 1_down");
+				            		pressed_1_down = false;
+				            		//stopRacket1_down();
+					                // Bence kezd
+					                if(!pressed_1_up){
+					                	getRacketL().setVelocity(0f);
+					                }
+					                // Bence vége
+				        		}
+							}
+		break;
+		
+		case "Pause": 		if(pressed){
+								pauseGame();
+								gui.showPauseMenu();
+							}else{
+								
+							}
 		break;
 
-		case "UP_Right": 	if(pressed) {} 
-							else		{}
+		case "UP_Right": 	if(pressed){
+					        	if(pressed_2_up == false)
+					        	{
+					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+					        		{
+						                System.out.println("pressed 2_up");
+						                pressed_2_up = true;
+						                //moveRacket2_up();
+						                // Bence kezd
+						                getRacketR().setVelocity(1f);
+						        		startGame(+1);
+						                // Bence vége
+					        		}
+					        	}
+							}else{
+								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+				        		{
+					                System.out.println("released 2_up");
+					                pressed_2_up = false;
+					                //stopRacket2_up();
+					                // Bence kezd
+					                if(!pressed_2_down){
+					                	getRacketR().setVelocity(0f);
+					                }
+					                // Bence vége
+				        		}
+							}
 		break;
-		case "DOWN_Right": 	if(pressed) {}
-							else		{}
+		
+		case "DOWN_Right": 	if(pressed){
+			if(pressed_2_down == false)
+					        	{
+					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+					        		{
+					            		System.out.println("pressed 2_down");
+					            		pressed_2_down = true;
+					            		//moveRacket2_down();
+						                // Bence kezd
+						                getRacketR().setVelocity(-1f);
+						        		startGame(+1);
+						                // Bence vége
+					        		}
+					        	}
+							}else{
+								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+				        		{
+				            		System.out.println("released 2_down");
+				            		pressed_2_down = false;
+				            		//stopRacket2_down();
+					                // Bence kezd
+					                if(!pressed_2_up){
+					                	getRacketR().setVelocity(0f);
+					                }
+					                // Bence vége
+				        		}
+							}
 		break;
+		
 		}
 	}
 	public void buttonStroke(String command)
 	{
-    switch (command) {
 
-        //Display panel one when I select the option on the menu bar
-        case "Offline":
-        	state = OFFLINE;
-        	gui.showOfflineMenu();
-            break;
-        
-        case "Online":
-			state = ONLINE;
-        	gui.showOnlineMenu();
-            break;
-            
-        case "Kilépés":
-        	System.exit(0);
-            break;
-        
-        case "Host":
-			state = HOST;
-        	gui.showHostMenu();
-            break;
-        
-        case "Kliens":
-			state = CLIENT;
-			gui.showClientMenu();
-            break;
-        
-        case "Új játék":
-        	if(state == OFFLINE)
-			{
-        		gui.showGame();
-				//start();
-			}
-			if(state == HOST)
-			{
-				gui.showGame();
-				gui.showWaitingForConnect();
-				startServer();
-				//start();
-			}
-            break;
-            
-        case "Játék betöltése":
-        	if(state == OFFLINE)
-			{
-				gui.showGame();
-				//start();
-			}
-			if(state == HOST)
-			{
-				gui.showGame();
-				gui.showWaitingForConnect();
-			}
-            break;
-
-        case "Vissza - offline":
-        	if(state == OFFLINE)
-			{
-        		gui.showMainMenu();
-				state = 0;
-			}
-			if(state == HOST)
-			{
-				gui.showOnlineMenu();
-			}
-			
-            break;
-            
-        case "Vissza - online":
-        	gui.showMainMenu();
-			state = 0;
-            break;
-            
-        case "Játék mentése":
-        	gui.showGame();
-			//time.start();
-			continueGame();
-            break;
-            
-        case "Vissza - pause":
-        	gui.showGame();
-			//time.start();
-			continueGame();
-            break;
-            
-        case "Kilépés a menübe":
-        	//time.stop();
-        	stopGame();
-			state = 0;
-			gui.showMainMenu();
-            break;
-            
-        case "Csatlakozás":
-		/*if(ip_pattern.matcher(menu.ip.getText()).matches())
-        	{
-				try {
-					//control = new Control();
-					startClient(menu.ip.getText());
-				 } catch (Exception exp) {
-					 //guibol hivni errort
-		         }       	
-        	}*/
-        	break;
-        	
-        case "Vissza - client":
-        	gui.showOnlineMenu();
-        	state = ONLINE;
-        	break;
-        default:
-    }
 	}
 }
 
