@@ -239,8 +239,13 @@ public class GUI extends JFrame implements ActionListener
 			if(state == HOST)
 			{
 				menu.host_wait_label.setVisible(true);
-				control.startServer();
+				try {
+					control.startServer();
+				 } catch (Exception exp) {
+					 //guibol hivni errort
+		         }				
 				menu.menu_offline_panel.setVisible(false);
+				menu.host_wait_label.setVisible(false);
 				start();				
 			}
             break;
@@ -257,7 +262,14 @@ public class GUI extends JFrame implements ActionListener
 			{
 				control.resetGame();		// lehet hogy nem kell
 				menu.host_wait_label.setVisible(true);
-				//time.start();
+				try {
+					control.startServer();
+				 } catch (Exception exp) {
+					 //guibol hivni errort
+		         }				
+				menu.menu_offline_panel.setVisible(false);
+				menu.host_wait_label.setVisible(false);
+				start();
 			}
             break;
 

@@ -28,7 +28,7 @@ public class Menu extends JLabel
 	private JButton back_client_button;
 	protected JLabel client_error_label;
 	protected JLabel host_wait_label;
-	private JLabel lost_label;
+	protected JLabel lost_label;
 	protected JPanel menu_main_panel;
 	protected JPanel menu_offline_panel;
 	protected JPanel menu_online_panel;
