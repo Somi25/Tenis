@@ -74,7 +74,6 @@ public class SerialClient extends Network {
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			out.flush();
-			System.out.println("OK");
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 			return true;
