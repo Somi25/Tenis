@@ -92,6 +92,7 @@ public class GUI extends JFrame implements ActionListener
 						control.resetGame();
 					}
 				}
+				if(state == HOST) control.sendState();
 		     }
 		});
 		
@@ -324,6 +325,7 @@ public class GUI extends JFrame implements ActionListener
 			control.stopGame();
 			control.resetGame();
 			state = 0;
+			menu.save_button.setVisible(true);
 			menu.pause_panel.setVisible(false);
 			menu.menu_main_panel.setVisible(true);
 			field_panel.setVisible(false);
@@ -357,6 +359,11 @@ public class GUI extends JFrame implements ActionListener
 	
 	public void showPauseMenu()
 	{
+		if(state == CLIENT)
+		{
+			menu.save_button.setVisible(false);
+		} 
         menu.pause_panel.setVisible(true);
+		
 	}
 }

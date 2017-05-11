@@ -74,12 +74,22 @@ class Control {
 					stopGame();
 					score.incScoreR();
 					serveR();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
 					stopGame();
 					score.incScoreL();
 					serveL();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				racketL.time();
@@ -90,12 +100,22 @@ class Control {
 					stopGame();
 					score.incScoreR();
 					serveR();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
 					stopGame();
 					score.incScoreL();
 					serveL();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 			}
 		});
@@ -170,6 +190,7 @@ class Control {
 	public void continueGame(){
 		pause = 0;
 		continueBallDir = 1;
+		whoStart = 0;
 	}
 	
 	public void stopGame(){
@@ -287,7 +308,7 @@ class Control {
 				{
 					if(pressed_2_down == false)
 					{
-			    		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+			    		if(gui.getState() == OFFLINE)
 			    		{
 			        		pressed_2_down = true;
 			                getRacketR().setVelocity(-1f);
@@ -403,7 +424,7 @@ class Control {
 		case "DOWN_Right": 	if(pressed){
 								if(pressed_2_down == false)
 					        	{
-					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+					        		if(gui.getState() == OFFLINE)
 					        		{
 					            		pressed_2_down = true;
 						                getRacketR().setVelocity(-1f);
