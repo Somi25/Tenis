@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 
-public class Key {
+public class Key implements Serializable {
 	private String name;
 	private Boolean state;
 	
@@ -22,10 +22,14 @@ public class Key {
 	}
 	public void writeObject(ObjectOutputStream out) throws IOException
 	{
+		System.out.println("belepett");
         out.writeObject(this.name);
         out.writeObject(this.state);
 	}
     private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException {
-        in.defaultReadObject();
+		System.out.println("olvas");
+        this.name=(String)in.readObject();
+        this.state=(Boolean)in.readObject();
+		System.out.println("olvasVege");
     }
 }
