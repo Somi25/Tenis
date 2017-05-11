@@ -22,7 +22,8 @@ public class Key {
 	}
 	public void writeObject(ObjectOutputStream out) throws IOException
 	{
-        out.defaultWriteObject();
+        out.writeObject(this.name);
+        out.writeObject(this.state);
 	}
     private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException {
         in.defaultReadObject();
