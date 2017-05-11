@@ -27,7 +27,7 @@ class Control {
 	protected final Float racketRx0		= (float)xFieldMax - 15;
 	protected final Float ballRad		= 10f;
 	private  final int sampleTime		= 4;
-	private final Float ballDefVel		= 1.5f;
+	private final Float ballDefVel		= 1.5f/5f;
 	
 	private Ball ball_inst;
 	private Racket racketL;
@@ -190,6 +190,7 @@ class Control {
 	public void continueGame(){
 		pause = 0;
 		continueBallDir = 1;
+		whoStart = 0;
 	}
 	
 	public void stopGame(){
