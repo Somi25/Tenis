@@ -34,7 +34,6 @@ class Control {
 	private Racket racketR;
 	private Scores score;
 	private Goal goal;
-	private Boolean gameState;
 	private Timer timer;
 	
 	private int whoStart = 0;
@@ -208,10 +207,6 @@ class Control {
 		this.ball_inst = ball_inst;
 	}
 	
-	public void setGameState(Boolean gameState) {
-		this.gameState = gameState;
-	}
-	
 	public void setRacketL(Racket racketL) {
 		this.racketL = racketL;
 	}
@@ -233,28 +228,14 @@ class Control {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
-		if(net.connect("localhost"))
-		{
-			//Hívni a Guiból a játékot 
-		}
-		else
-		{
-			//Hívni a Guiból a hiba fv-t
-		}
+		net.connect("localhost");
 	}
 
 	void startClient(String ip) throws IOException {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
-		if(net.connect(ip))
-		{
-			return;
-		}
-		else
-		{
-			throw new IOException();//Hívni a Guiból a hiba fv-t
-		}
+		net.connect(ip);
 	}
 
 	void networkError(Exception ex,String where) {
@@ -267,7 +248,7 @@ class Control {
 	}
 	
 	void sendState() {
-		((SerialServer)net).sendStates(ball_inst, racketL, racketR, gameState);
+		((SerialServer)net).sendStates(ball_inst, racketL, racketR);
 	}
 	void sendScores() {
 		((SerialServer)net).sendScore(score);
@@ -275,59 +256,62 @@ class Control {
 
 	
 	public void keyReceived(Key e){
-		Boolean pressed = e.getState();
-		if(e.getName()=="UP_Right")
-		{
-			if(pressed)
+		if(pause == 0)
 			{
-				if(pressed_2_up == false)
-				{
-	                pressed_2_up = true;
-	                getRacketR().setVelocity(1f);
-	        		startGame(+1);
-	    		}
-			}
-			else
+			Boolean pressed = e.getState();
+			if(e.getName()=="UP_Right")
 			{
-				if(gui.getState() == OFFLINE)
+				if(pressed)
 				{
-		            pressed_2_up = false;
-		            if(!pressed_2_down){
-		            	getRacketR().setVelocity(0f);
-		            }
-				}
-			}
-		}
-		if(e.getName()=="DOWN_Right")
-		{
-			if(pressed)
-			{
-				if(pressed_2_down == false)
-				{
-		    		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
-		    		{
-		        		pressed_2_down = true;
-		                getRacketR().setVelocity(-1f);
+					if(pressed_2_up == false)
+					{
+		                pressed_2_up = true;
+		                getRacketR().setVelocity(1f);
 		        		startGame(+1);
 		    		}
 				}
-			}
-			else
-			{
-				if(gui.getState() == OFFLINE)
+				else
 				{
-		    		pressed_2_down = false;
-		            if(!pressed_2_up)
-		            {
-		            	getRacketR().setVelocity(0f);
-		            }
+					if(gui.getState() == OFFLINE)
+					{
+			            pressed_2_up = false;
+			            if(!pressed_2_down){
+			            	getRacketR().setVelocity(0f);
+			            }
+					}
 				}
 			}
-		}
-		if(e.getName()=="Pause")
-		{
-			pauseGame();
-			gui.showPauseMenu();
+			if(e.getName()=="DOWN_Right")
+			{
+				if(pressed)
+				{
+					if(pressed_2_down == false)
+					{
+			    		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+			    		{
+			        		pressed_2_down = true;
+			                getRacketR().setVelocity(-1f);
+			        		startGame(+1);
+			    		}
+					}
+				}
+				else
+				{
+					if(gui.getState() == OFFLINE)
+					{
+			    		pressed_2_down = false;
+			            if(!pressed_2_up)
+			            {
+			            	getRacketR().setVelocity(0f);
+			            }
+					}
+				}
+			}
+			if(e.getName()=="Pause")
+			{
+				pauseGame();
+				gui.showPauseMenu();
+			}
 		}
 	}
 	

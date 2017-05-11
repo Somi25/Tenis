@@ -35,10 +35,6 @@ public class SerialClient extends Network {
 							control.setRacketR((Racket) received);
 						 }
 					 }
-					if(received instanceof Boolean)//game state (paused or not)
-					 {
-						control.setGameState((Boolean) received);
-					 }
 					if(received instanceof Scores)//pontok
 					 {
 						control.setScore((Scores) received);

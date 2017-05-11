@@ -47,34 +47,37 @@ public class SerialServer extends Network {
 
 			try {
 				while (true) {
+					Key received;
 					System.out.println("OK2");
-					Object received =in.readObject();
-					System.out.println("OK23");
-					if(received != null) 
+					while((received = (Key)in.readObject()) != null)
 					{
-						control.keyReceived((Key)received);
+						System.out.println("OK23");
+						control.keyReceived(received);
 						System.out.println("OK4");
 					}
-				}
-			} catch (Exception ex) {
-				control.networkError(ex,"SERVER_READOBJECT");
+				} 
+			}catch (IOException ex) {
+				//control.networkError(ex,"SERVER_READOBJECT");
 				System.out.println(ex.getMessage());
-				System.err.println("Client disconnected!");
+				System.err.println("Client disconnected! - IO");
+			} catch (ClassNotFoundException ex) {
+				//control.networkError(ex,"SERVER_READOBJECT");
+				System.out.println(ex.getMessage());
+				System.err.println("Client disconnected! - CLASS");
 			} finally {
-				disconnect();
+				//disconnect();
 			}
 			System.out.println("OK3");
 		}
 	}
 
-	void sendStates(Ball ball_ins, Racket racketL, Racket racketR, Boolean gameState) {
+	void sendStates(Ball ball_ins, Racket racketL, Racket racketR) {
 		if (out == null)
 			return;
 		try {
 			out.writeObject(ball_ins);
 			out.writeObject(racketL);
 			out.writeObject(racketR);
-			out.writeObject(gameState);
 			out.flush();
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSTATES");
