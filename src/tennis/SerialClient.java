@@ -51,7 +51,7 @@ public class SerialClient extends Network {
 						}
 						if(gotBall0 && gotBall1)
 						{
-							gotBall0=false; gotBall1=false; control.setBall_inst();
+							gotBall0=false; gotBall1=false; control.setBall_inst(ball_coord);
 						}
 					 }
 					else
@@ -65,12 +65,12 @@ public class SerialClient extends Network {
 						}
 						if(received.charAt(1) == '1')
 						{
-							racketL_coord[0]=Float.parseFloat(received.substring(2).trim());
+							racketL_coord[1]=Float.parseFloat(received.substring(2).trim());
 							gotRacketL1=true;
 						}
 						if(gotRacketL0 && gotRacketL1)
 						{
-							gotRacketL0=false; gotRacketL1=false; control.setRacketL();
+							gotRacketL0=false; gotRacketL1=false; control.setRacketL(racketL_coord);
 						}
 					 }
 					else
@@ -84,12 +84,12 @@ public class SerialClient extends Network {
 						}
 						if(received.charAt(1) == '1')
 						{
-							racketR_coord[0]=Float.parseFloat(received.substring(2).trim());
+							racketR_coord[1]=Float.parseFloat(received.substring(2).trim());
 							gotRacketR1=true;
 						}
 						if(gotRacketR0 && gotRacketR1)
 						{
-							gotRacketR0=false; gotRacketR1=false; control.setRacketR();
+							gotRacketR0=false; gotRacketR1=false; control.setRacketR(racketR_coord);
 						}
 					 }
 					else
@@ -108,7 +108,7 @@ public class SerialClient extends Network {
 						}
 						if(gotScoreL && gotScoreR)
 						{
-							gotScoreL=false; gotScoreR=false; control.setScore();
+							gotScoreL=false; gotScoreR=false; control.setScore(score);
 						}
 					 }
 					}

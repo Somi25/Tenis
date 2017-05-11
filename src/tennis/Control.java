@@ -224,20 +224,20 @@ class Control {
 	}
 	
 	
-	public void setBall_inst(Ball ball_inst) {
-		this.ball_inst = ball_inst;
+	public void setBall_inst(Float[] ball_crds) {
+		this.ball_inst.setCoordinates(ball_crds);
 	}
 	
-	public void setRacketL(Racket racketL) {
-		this.racketL = racketL;
+	public void setRacketL(Float[] racketL_crds) {
+		this.racketL.setCoordinates(racketL_crds);
 	}
 	
-	public void setRacketR(Racket racketR) {
-		this.racketR = racketR;
+	public void setRacketR(Float[] racketR_crds) {
+		this.racketR.setCoordinates(racketR_crds);
 	}
 	
-	public void setScore(Scores score) {
-		this.score = score;
+	public void setScore(Integer[] scores) {
+		this.score.setScores(scores);
 	}
 
 	

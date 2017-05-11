@@ -1,8 +1,6 @@
 package tennis;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -10,14 +8,7 @@ import java.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SerialServer extends Network {
 
@@ -78,7 +69,7 @@ public class SerialServer extends Network {
 						}
 							if(gotKeyName && gotKeyState)
 							{
-								gotKeyName=false; gotKeyState=false; control.keyReceived();
+								gotKeyName=false; gotKeyState=false; control.keyReceived(new Key(keyName,keyState));
 							}
 						 }
 					}
@@ -87,12 +78,8 @@ public class SerialServer extends Network {
 				//control.networkError(ex,"SERVER_READOBJECT");
 				System.out.println(ex.getMessage());
 				System.err.println("Client disconnected! - IO");
-			} catch (ClassNotFoundException ex) {
-				//control.networkError(ex,"SERVER_READOBJECT");
-				System.out.println(ex.getMessage());
-				System.err.println("Client disconnected! - CLASS");
 			} finally {
-				//disconnect();
+				disconnect();
 			}
 			System.out.println("OK3");
 		}
