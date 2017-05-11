@@ -243,17 +243,17 @@ class Control {
 		}
 	}
 
-	void startClient(String ip) {
+	void startClient(String ip) throws IOException {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
 		if(net.connect(ip))
 		{
-			//Hívni a Guiból a játékot 
+			return;
 		}
 		else
 		{
-			//Hívni a Guiból a hiba fv-t
+			throw new IOException();//Hívni a Guiból a hiba fv-t
 		}
 	}
 
@@ -275,25 +275,59 @@ class Control {
 
 	
 	public void keyReceived(Key e){
-		if(e.getName()=="W")
+		Boolean pressed = e.getState();
+		if(e.getName()=="UP_Right")
 		{
-			
+			if(pressed)
+			{
+				if(pressed_2_up == false)
+				{
+	                pressed_2_up = true;
+	                getRacketR().setVelocity(1f);
+	        		startGame(+1);
+	    		}
+			}
+			else
+			{
+				if(gui.getState() == OFFLINE)
+				{
+		            pressed_2_up = false;
+		            if(!pressed_2_down){
+		            	getRacketR().setVelocity(0f);
+		            }
+				}
+			}
 		}
-		if(e.getName()=="S")
+		if(e.getName()=="DOWN_Right")
 		{
-			
+			if(pressed)
+			{
+				if(pressed_2_down == false)
+				{
+		    		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+		    		{
+		        		pressed_2_down = true;
+		                getRacketR().setVelocity(-1f);
+		        		startGame(+1);
+		    		}
+				}
+			}
+			else
+			{
+				if(gui.getState() == OFFLINE)
+				{
+		    		pressed_2_down = false;
+		            if(!pressed_2_up)
+		            {
+		            	getRacketR().setVelocity(0f);
+		            }
+				}
+			}
 		}
-		if(e.getName()=="UP")
+		if(e.getName()=="Pause")
 		{
-			
-		}
-		if(e.getName()=="DOWN")
-		{
-			
-		}
-		if(e.getName()=="P")
-		{
-			
+			pauseGame();
+			gui.showPauseMenu();
 		}
 	}
 	
@@ -306,26 +340,18 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
 					        		{
-						                //System.out.println("pressed 1_up");
 						                pressed_1_up = true;
-						                //moveRacket1_up();
-						                // Bence kezd
 						                getRacketL().setVelocity(1f);
 						        		startGame(-1);
-						                // Bence vége
 					        		}
 					        	}
 							}else{
 				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
 				        		{
-					            	//System.out.println("released 1_up");
 					                pressed_1_up = false;
-					                //stopRacket1_down();
-					                // Bence kezd
 					                if(!pressed_1_down){
 					                	getRacketL().setVelocity(0f);
 					                }
-					                // Bence vége
 				        		}
 							}
 		break;
@@ -335,26 +361,18 @@ class Control {
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == HOST)
 					        		{
-					            		//System.out.println("pressed 1_down");
 					            		pressed_1_down = true;
-					            		//moveRacket1_down();
-						                // Bence kezd
 						                getRacketL().setVelocity(-1f);
 						        		startGame(-1);
-						                // Bence vége
 					        		}
 					        	}
 							}else{
 				            	if(gui.getState() == OFFLINE || gui.getState() == HOST)
 				        		{
-				            		//System.out.println("released 1_down");
 				            		pressed_1_down = false;
-				            		//stopRacket1_down();
-					                // Bence kezd
 					                if(!pressed_1_up){
 					                	getRacketL().setVelocity(0f);
 					                }
-					                // Bence vége
 				        		}
 							}
 		break;
@@ -362,66 +380,72 @@ class Control {
 		case "Pause": 		if(pressed){
 								pauseGame();
 								gui.showPauseMenu();
-							}else{
-								
+			        			if(gui.getState() == CLIENT)
+			        				((SerialClient)net).send(new Key("Pause",true));
 							}
 		break;
 
 		case "UP_Right": 	if(pressed){
 					        	if(pressed_2_up == false)
 					        	{
-					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+					        		if(gui.getState() == OFFLINE)
 					        		{
-						                //System.out.println("pressed 2_up");
 						                pressed_2_up = true;
-						                //moveRacket2_up();
-						                // Bence kezd
 						                getRacketR().setVelocity(1f);
 						        		startGame(+1);
-						                // Bence vége
 					        		}
+					        		else
+					        			if(gui.getState() == CLIENT)
+					        			{
+					        				((SerialClient)net).send(new Key("UP_Right",true));
+					        			}
 					        	}
 							}else{
-								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+								if(gui.getState() == OFFLINE)
 				        		{
-					                //System.out.println("released 2_up");
 					                pressed_2_up = false;
-					                //stopRacket2_up();
-					                // Bence kezd
 					                if(!pressed_2_down){
 					                	getRacketR().setVelocity(0f);
 					                }
-					                // Bence vége
 				        		}
+				        		else
+				        			if(gui.getState() == CLIENT)
+				        			{
+				        				((SerialClient)net).send(new Key("UP_Right",false));
+				        			}
 							}
 		break;
 		
 		case "DOWN_Right": 	if(pressed){
-			if(pressed_2_down == false)
+								if(pressed_2_down == false)
 					        	{
 					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
 					        		{
-					            		//System.out.println("pressed 2_down");
 					            		pressed_2_down = true;
-					            		//moveRacket2_down();
-						                // Bence kezd
 						                getRacketR().setVelocity(-1f);
 						        		startGame(+1);
-						                // Bence vége
 					        		}
+					        		else
+					        			if(gui.getState() == CLIENT)
+					        			{
+					        				((SerialClient)net).send(new Key("DOWN_Right",true));
+					        			}
 					        	}
-							}else{
-								if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+							}
+							else
+							{
+								if(gui.getState() == OFFLINE)
 				        		{
-				            		//System.out.println("released 2_down");
 				            		pressed_2_down = false;
-				            		//stopRacket2_down();
-					                // Bence kezd
 					                if(!pressed_2_up){
 					                	getRacketR().setVelocity(0f);
 					                }
-					                // Bence vége
 				        		}
+				        		else
+				        			if(gui.getState() == CLIENT)
+				        			{
+				        				((SerialClient)net).send(new Key("DOWN_Right",false));
+				        			}
 							}
 		break;
 		
