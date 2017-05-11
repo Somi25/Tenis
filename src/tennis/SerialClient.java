@@ -26,11 +26,11 @@ public class SerialClient extends Network {
 					 }
 					if(received instanceof Racket)
 					 {
-						if(((Racket) received).getCoordinates()[0]<50)//szebbre!
+						if(((Racket) received).getCoordinates()[0]<20)//szebbre!
 						 {
 							control.setRacketL((Racket) received); 
 						 }
-						if(((Racket) received).getCoordinates()[0]>1220)//szebbre!
+						if(((Racket) received).getCoordinates()[0]>1260)//szebbre!
 						 {
 							control.setRacketR((Racket) received);
 						 }
@@ -58,6 +58,7 @@ public class SerialClient extends Network {
 		if (out == null)
 			return;
 		try {
+			System.out.println("sendKey");
 			out.writeObject(toSend);
 			out.flush();
 		} catch (IOException ex) {
