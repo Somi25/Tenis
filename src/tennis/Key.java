@@ -1,5 +1,11 @@
 package tennis;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+
 public class Key {
 	private String name;
 	private Boolean state;
@@ -14,4 +20,11 @@ public class Key {
 	public Boolean getState() {
 		return state;
 	}
+	public void writeObject(ObjectOutputStream out) throws IOException
+	{
+        out.defaultWriteObject();
+	}
+    private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException {
+        in.defaultReadObject();
+    }
 }
