@@ -200,14 +200,13 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			// ha sokkal szarabb lett a sarok bug, akkor a következõ sort kommentezd ki:
-			coord[0] = coord[0] - 2*(radius - (difCoords(new Float[]{racketCoord[0] - racketR.getWidth()/2, racketCoord[1] + racketR.getHeight()/2}, coord)));
+			coord[0] = coord[0] - 2*velocity;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) - twist * racketR.getVelocity() - cornerDir + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashRight corner, velo: " + racketR.getVelocity());
 		}
-		
+
 		return coord;
 	}
 	
@@ -248,19 +247,17 @@ public class Ball extends GeometricObject{
 			}
 			
 			// új x koordináta
-			// ha sokkal szarabb lett a sarok bug, akkor a következõ sort kommentezd ki:
-			coord[0] = coord[0] + 2*(radius - difCoords(new Float[]{racketCoord[0] + racketL.getWidth()/2, racketCoord[1] + racketL.getHeight()/2}, coord));
+			coord[0] = coord[0] + 2*velocity;
 			
 			// új irány (tükrözés y tengelyre + csavarás)
 			direction = (float) ((-direction + Math.PI) % (2*Math.PI)) + twist * racketL.getVelocity() + cornerDir + maxRand*((float)Math.random()-0.5f);
 	    	//System.out.println("crashLeft corner, velo: " + racketL.getVelocity());
 		}
-		
-		
+
 		return coord;
 	}
 	
-	public Float difCoords(Float[] a, Float[] b){
+	private Float difCoords(Float[] a, Float[] b){
 		Float dif = 0f;
 		Float dX = a[0] - b[0];
 		Float dY = a[1] - b[1];
