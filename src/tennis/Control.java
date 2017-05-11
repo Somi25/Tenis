@@ -308,7 +308,7 @@ class Control {
 				{
 					if(pressed_2_down == false)
 					{
-			    		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+			    		if(gui.getState() == OFFLINE)
 			    		{
 			        		pressed_2_down = true;
 			                getRacketR().setVelocity(-1f);
@@ -424,7 +424,7 @@ class Control {
 		case "DOWN_Right": 	if(pressed){
 								if(pressed_2_down == false)
 					        	{
-					        		if(gui.getState() == OFFLINE || gui.getState() == CLIENT)
+					        		if(gui.getState() == OFFLINE)
 					        		{
 					            		pressed_2_down = true;
 						                getRacketR().setVelocity(-1f);
