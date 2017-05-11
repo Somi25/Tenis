@@ -33,6 +33,7 @@ public class SerialServer extends Network {
 				return;
 			}
 
+			System.out.println("OK1");
 			try {
 				out = new ObjectOutputStream(clientSocket.getOutputStream());
 				in = new ObjectInputStream(clientSocket.getInputStream());
@@ -44,10 +45,19 @@ public class SerialServer extends Network {
 				return;
 			}
 
+			System.out.println("OK2");
 			try {
-				while (true) {
-					Key received = (Key) in.readObject();
-					control.keyReceived(received);
+				int i=0;
+				while (i<1) {
+					i++;
+					System.out.println("OK2");
+					Object received =in.readObject();
+					System.out.println("OK2");
+					if(received != null) 
+					{
+						control.keyReceived((Key)received);
+						System.out.println("OK2");
+					}
 				}
 			} catch (Exception ex) {
 				control.networkError(ex,"SERVER_READOBJECT");
@@ -56,6 +66,7 @@ public class SerialServer extends Network {
 			} finally {
 				disconnect();
 			}
+			System.out.println("OK3");
 		}
 	}
 
