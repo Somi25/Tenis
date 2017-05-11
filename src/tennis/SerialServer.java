@@ -38,9 +38,9 @@ SerialServer(Control c) {
 
 		public void run() {
 			try {
-				System.out.println("Waiting for Client");
+				System.out.println("Waiting for Client ->to receive");
 				clientSocket = serverSocket.accept();
-				System.out.println("Client connected.");
+				System.out.println("Client connected ->to receive");
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_WAITING");
 				System.err.println("Accept failed.");
@@ -60,10 +60,11 @@ SerialServer(Control c) {
 
 			try {
 				String received;
+				System.out.println("whileTrueig eljutott");
 				while (true) {
-					System.out.println("OK2");
 					while((received = in.readLine()) != null)
 					{
+						System.out.println("string received");
 						if(received.charAt(0) == 'n')
 						 {
 							keyName=received.substring(1).trim();
@@ -75,6 +76,7 @@ SerialServer(Control c) {
 						}
 							if(gotKeyName && gotKeyState)
 							{
+								System.out.println("key is OK");
 								gotKeyName=false; gotKeyState=false; control.keyReceived(new Key(keyName,keyState));
 							}
 						 }
@@ -142,10 +144,13 @@ SerialServer(Control c) {
 			{
 				serverSendSocket = new ServerSocket(10007);
 				serverSocket = new ServerSocket(10006);
+				System.out.println("Waiting for Client ->to send");
 				sendSocket = serverSendSocket.accept();
+				System.out.println("Connected Client ->to send");
 				out = new DataOutputStream(sendSocket.getOutputStream());
 				alreadySend = true;
 				rec = new Thread(new ReceiverThread());
+				rec.start();
 			}
 			else
 			{
