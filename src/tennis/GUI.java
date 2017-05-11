@@ -323,6 +323,7 @@ public class GUI extends JFrame implements ActionListener
         case "Kilépés a menübe":
         	time.stop();
 			control.stopGame();
+			//control.net.disconnect();
 			control.resetGame();
 			state = 0;
 			menu.save_button.setVisible(true);
@@ -364,6 +365,13 @@ public class GUI extends JFrame implements ActionListener
 			menu.save_button.setVisible(false);
 		} 
         menu.pause_panel.setVisible(true);
-		
+        time.stop();		
+	}
+	
+	public void hidePauseMenu()
+	{
+		control.continueGame();
+		menu.pause_panel.setVisible(false);
+		time.start();		
 	}
 }
