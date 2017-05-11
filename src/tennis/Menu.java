@@ -35,7 +35,7 @@ public class Menu extends JLabel
 	protected JPanel menu_online_panel;
 	protected JPanel pause_panel;
 	protected JPanel menu_client_panel;
-	private JButton save_button;
+	protected JButton save_button;
 	private JButton back_pause_button;
 	private JButton menu_button;
 	protected JFormattedTextField ip;
