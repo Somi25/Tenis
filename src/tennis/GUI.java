@@ -340,10 +340,10 @@ public class GUI extends JFrame implements ActionListener
 						System.out.println(menu.ip.getText());
 						control.startClient(menu.ip.getText());
 						menu.menu_offline_panel.setVisible(false);
-						start();
+						start();						
 					 } catch (Exception exp) {
 						 //guibol hivni errort
-			         }       	
+			         } 
 	        	}
         	break;
         	
