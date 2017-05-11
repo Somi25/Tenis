@@ -393,6 +393,7 @@ class Control {
 		case "UP_Right": 	if(pressed){
 					        	if(pressed_2_up == false)
 					        	{
+					                pressed_2_up = true;
 					        		if(gui.getState() == OFFLINE)
 					        		{
 						                pressed_2_up = true;
@@ -406,9 +407,9 @@ class Control {
 					        			}
 					        	}
 							}else{
+				                pressed_2_up = false;
 								if(gui.getState() == OFFLINE)
 				        		{
-					                pressed_2_up = false;
 					                if(!pressed_2_down){
 					                	getRacketR().setVelocity(0f);
 					                }
@@ -424,9 +425,9 @@ class Control {
 		case "DOWN_Right": 	if(pressed){
 								if(pressed_2_down == false)
 					        	{
+				            		pressed_2_down = true;
 					        		if(gui.getState() == OFFLINE)
 					        		{
-					            		pressed_2_down = true;
 						                getRacketR().setVelocity(-1f);
 						        		startGame(+1);
 					        		}
@@ -439,9 +440,9 @@ class Control {
 							}
 							else
 							{
+			            		pressed_2_down = false;
 								if(gui.getState() == OFFLINE)
 				        		{
-				            		pressed_2_down = false;
 					                if(!pressed_2_up){
 					                	getRacketR().setVelocity(0f);
 					                }

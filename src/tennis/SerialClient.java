@@ -32,6 +32,8 @@ public class SerialClient extends Network {
 	private Boolean gotScoreR = false;
 	
 	private Boolean alreadyListen = false;
+	
+	public String currentIP;
 	SerialClient(Control c) {
 		super(c);
 	}
@@ -131,9 +133,9 @@ public class SerialClient extends Network {
 	}
 
 	void send(Key toSend) {
-		if (out == null)
-			return;
 		try {
+			if (out == null)
+				connect();
 			String sentence;
 			System.out.println("sendKey");
 			
@@ -145,12 +147,16 @@ public class SerialClient extends Network {
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
+			disconnect();
 		}
 	}
-	
+	void connect(){
+		connect(currentIP);
+	}
 	@Override
 	void connect(String ip) {
 		disconnect();
+		currentIP=ip;
 		try {
 			if(!alreadyListen)
 			{
@@ -166,6 +172,7 @@ public class SerialClient extends Network {
 			{
 				sendSocket = new Socket(ip,10006);
 				out = new DataOutputStream(sendSocket.getOutputStream());
+				System.out.println("out inicializalva");
 			}
 		} catch (IllegalArgumentException ex) {
 			control.networkError(ex,"CLIENT_CONSTRUCT");
@@ -177,8 +184,6 @@ public class SerialClient extends Network {
 			control.networkError(ex,"CLIENT_CONNECT");
 			System.err.println("Couldn't get I/O for the connection. ");
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
-		} finally{
-			disconnect();
 		}
 	}
 
@@ -193,6 +198,7 @@ public class SerialClient extends Network {
 			control.networkError(ex,"CLIENT_DISCONNECT");
 			System.err.println("Error while closing conn.");
 		}
+		System.out.println("disconnected");
 	}
 	void disconnectAll() {
 		try {
