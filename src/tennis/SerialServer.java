@@ -45,18 +45,15 @@ public class SerialServer extends Network {
 				return;
 			}
 
-			System.out.println("OK2");
 			try {
-				int i=0;
-				while (i<1) {
-					i++;
+				while (true) {
 					System.out.println("OK2");
 					Object received =in.readObject();
-					System.out.println("OK2");
+					System.out.println("OK23");
 					if(received != null) 
 					{
 						control.keyReceived((Key)received);
-						System.out.println("OK2");
+						System.out.println("OK4");
 					}
 				}
 			} catch (Exception ex) {
