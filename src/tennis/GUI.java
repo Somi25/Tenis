@@ -92,6 +92,7 @@ public class GUI extends JFrame implements ActionListener
 						control.resetGame();
 					}
 				}
+				if(state == HOST) control.sendState();
 		     }
 		});
 		
