@@ -74,12 +74,22 @@ class Control {
 					stopGame();
 					score.incScoreR();
 					serveR();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
 					stopGame();
 					score.incScoreL();
 					serveL();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				racketL.time();
@@ -90,12 +100,22 @@ class Control {
 					stopGame();
 					score.incScoreR();
 					serveR();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 				
 				if(goal.isGoal(ball_inst) == +1){
 					stopGame();
 					score.incScoreL();
 					serveL();
+					
+					// pont elküldése gólnál
+					if(gui.getState() == HOST){
+						sendScores();
+					}
 				}
 			}
 		});
