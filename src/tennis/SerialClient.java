@@ -2,11 +2,15 @@ package tennis;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 public class SerialClient extends Network {
 
-	private Socket socket = null;
+	private Socket sendSocket = null;
+	private Socket listenSocket = null;
 	private DataOutputStream out = null;
 	private BufferedReader in = null;
 	
@@ -24,9 +28,10 @@ public class SerialClient extends Network {
 	private Boolean gotRacketR0 = false;
 	private Boolean gotRacketR1 = false;
 	
-	private Boolean gotScoreL;
-	private Boolean gotScoreR;
+	private Boolean gotScoreL = false;
+	private Boolean gotScoreR = false;
 	
+	private Boolean alreadyListen = false;
 	SerialClient(Control c) {
 		super(c);
 	}
@@ -144,16 +149,24 @@ public class SerialClient extends Network {
 	}
 	
 	@Override
-	Boolean connect(String ip) {
+	void connect(String ip) {
 		disconnect();
 		try {
-			socket = new Socket(ip,10007);
-			out = new DataOutputStream(socket.getOutputStream());
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-			Thread rec = new Thread(new ReceiverThread());
-			rec.start();
-			return true;
+			if(!alreadyListen)
+			{
+				listenSocket = new Socket(ip,10007);
+				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
+				
+				alreadyListen = true;
+				
+				Thread rec = new Thread(new ReceiverThread());
+				rec.start();
+				}
+			else
+			{
+				sendSocket = new Socket(ip,10006);
+				out = new DataOutputStream(sendSocket.getOutputStream());
+			}
 		} catch (IllegalArgumentException ex) {
 			control.networkError(ex,"CLIENT_CONSTRUCT");
 			System.err.println("One of the arguments are illegal");
@@ -166,7 +179,6 @@ public class SerialClient extends Network {
 			JOptionPane.showMessageDialog(null, "Cannot connect to server!");
 		} finally{
 			disconnect();
-			return false;
 		}
 	}
 
@@ -175,13 +187,26 @@ public class SerialClient extends Network {
 		try {
 			if (out != null)
 				out.close();
-			if (in != null)
-				in.close();
-			if (socket != null)
-				socket.close();
+			if (sendSocket != null)
+				sendSocket.close();
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_DISCONNECT");
 			System.err.println("Error while closing conn.");
+		}
+	}
+	void disconnectAll() {
+		try {
+			if (out != null)
+				out.close();
+			if (in != null)
+				in.close();
+			if (listenSocket != null)
+				listenSocket.close();
+			if (sendSocket != null)
+				sendSocket.close();
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_DISCONNECT");
+			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
 		}
 	}
 }
