@@ -245,8 +245,8 @@ public class GUI extends JFrame implements ActionListener
 					 //guibol hivni errort
 		         }				
 				menu.menu_offline_panel.setVisible(false);
-				menu.host_wait_label.setVisible(true);
-				start();				
+				start();		
+				menu.host_wait_label.setVisible(true);		
 			}
             break;
             
@@ -272,15 +272,14 @@ public class GUI extends JFrame implements ActionListener
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				menu.host_wait_label.setVisible(true);
 				try {
 					control.startServer();
 				 } catch (Exception exp) {
 					 //guibol hivni errort
 		         }				
 				menu.menu_offline_panel.setVisible(false);
-				menu.host_wait_label.setVisible(true);
 				start();
+				menu.host_wait_label.setVisible(true);
 			}
             break;
 
@@ -335,8 +334,9 @@ public class GUI extends JFrame implements ActionListener
         	if(ip_pattern.matcher(menu.ip.getText()).matches())
 	        	{
 					try {
+						System.out.println(menu.ip.getText());
 						control.startClient(menu.ip.getText());
-						
+						start();
 					 } catch (Exception exp) {
 						 //guibol hivni errort
 			         }       	
