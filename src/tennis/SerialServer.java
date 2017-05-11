@@ -8,12 +8,29 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class SerialServer extends Network {
 
 	private ServerSocket serverSocket = null;
 	private Socket clientSocket = null;
-	private ObjectOutputStream out = null;
-	private ObjectInputStream in = null;
+	private DataOutputStream out = null;
+	private BufferedReader in = null;
+	
+	private String keyName;
+	private Boolean keyState;
+	
+	private Boolean gotKeyName = false;
+	private Boolean gotKeyState = false;
 
 	SerialServer(Control c) {
 		super(c);
@@ -35,9 +52,8 @@ public class SerialServer extends Network {
 
 			System.out.println("OK1");
 			try {
-				out = new ObjectOutputStream(clientSocket.getOutputStream());
-				in = new ObjectInputStream(clientSocket.getInputStream());
-				out.flush();
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				out = new DataOutputStream(clientSocket.getOutputStream());
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_CONSTRUCTOR");
 				System.err.println("Error while getting streams.");
@@ -46,14 +62,25 @@ public class SerialServer extends Network {
 			}
 
 			try {
+				String received;
 				while (true) {
-					Key received;
 					System.out.println("OK2");
-					while((received = (Key)in.readObject()) != null)
+					while((received = in.readLine()) != null)
 					{
-						System.out.println("OK23");
-						control.keyReceived(received);
-						System.out.println("OK4");
+						if(received.charAt(0) == 'n')
+						 {
+							keyName=received.substring(1).trim();
+							gotKeyName=true;
+						if(received.charAt(0) == 's')
+						{
+							keyState=Boolean.parseBoolean(received.substring(1).trim());
+							gotKeyState=true;
+						}
+							if(gotKeyName && gotKeyState)
+							{
+								gotKeyName=false; gotKeyState=false; control.keyReceived();
+							}
+						 }
 					}
 				} 
 			}catch (IOException ex) {
@@ -75,10 +102,25 @@ public class SerialServer extends Network {
 		if (out == null)
 			return;
 		try {
-			out.writeObject(ball_ins);
-			out.writeObject(racketL);
-			out.writeObject(racketR);
-			out.flush();
+			String floatToString;
+			
+			floatToString = "B0"+Float.toString(ball_ins.getCoordinates()[0]) + '\n';
+			out.writeBytes(floatToString);
+			floatToString = "B1"+Float.toString(ball_ins.getCoordinates()[1]) + '\n';
+			out.writeBytes(floatToString);
+
+
+			floatToString = "L0"+Float.toString(racketL.getCoordinates()[0]) + '\n';
+			out.writeBytes(floatToString);
+			floatToString = "L1"+Float.toString(racketL.getCoordinates()[1]) + '\n';
+			out.writeBytes(floatToString);
+			
+
+			floatToString = "R0"+Float.toString(racketR.getCoordinates()[0]) + '\n';
+			out.writeBytes(floatToString);
+			floatToString = "R1"+Float.toString(racketR.getCoordinates()[1]) + '\n';
+			out.writeBytes(floatToString);
+			
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSTATES");
 			System.err.println("Send error.");
@@ -86,8 +128,13 @@ public class SerialServer extends Network {
 	}
 	void sendScore(Scores toSend){
 		try {
-			out.writeObject(toSend);
-			out.flush();
+			String intToString;
+			
+			intToString = "sL" + Integer.toString(toSend.getScores()[0]) + '\n';
+			out.writeBytes(intToString);
+			intToString = "sR" + Integer.toString(toSend.getScores()[1]) + '\n';
+			out.writeBytes(intToString);
+			
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSCORE");
 			System.err.println("Send error.");

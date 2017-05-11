@@ -7,9 +7,26 @@ import javax.swing.JOptionPane;
 public class SerialClient extends Network {
 
 	private Socket socket = null;
-	private ObjectOutputStream out = null;
-	private ObjectInputStream in = null;
+	private DataOutputStream out = null;
+	private BufferedReader in = null;
+	
+	private Float[] ball_coord = new Float[2];
+	private Float[] racketL_coord = new Float[2];
+	private Float[] racketR_coord = new Float[2];
+	private Integer[] score = new Integer[2];
+	
+	private Boolean gotBall0 = false;
+	private Boolean gotBall1 = false;
 
+	private Boolean gotRacketL0 = false;
+	private Boolean gotRacketL1 = false;
+
+	private Boolean gotRacketR0 = false;
+	private Boolean gotRacketR1 = false;
+	
+	private Boolean gotScoreL;
+	private Boolean gotScoreR;
+	
 	SerialClient(Control c) {
 		super(c);
 	}
@@ -19,26 +36,84 @@ public class SerialClient extends Network {
 		public void run() {
 			try {
 				while (true) {
-					Object received = in.readObject();
-					if(received instanceof Ball)
+					String received = in.readLine();
+					if(received.charAt(0) == 'B')
 					 {
-						control.setBall_inst((Ball) received); 
+						if(received.charAt(1) == '0')
+						{
+							ball_coord[0]=Float.parseFloat(received.substring(2).trim());
+							gotBall0=true;
+						}
+						if(received.charAt(1) == '1')
+						{
+							ball_coord[1]=Float.parseFloat(received.substring(2).trim());
+							gotBall1=true;
+						}
+						if(gotBall0 && gotBall1)
+						{
+							gotBall0=false; gotBall1=false; control.setBall_inst();
+						}
 					 }
-					if(received instanceof Racket)
+					else
+					{
+					if(received.charAt(0) == 'L')
 					 {
-						if(((Racket) received).getCoordinates()[0]<20)//szebbre!
-						 {
-							control.setRacketL((Racket) received); 
-						 }
-						if(((Racket) received).getCoordinates()[0]>1260)//szebbre!
-						 {
-							control.setRacketR((Racket) received);
-						 }
+						if(received.charAt(1) == '0')
+						{
+							racketL_coord[0]=Float.parseFloat(received.substring(2).trim());
+							gotRacketL0=true;
+						}
+						if(received.charAt(1) == '1')
+						{
+							racketL_coord[0]=Float.parseFloat(received.substring(2).trim());
+							gotRacketL1=true;
+						}
+						if(gotRacketL0 && gotRacketL1)
+						{
+							gotRacketL0=false; gotRacketL1=false; control.setRacketL();
+						}
 					 }
-					if(received instanceof Scores)//pontok
+					else
+					{
+					if(received.charAt(0) == 'R')
 					 {
-						control.setScore((Scores) received);
+						if(received.charAt(1) == '0')
+						{
+							racketR_coord[0]=Float.parseFloat(received.substring(2).trim());
+							gotRacketR0=true;
+						}
+						if(received.charAt(1) == '1')
+						{
+							racketR_coord[0]=Float.parseFloat(received.substring(2).trim());
+							gotRacketR1=true;
+						}
+						if(gotRacketR0 && gotRacketR1)
+						{
+							gotRacketR0=false; gotRacketR1=false; control.setRacketR();
+						}
 					 }
+					else
+					{
+					if(received.charAt(0) == 's')
+					 {
+						if(received.charAt(1) == 'L')
+						{
+							score[0]=Integer.parseInt(received.substring(2).trim());
+							gotScoreL=true;
+						}
+						if(received.charAt(1) == 'R')
+						{
+							score[1]=Integer.parseInt(received.substring(2).trim());
+							gotScoreR=true;
+						}
+						if(gotScoreL && gotScoreR)
+						{
+							gotScoreL=false; gotScoreR=false; control.setScore();
+						}
+					 }
+					}
+					}
+					}
 				}
 			} catch (Exception ex) {
 				control.networkError(ex,"CLIENT_READOBJECT");
@@ -54,9 +129,14 @@ public class SerialClient extends Network {
 		if (out == null)
 			return;
 		try {
+			String sentence;
 			System.out.println("sendKey");
-			out.writeObject(toSend);
-			out.flush();
+			
+			sentence = 'n'+toSend.getName();
+			out.writeBytes(sentence + '\n');
+			sentence = 's'+Boolean.toString(toSend.getState());
+			out.writeBytes(sentence + '\n');
+			
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
@@ -68,9 +148,9 @@ public class SerialClient extends Network {
 		disconnect();
 		try {
 			socket = new Socket(ip,10007);
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
-			out.flush();
+			out = new DataOutputStream(socket.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 			return true;
