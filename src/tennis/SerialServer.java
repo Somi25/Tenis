@@ -14,8 +14,11 @@ public class SerialServer extends Network {
 
 	private ServerSocket serverSocket = null;
 	private Socket clientSocket = null;
-	private DataOutputStream out = null;
 	private BufferedReader in = null;
+
+	private ServerSocket serverSendSocket = null;
+	private Socket sendSocket = null;
+	private DataOutputStream out = null;
 	
 	private String keyName;
 	private Boolean keyState;
@@ -23,10 +26,14 @@ public class SerialServer extends Network {
 	private Boolean gotKeyName = false;
 	private Boolean gotKeyState = false;
 
-	SerialServer(Control c) {
+	private Boolean alreadySend = false;
+
+	private Thread rec;
+	
+SerialServer(Control c) {
 		super(c);
 	}
-
+	
 	private class ReceiverThread implements Runnable {
 
 		public void run() {
@@ -44,7 +51,6 @@ public class SerialServer extends Network {
 			System.out.println("OK1");
 			try {
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				out = new DataOutputStream(clientSocket.getOutputStream());
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_CONSTRUCTOR");
 				System.err.println("Error while getting streams.");
@@ -129,29 +135,53 @@ public class SerialServer extends Network {
 	}
 
 	@Override
-	Boolean connect(String ip) {
+	void connect(String ip) {
 		disconnect();
 		try {
-			serverSocket = new ServerSocket(10007);
-
-			Thread rec = new Thread(new ReceiverThread());
-			rec.start();
-			return true;
+			if(!alreadySend)
+			{
+				serverSendSocket = new ServerSocket(10007);
+				serverSocket = new ServerSocket(10006);
+				sendSocket = serverSendSocket.accept();
+				out = new DataOutputStream(sendSocket.getOutputStream());
+				alreadySend = true;
+				rec = new Thread(new ReceiverThread());
+			}
+			else
+			{
+				rec.start();
+			}
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_CONNECT");
 			System.err.println("Could not listen on port: 10007.");
-			return false;
 		}
 	}
 
 	@Override
 	void disconnect() {
 		try {
+			if (in != null)
+				in.close();
+			if (clientSocket != null)
+				clientSocket.close();
+			if (serverSocket != null)
+				serverSocket.close();
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_DISCONNECT");
+			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
+		}
+	}
+	void disconnectAll() {
+		try {
 			if (out != null)
 				out.close();
 			if (in != null)
 				in.close();
 			if (clientSocket != null)
+				clientSocket.close();
+			if (serverSocket != null)
+				serverSocket.close();
+			if (serverSendSocket != null)
 				clientSocket.close();
 			if (serverSocket != null)
 				serverSocket.close();
