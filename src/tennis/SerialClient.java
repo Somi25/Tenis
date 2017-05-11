@@ -70,11 +70,11 @@ public class SerialClient extends Network {
 	Boolean connect(String ip) {
 		disconnect();
 		try {
-			socket = new Socket("localhost",10007);
+			socket = new Socket(ip,10007);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			out.flush();
-
+			System.out.println("OK");
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 			return true;
