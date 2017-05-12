@@ -70,12 +70,12 @@ public class SerialClient extends Network {
 					case 'S':
 						if(received.charAt(1) == 'L')
 						{
-							score[0]=Integer.parseInt(received.substring(1).trim());
+							score[0]=Integer.parseInt(received.substring(2).trim());
 							gotScoreL=true;
 						}
 						if(received.charAt(1) == 'R')
 						{
-							score[1]=Integer.parseInt(received.substring(1).trim());
+							score[1]=Integer.parseInt(received.substring(2).trim());
 							gotScoreR=true;
 						}
 						if(gotScoreL && gotScoreR)
