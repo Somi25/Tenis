@@ -36,8 +36,8 @@ public class GUI extends JFrame implements ActionListener
 	private static final int HOST = 3;
 	private static final int CLIENT = 4;
 	
-	private Integer[] racketL_before=new Integer[2];
-	private Integer[] racketR_before=new Integer[2];
+	private Integer racketL_before=0;
+	private Integer racketR_before=0;
 	
 	public GUI(Control c)
 	{		
@@ -57,19 +57,19 @@ public class GUI extends JFrame implements ActionListener
 				coords = control.getRacketL().getGUIcoords();		
 				field_panel.racket_1(coords[0],coords[1]);
 				if(state==HOST)
-					if(Math.abs(racketL_before[1]-coords[1])>0)
+					if(Math.abs(racketL_before-coords[1])>0)
 					{
 						control.hostRacketLChanged();
-						racketL_before[1]=coords[1];
+						racketL_before=coords[1];
 					}
 				// jobb ütő koordináták megszerzése
 				coords = control.getRacketR().getGUIcoords();
 				field_panel.racket_2(coords[0],coords[1]);
 				if(state==HOST)
-					if(Math.abs(racketR_before[1]-coords[1])>0)
+					if(Math.abs(racketR_before-coords[1])>0)
 					{
 						control.hostRacketRChanged();
-						racketR_before[1]=coords[1];
+						racketR_before=coords[1];
 					}
 				
 				// labda ütő koordináták megszerzése
