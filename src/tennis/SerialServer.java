@@ -95,7 +95,8 @@ SerialServer(Control c) {
 		}
 	}
 
-	void sendStates(Ball ball_ins, Racket racketL, Racket racketR) {
+	void sendBall(Ball ball_ins)
+	{
 		if (out == null)
 			return;
 		try {
@@ -105,17 +106,34 @@ SerialServer(Control c) {
 			out.writeBytes(floatToString);
 			floatToString = "B1"+Float.toString(ball_ins.getCoordinates()[1]) + '\n';
 			out.writeBytes(floatToString);
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_SENDSTATES");
+			System.err.println("Send error.");
+		}
+	}
+	void sendRacketL(Racket racketL)
+	{
+		if (out == null)
+			return;
+		try {
+			String floatToString;
 
-
-			floatToString = "L0"+Float.toString(racketL.getCoordinates()[0]) + '\n';
-			out.writeBytes(floatToString);
-			floatToString = "L1"+Float.toString(racketL.getCoordinates()[1]) + '\n';
+			floatToString = "L"+Float.toString(racketL.getCoordinates()[1]) + '\n';
 			out.writeBytes(floatToString);
 			
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_SENDSTATES");
+			System.err.println("Send error.");
+		}
+	}
+	void sendRacketR(Racket racketR)
+	{
+		if (out == null)
+			return;
+		try {
+			String floatToString;	
 
-			floatToString = "R0"+Float.toString(racketR.getCoordinates()[0]) + '\n';
-			out.writeBytes(floatToString);
-			floatToString = "R1"+Float.toString(racketR.getCoordinates()[1]) + '\n';
+			floatToString = "R"+Float.toString(racketR.getCoordinates()[1]) + '\n';
 			out.writeBytes(floatToString);
 			
 		} catch (IOException ex) {
@@ -137,7 +155,6 @@ SerialServer(Control c) {
 			System.err.println("Send error.");
 		}
 	}
-	
 	void sendPause(Integer toSend){
 		try {
 			String intToString;

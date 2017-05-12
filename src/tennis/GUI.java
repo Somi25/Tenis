@@ -36,6 +36,9 @@ public class GUI extends JFrame implements ActionListener
 	private static final int HOST = 3;
 	private static final int CLIENT = 4;
 	
+	private Integer[] racketL_before=new Integer[2];
+	private Integer[] racketR_before=new Integer[2];
+	
 	public GUI(Control c)
 	{		
 		super("Tenisz");
@@ -53,11 +56,22 @@ public class GUI extends JFrame implements ActionListener
 				// bal ütő koordináták megszerzése
 				coords = control.getRacketL().getGUIcoords();		
 				field_panel.racket_1(coords[0],coords[1]);
-
+				if(state==HOST)
+					if(Math.abs(racketL_before[1]-coords[1])>0)
+					{
+						control.hostRacketLChanged();
+						racketL_before[1]=coords[1];
+					}
 				// jobb ütő koordináták megszerzése
 				coords = control.getRacketR().getGUIcoords();
 				field_panel.racket_2(coords[0],coords[1]);
-
+				if(state==HOST)
+					if(Math.abs(racketR_before[1]-coords[1])>0)
+					{
+						control.hostRacketRChanged();
+						racketR_before[1]=coords[1];
+					}
+				
 				// labda ütő koordináták megszerzése
 				coords = control.getBall().getGUIcoords();
 				field_panel.ball(coords[0],coords[1]);
@@ -92,7 +106,10 @@ public class GUI extends JFrame implements ActionListener
 						control.resetGame();
 					}
 				}
-				if(state == HOST) control.sendState();
+				if(state == HOST) 
+				{
+					control.hostBall();
+				}
 		     }
 		});
 		

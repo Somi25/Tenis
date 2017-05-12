@@ -241,11 +241,15 @@ class Control {
 	}
 	
 	public void setRacketL(Float[] racketL_crds) {
-		this.racketL.setCoordinates(racketL_crds);
+		
+		this.racketL.setCoordinates(new Float[]{racketLx0, racketL_crds[1]});
+		
 	}
 	
 	public void setRacketR(Float[] racketR_crds) {
-		this.racketR.setCoordinates(racketR_crds);
+		
+		this.racketR.setCoordinates(new Float[]{racketRx0, racketR_crds[1]});
+		
 	}
 	
 	public void setScore(Integer[] scores) {
@@ -280,8 +284,16 @@ class Control {
 		return score.getScores();
 	}
 	
-	void sendState() {
-		((SerialServer)net).sendStates(ball_inst, racketL, racketR);
+	void hostBall() {
+		((SerialServer)net).sendBall(ball_inst);
+	}
+	void hostRacketLChanged()
+	{
+		((SerialServer)net).sendRacketL(racketL);
+	}
+	void hostRacketRChanged()
+	{
+		((SerialServer)net).sendRacketR(racketR);
 	}
 	void sendScores() {
 		((SerialServer)net).sendScore(score);

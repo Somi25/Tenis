@@ -21,12 +21,6 @@ public class SerialClient extends Network {
 	
 	private Boolean gotBall0 = false;
 	private Boolean gotBall1 = false;
-
-	private Boolean gotRacketL0 = false;
-	private Boolean gotRacketL1 = false;
-
-	private Boolean gotRacketR0 = false;
-	private Boolean gotRacketR1 = false;
 	
 	private Boolean gotScoreL = false;
 	private Boolean gotScoreR = false;
@@ -62,38 +56,17 @@ public class SerialClient extends Network {
 							gotBall0=false; gotBall1=false; control.setBall_inst(ball_coord);
 						}
 						break;
+						
 					case 'L':
-						if(received.charAt(1) == '0')
-						{
-							racketL_coord[0]=Float.parseFloat(received.substring(2).trim());
-							gotRacketL0=true;
-						}
-						if(received.charAt(1) == '1')
-						{
-							racketL_coord[1]=Float.parseFloat(received.substring(2).trim());
-							gotRacketL1=true;
-						}
-						if(gotRacketL0 && gotRacketL1)
-						{
-							gotRacketL0=false; gotRacketL1=false; control.setRacketL(racketL_coord);
-						}
+						racketL_coord[1]=Float.parseFloat(received.substring(2).trim());
+						control.setRacketL(racketL_coord);
 						break;
+						
 					case 'R':
-						if(received.charAt(1) == '0')
-						{
-							racketR_coord[0]=Float.parseFloat(received.substring(2).trim());
-							gotRacketR0=true;
-						}
-						if(received.charAt(1) == '1')
-						{
-							racketR_coord[1]=Float.parseFloat(received.substring(2).trim());
-							gotRacketR1=true;
-						}
-						if(gotRacketR0 && gotRacketR1)
-						{
-							gotRacketR0=false; gotRacketR1=false; control.setRacketR(racketR_coord);
-						}
+						racketR_coord[1]=Float.parseFloat(received.substring(2).trim());
+						control.setRacketR(racketR_coord);
 						break;
+						
 					case 'S':
 						if(received.charAt(1) == 'L')
 						{
