@@ -189,17 +189,19 @@ class Control {
 	}
 	
 	public void continueGame(){
-		if(gui.getState() == HOST)
-		{
-			((SerialServer)net).sendPause(pause);
-			pause = 0;
-			continueBallDir = 1;
-			whoStart = 0;
-		}
+
 		if(gui.getState() == CLIENT)
 		{
 			gui.hidePauseMenu();
 			pause = 0;
+		}
+		else
+		{	
+			pause = 0;
+			continueBallDir = 1;
+			whoStart = 0;
+			if(gui.getState() == HOST)
+				((SerialServer)net).sendPause(pause);
 		}
 	}
 	
