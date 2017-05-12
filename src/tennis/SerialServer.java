@@ -70,7 +70,7 @@ SerialServer(Control c) {
 							got.setState(Boolean.parseBoolean(received.substring(1).trim()));
 							gotKeyState=true;
 							break;
-						case 'E': control.exitGame();
+						case 'E': control.exitGame(); break;
 						default:
 						}
 						if(gotKeyName && gotKeyState)

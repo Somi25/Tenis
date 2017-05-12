@@ -87,7 +87,8 @@ public class SerialClient extends Network {
 						case 1: control.pauseGame(); break;
 						default:
 						}
-					case 'E': control.exitGame();
+						break;
+					case 'E': control.exitGame(); break;
 					}
 				}
 			} catch (Exception ex) {
