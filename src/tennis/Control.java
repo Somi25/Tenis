@@ -545,5 +545,27 @@ class Control {
 			serveR();
 		}
 	}
+	
+	void disconnect()
+	{
+		net.sendExit();
+		net.disconnectAll();
+	}
+	void exitGame() //ezzel kéne egyelõnek lennie ! Oldjátok meg !
+	{
+		net.disconnectAll();
+		/*case "Kilépés a menübe":
+	    	time.stop();
+			control.stopGame();
+			control.disconnect();
+			control.resetGame();
+			state = 0;
+			menu.save_button.setVisible(true);
+			menu.pause_panel.setVisible(false);
+			menu.menu_main_panel.setVisible(true);
+			field_panel.setVisible(false);
+			field_panel.score_panel.setVisible(false);
+	        */
+	}
 }
 

@@ -60,15 +60,18 @@ SerialServer(Control c) {
 					while((received = in.readLine()) != null)
 					{
 						System.out.println(received);
-						if(received.charAt(0) == 'n')
-						 {
+						switch(received.charAt(0))
+						{
+						case 'n':
 							got.setName(received.substring(1).trim());
 							gotKeyName=true;
-						 }
-						if(received.charAt(0) == 's')
-						{
+							break;
+						case 's':
 							got.setState(Boolean.parseBoolean(received.substring(1).trim()));
 							gotKeyState=true;
+							break;
+						case 'E': control.exitGame();
+						default:
 						}
 						if(gotKeyName && gotKeyState)
 						{
@@ -216,6 +219,17 @@ SerialServer(Control c) {
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_DISCONNECT");
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
+		}
+	}
+	@Override
+	void sendExit()
+	{
+		try {
+			out.writeBytes("E\n");
+		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_SENDKEY");
+			System.err.println("Send error.");
+			disconnect();
 		}
 	}
 }

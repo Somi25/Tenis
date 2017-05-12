@@ -87,6 +87,7 @@ public class SerialClient extends Network {
 						case 1: control.pauseGame(); break;
 						default:
 						}
+					case 'E': control.exitGame();
 					}
 				}
 			} catch (Exception ex) {
@@ -181,6 +182,18 @@ public class SerialClient extends Network {
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_DISCONNECT");
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
+		}
+	}
+
+	@Override
+	void sendExit()
+	{
+		try {
+			out.writeBytes("E\n");
+		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_SENDKEY");
+			System.err.println("Send error.");
+			disconnect();
 		}
 	}
 }

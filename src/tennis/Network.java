@@ -20,7 +20,7 @@ abstract class Network {
 	Network(Control c) {
 		control = c;
 	}
-
+	abstract void sendExit();
 	abstract void disconnect();
 	abstract void disconnectAll();
 
