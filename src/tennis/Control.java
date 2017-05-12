@@ -368,6 +368,8 @@ class Control {
 				break;
 			}
 		}
+		else
+			if( e.getName().equals("Pause") && !pressed) continueGame();
 	}
 	
 	public void keyStroke(Key e)
