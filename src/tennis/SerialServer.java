@@ -12,16 +12,10 @@ import java.io.InputStreamReader;
 
 public class SerialServer extends Network {
 
-	private ServerSocket serverSocket = null;
-	private Socket clientSocket = null;
-	private BufferedReader in = null;
-
+	private ServerSocket serverListenSocket = null;
 	private ServerSocket serverSendSocket = null;
-	private Socket sendSocket = null;
-	private DataOutputStream out = null;
 	
-	private String keyName;
-	private Boolean keyState;
+	private Key got = new Key();
 	
 	private Boolean gotKeyName = false;
 	private Boolean gotKeyState = false;
@@ -32,6 +26,8 @@ public class SerialServer extends Network {
 	
 SerialServer(Control c) {
 		super(c);
+		sendPort=10007;
+		listenPort=10006;
 	}
 	
 	private class ReceiverThread implements Runnable {
@@ -39,7 +35,7 @@ SerialServer(Control c) {
 		public void run() {
 			try {
 				System.out.println("Waiting for Client ->to receive");
-				clientSocket = serverSocket.accept();
+				listenSocket = serverListenSocket.accept();
 				System.out.println("Client connected ->to receive");
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_WAITING");
@@ -50,7 +46,7 @@ SerialServer(Control c) {
 
 			System.out.println("OK1");
 			try {
-				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_CONSTRUCTOR");
 				System.err.println("Error while getting streams.");
@@ -60,27 +56,25 @@ SerialServer(Control c) {
 
 			try {
 				String received;
-				System.out.println("whileTrueig eljutott");
 				while (true) {
 					while((received = in.readLine()) != null)
 					{
 						System.out.println(received);
 						if(received.charAt(0) == 'n')
 						 {
-							keyName=received.substring(1).trim();
+							got.setName(received.substring(1).trim());
 							gotKeyName=true;
 						 }
 						if(received.charAt(0) == 's')
 						{
-							keyState=Boolean.parseBoolean(received.substring(1).trim());
+							got.setState(Boolean.parseBoolean(received.substring(1).trim()));
 							gotKeyState=true;
 						}
 						if(gotKeyName && gotKeyState)
 						{
-							System.out.println("key is OK");
 							gotKeyName=false; gotKeyState=false;
-							control.keyReceived(new Key(keyName,keyState));
-							System.out.println(keyName+" "+keyState.toString());
+							System.out.println("got key");
+							control.keyReceived(got);
 						}
 					}
 				} 
@@ -88,10 +82,7 @@ SerialServer(Control c) {
 				//control.networkError(ex,"SERVER_READOBJECT");
 				System.out.println(ex.getMessage());
 				System.err.println("Client disconnected! - IO");
-			} finally {
-				disconnect();
 			}
-			System.out.println("OK3");
 		}
 	}
 
@@ -167,15 +158,14 @@ SerialServer(Control c) {
 			System.err.println("Send error.");
 		}
 	}
-
-	@Override
-	void connect(String ip) {
+	
+	void connect() {
 		disconnect();
 		try {
 			if(!alreadySend)
 			{
-				serverSendSocket = new ServerSocket(10007);
-				serverSocket = new ServerSocket(10006);
+				serverSendSocket = new ServerSocket(sendPort);
+				serverListenSocket = new ServerSocket(listenPort);
 				System.out.println("Waiting for Client ->to send");
 				sendSocket = serverSendSocket.accept();
 				System.out.println("Connected Client ->to send");
@@ -199,29 +189,30 @@ SerialServer(Control c) {
 		try {
 			if (in != null)
 				in.close();
-			if (clientSocket != null)
-				clientSocket.close();
-			if (serverSocket != null)
-				serverSocket.close();
+			if (listenSocket != null)
+				listenSocket.close();
+			if (serverListenSocket != null)
+				serverListenSocket.close();
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_DISCONNECT");
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
 		}
 	}
+	@Override	
 	void disconnectAll() {
 		try {
 			if (out != null)
 				out.close();
 			if (in != null)
 				in.close();
-			if (clientSocket != null)
-				clientSocket.close();
-			if (serverSocket != null)
-				serverSocket.close();
+			if (listenSocket != null)
+				listenSocket.close();
+			if (serverListenSocket != null)
+				serverListenSocket.close();
 			if (serverSendSocket != null)
-				clientSocket.close();
-			if (serverSocket != null)
-				serverSocket.close();
+				listenSocket.close();
+			if (serverListenSocket != null)
+				serverListenSocket.close();
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_DISCONNECT");
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);

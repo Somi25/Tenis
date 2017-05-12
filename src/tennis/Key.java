@@ -9,7 +9,11 @@ import java.io.Serializable;
 public class Key implements Serializable {
 	private String name;
 	private Boolean state;
-	
+	Key()
+	{
+		name=null;
+		state=null;
+	}
 	Key(String key, Boolean state)
 	{
 		this.name=key; this.state=state;
@@ -20,6 +24,13 @@ public class Key implements Serializable {
 	public Boolean getState() {
 		return state;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setState(Boolean state) {
+		this.state = state;
+	}
+	/*
 	public void writeObject(ObjectOutputStream out) throws IOException
 	{
 		System.out.println("belepett");
@@ -31,5 +42,5 @@ public class Key implements Serializable {
         this.name=(String)in.readObject();
         this.state=(Boolean)in.readObject();
 		System.out.println("olvasVege");
-    }
+    }*/
 }

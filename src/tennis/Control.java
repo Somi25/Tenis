@@ -194,6 +194,7 @@ class Control {
 		{
 			gui.hidePauseMenu();
 			pause = 0;
+			((SerialClient)net).send(new Key("Pause",false));
 		}
 		else
 		{	
@@ -203,6 +204,14 @@ class Control {
 			if(gui.getState() == HOST)
 				((SerialServer)net).sendPause(pause);
 		}
+	}
+	
+	public void continueGamefromClient()
+	{
+		gui.hidePauseMenu();
+		pause = 0;
+		continueBallDir = 1;
+		whoStart = 0;
 	}
 	
 	public void stopGame(){
@@ -265,14 +274,14 @@ class Control {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
-		net.connect("localhost");
+		((SerialServer)net).connect();
 	}
 
 	void startClient(String ip) throws IOException {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
-		net.connect(ip);
+		((SerialClient)net).connect(ip);
 	}
 
 	void networkError(Exception ex,String where) {
@@ -347,8 +356,15 @@ class Control {
 				}
 				break;
 			case "Pause":
-				pauseGame();
-				gui.showPauseMenu();
+				if(pressed)
+				{
+					pauseGame();
+					gui.showPauseMenu();
+				}
+				else
+				{
+					continueGame();
+				}
 				break;
 			}
 		}

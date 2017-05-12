@@ -8,11 +8,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class SerialClient extends Network {
-
-	private Socket sendSocket = null;
-	private Socket listenSocket = null;
-	private DataOutputStream out = null;
-	private BufferedReader in = null;
 	
 	private Float[] ball_coord = new Float[2];
 	private Float[] racketL_coord = new Float[2];
@@ -27,9 +22,11 @@ public class SerialClient extends Network {
 	
 	private Boolean alreadyListen = false;
 	
-	public String currentIP;
+	public String joinedIP;
 	SerialClient(Control c) {
 		super(c);
+		sendPort=10006;
+		listenPort=10007;
 	}
 
 	private class ReceiverThread implements Runnable {
@@ -120,17 +117,17 @@ public class SerialClient extends Network {
 			disconnect();
 		}
 	}
+
 	void connect(){
-		connect(currentIP);
+		connect(joinedIP);
 	}
-	@Override
 	void connect(String ip) {
 		disconnect();
-		currentIP=ip;
+		joinedIP=ip;
 		try {
 			if(!alreadyListen)
 			{
-				listenSocket = new Socket(ip,10007);
+				listenSocket = new Socket(ip,listenPort);
 				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
 				
 				alreadyListen = true;
@@ -140,7 +137,7 @@ public class SerialClient extends Network {
 				}
 			else
 			{
-				sendSocket = new Socket(ip,10006);
+				sendSocket = new Socket(ip,sendPort);
 				out = new DataOutputStream(sendSocket.getOutputStream());
 				System.out.println("out inicializalva");
 			}
@@ -170,6 +167,7 @@ public class SerialClient extends Network {
 		}
 		System.out.println("disconnected");
 	}
+	@Override
 	void disconnectAll() {
 		try {
 			if (out != null)
