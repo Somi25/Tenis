@@ -372,6 +372,6 @@ public class GUI extends JFrame implements ActionListener
 	{
 		//control.continueGame();
 		menu.pause_panel.setVisible(false);
-		//time.start();		
+		time.start();		
 	}
 }
