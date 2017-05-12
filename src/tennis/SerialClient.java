@@ -44,8 +44,9 @@ public class SerialClient extends Network {
 			try {
 				while (true) {
 					String received = in.readLine();
-					if(received.charAt(0) == 'B')
-					 {
+					switch(received.charAt(0))
+					{
+					case 'B':
 						if(received.charAt(1) == '0')
 						{
 							ball_coord[0]=Float.parseFloat(received.substring(2).trim());
@@ -60,11 +61,8 @@ public class SerialClient extends Network {
 						{
 							gotBall0=false; gotBall1=false; control.setBall_inst(ball_coord);
 						}
-					 }
-					else
-					{
-					if(received.charAt(0) == 'L')
-					 {
+						break;
+					case 'L':
 						if(received.charAt(1) == '0')
 						{
 							racketL_coord[0]=Float.parseFloat(received.substring(2).trim());
@@ -79,11 +77,8 @@ public class SerialClient extends Network {
 						{
 							gotRacketL0=false; gotRacketL1=false; control.setRacketL(racketL_coord);
 						}
-					 }
-					else
-					{
-					if(received.charAt(0) == 'R')
-					 {
+						break;
+					case 'R':
 						if(received.charAt(1) == '0')
 						{
 							racketR_coord[0]=Float.parseFloat(received.substring(2).trim());
@@ -98,11 +93,8 @@ public class SerialClient extends Network {
 						{
 							gotRacketR0=false; gotRacketR1=false; control.setRacketR(racketR_coord);
 						}
-					 }
-					else
-					{
-					if(received.charAt(0) == 's')
-					 {
+						break;
+					case 'S':
 						if(received.charAt(1) == 'L')
 						{
 							score[0]=Integer.parseInt(received.substring(2).trim());
@@ -117,9 +109,14 @@ public class SerialClient extends Network {
 						{
 							gotScoreL=false; gotScoreR=false; control.setScore(score);
 						}
-					 }
-					}
-					}
+						break;
+					case 'G':
+						switch (Integer.parseInt(received.substring(1).trim()))
+						{
+						case 0: control.continueGame(); break;
+						case 1: control.pauseGame(); break;
+						default:
+						}
 					}
 				}
 			} catch (Exception ex) {

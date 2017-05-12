@@ -185,12 +185,22 @@ class Control {
 	public void pauseGame(){
 		timer.stop();
 		pause = 1;
+		gui.showPauseMenu();
 	}
 	
 	public void continueGame(){
-		pause = 0;
-		continueBallDir = 1;
-		whoStart = 0;
+		if(gui.getState() == HOST)
+		{
+			((SerialServer)net).sendPause(pause);
+			pause = 0;
+			continueBallDir = 1;
+			whoStart = 0;
+		}
+		if(gui.getState() == CLIENT)
+		{
+			gui.hidePauseMenu();
+			pause = 0;
+		}
 	}
 	
 	public void stopGame(){
@@ -277,11 +287,14 @@ class Control {
 
 	
 	public void keyReceived(Key e){
-		if(pause == 0)
+		
+		Boolean pressed = e.getState();
+		if(pause == 0 )
+		{
+			System.out.println(e.getName()+" "+pressed.toString());
+			switch(e.getName())
 			{
-			Boolean pressed = e.getState();
-			if(e.getName()=="UP_Right")
-			{
+			case "UP_Right":
 				if(pressed)
 				{
 					if(pressed_2_up == false)
@@ -293,45 +306,36 @@ class Control {
 				}
 				else
 				{
-					if(gui.getState() == OFFLINE)
-					{
-			            pressed_2_up = false;
-			            if(!pressed_2_down){
-			            	getRacketR().setVelocity(0f);
-			            }
-					}
+		            pressed_2_up = false;
+		            if(!pressed_2_down){
+		            	getRacketR().setVelocity(0f);
+		            }
 				}
-			}
-			if(e.getName()=="DOWN_Right")
-			{
+				break;
+			case "DOWN_Right":
 				if(pressed)
 				{
+					
 					if(pressed_2_down == false)
 					{
-			    		if(gui.getState() == OFFLINE)
-			    		{
-			        		pressed_2_down = true;
-			                getRacketR().setVelocity(-1f);
-			        		startGame(+1);
-			    		}
+		        		pressed_2_down = true;
+		                getRacketR().setVelocity(-1f);
+		        		startGame(+1);
 					}
 				}
 				else
 				{
-					if(gui.getState() == OFFLINE)
-					{
-			    		pressed_2_down = false;
-			            if(!pressed_2_up)
-			            {
-			            	getRacketR().setVelocity(0f);
-			            }
-					}
+		    		pressed_2_down = false;
+		            if(!pressed_2_up)
+		            {
+		            	getRacketR().setVelocity(0f);
+		            }
 				}
-			}
-			if(e.getName()=="Pause")
-			{
+				break;
+			case "Pause":
 				pauseGame();
 				gui.showPauseMenu();
+				break;
 			}
 		}
 	}
@@ -384,9 +388,10 @@ class Control {
 		
 		case "Pause": 		if(pressed){
 								pauseGame();
-								gui.showPauseMenu();
 			        			if(gui.getState() == CLIENT)
 			        				((SerialClient)net).send(new Key("Pause",true));
+			        			if(gui.getState() == HOST)
+			        				((SerialServer)net).sendPause(pause);
 							}
 		break;
 

@@ -64,22 +64,24 @@ SerialServer(Control c) {
 				while (true) {
 					while((received = in.readLine()) != null)
 					{
-						System.out.println("string received");
+						System.out.println(received);
 						if(received.charAt(0) == 'n')
 						 {
 							keyName=received.substring(1).trim();
 							gotKeyName=true;
+						 }
 						if(received.charAt(0) == 's')
 						{
 							keyState=Boolean.parseBoolean(received.substring(1).trim());
 							gotKeyState=true;
 						}
-							if(gotKeyName && gotKeyState)
-							{
-								System.out.println("key is OK");
-								gotKeyName=false; gotKeyState=false; control.keyReceived(new Key(keyName,keyState));
-							}
-						 }
+						if(gotKeyName && gotKeyState)
+						{
+							System.out.println("key is OK");
+							gotKeyName=false; gotKeyState=false;
+							control.keyReceived(new Key(keyName,keyState));
+							System.out.println(keyName+" "+keyState.toString());
+						}
 					}
 				} 
 			}catch (IOException ex) {
@@ -125,9 +127,22 @@ SerialServer(Control c) {
 		try {
 			String intToString;
 			
-			intToString = "sL" + Integer.toString(toSend.getScores()[0]) + '\n';
+			intToString = "SL" + Integer.toString(toSend.getScores()[0]) + '\n';
 			out.writeBytes(intToString);
-			intToString = "sR" + Integer.toString(toSend.getScores()[1]) + '\n';
+			intToString = "SR" + Integer.toString(toSend.getScores()[1]) + '\n';
+			out.writeBytes(intToString);
+			
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_SENDSCORE");
+			System.err.println("Send error.");
+		}
+	}
+	
+	void sendPause(Integer toSend){
+		try {
+			String intToString;
+			
+			intToString = "G" + Integer.toString(toSend) + '\n';
 			out.writeBytes(intToString);
 			
 		} catch (IOException ex) {
