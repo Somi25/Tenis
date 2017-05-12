@@ -58,12 +58,12 @@ public class SerialClient extends Network {
 						break;
 						
 					case 'L':
-						racketL_coord[1]=Float.parseFloat(received.substring(2).trim());
+						racketL_coord[1]=Float.parseFloat(received.substring(1).trim());
 						control.setRacketL(racketL_coord);
 						break;
 						
 					case 'R':
-						racketR_coord[1]=Float.parseFloat(received.substring(2).trim());
+						racketR_coord[1]=Float.parseFloat(received.substring(1).trim());
 						control.setRacketR(racketR_coord);
 						break;
 						
