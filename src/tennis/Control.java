@@ -504,6 +504,10 @@ class Control {
 		try{	
 			writeObj = new FileWriter("savefile.txt" , false);
 			printObj = new PrintWriter(writeObj);
+			printObj.println("Save Tennis game");		
+			printObj.println(whoStart);		
+			printObj.println(score.getScores()[0]);		
+			printObj.println(score.getScores()[1]);
 			printObj.close();
            
 		}catch(Exception ex){
