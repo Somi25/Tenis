@@ -48,13 +48,10 @@ public class Racket extends GeometricObject{
 
 	@Override
 	void setCoordinates(Float[] coordinates) throws InvalidParameterException {
-		//if(coordinates[1]<(this.height/2)+yFieldMin && coordinates[1]>(yFieldMax-(this.height/2)))
-		 {
+		if(coordinates[1]>((this.height/2)+yFieldMin) && coordinates[1]<(yFieldMax-(this.height/2))){
 			this.coordinates[1]=coordinates[1];
-		 }
-		//else 
-		 {
-			//throw new InvalidParameterException();
+		 }else{
+			throw new InvalidParameterException();
 		 }
 		
 	}

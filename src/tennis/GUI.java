@@ -328,7 +328,12 @@ public class GUI extends JFrame implements ActionListener
             
         case "Játék mentése":
         	//showGame();
-        	control.saveFile();
+        	try {
+				control.saveFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             break;
             
         case "Vissza - pause":

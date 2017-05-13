@@ -43,21 +43,17 @@ public class Ball extends GeometricObject{
 	@Override
 	public void setCoordinates(Float[] coordinates) throws InvalidParameterException {
 		
-		//if(coordinates[0]>this.radius+xFieldMin && coordinates[0]<xFieldMax-this.radius)
-		{
+		if(coordinates[0]>(this.radius+xFieldMin) && coordinates[0]<(xFieldMax-this.radius)){
 			this.coordinates[0] = coordinates[0];
+		}else{
+			throw new InvalidParameterException();
 		}
-		//else
-		{
-			//throw new InvalidParameterException();
-		}
-		//if(coordinates[1]>this.radius+yFieldMin && coordinates[1]<yFieldMin-this.radius)
-		{
+		
+		
+		if(coordinates[1]>(this.radius+yFieldMin) && coordinates[1]<(yFieldMax-this.radius)){
 			this.coordinates[1] = coordinates[1];
-		}
-		//else
-		{
-			//throw new InvalidParameterException();
+		}else{
+			throw new InvalidParameterException();
 		}
 	}
 	@Override
@@ -93,36 +89,25 @@ public class Ball extends GeometricObject{
 		maxDir();
 	}
 	
-	private void maxDir(){
-		float dirX = (float)direction;
-		
-		
+	private void maxDir(){		
 		// nagyobb mint 45 fok ÉS kisebb mint 90 -> legyen 45 fok
 		if(direction > (float)(Math.PI / 4) && direction <= (float)(Math.PI / 2)){
 			direction = (float)(Math.PI / 4) + maxRand*((float)Math.random()-0.5f);
-			//System.out.println("old: " + dirX / Math.PI * 180);
-			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// kisebb mint -45 fok (315 fok) ÉS kisebb mint -90 (270) -> legyen -45 fok (315 fok)
 		if(direction < (float)(Math.PI * 7/4) && direction >= (float)(Math.PI * 3/2)){
 			direction = (float)(Math.PI * 7/4) + maxRand*((float)Math.random()-0.5f);
-			//System.out.println("old: " + dirX / Math.PI * 180);
-			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// ha kisebb mint 135 fok ÉS nagyobb mint 90 fok -> legyen 135 fok
 		if(direction < (float)(Math.PI * 3/4) && direction > (float)(Math.PI / 2)){
 			direction = (float)(Math.PI * 3/4) + maxRand*((float)Math.random()-0.5f);
-			//System.out.println("old: " + dirX / Math.PI * 180);
-			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 		// ha nagyobb mint 225 fok ÉS kisebb mint 270 fok -> legyen 225 fok
 		if(direction > (float)(Math.PI * 5/4) && direction < (float)(Math.PI * 3/2)){
 			direction = (float)(Math.PI * 5/4) + maxRand*((float)Math.random()-0.5f);
-			//System.out.println("old: " + dirX / Math.PI * 180);
-			//System.out.println("new: " + direction / Math.PI * 180);
 		}
 		
 	}

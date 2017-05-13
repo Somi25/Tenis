@@ -170,7 +170,6 @@ class Control {
 				}
 				
 			} catch (InvalidParameterException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -495,24 +494,19 @@ class Control {
 		}
 	}
 
-	public void saveFile(){
+	public void saveFile() throws IOException{
 		//System.out.println("save file");
 	
 		FileWriter writeObj;
 		PrintWriter printObj;
-
-		try{	
-			writeObj = new FileWriter("savefile.txt" , false);
-			printObj = new PrintWriter(writeObj);
-			printObj.println("Save Tennis game");		
-			printObj.println(whoStart);		
-			printObj.println(score.getScores()[0]);		
-			printObj.println(score.getScores()[1]);
-			printObj.close();
-           
-		}catch(Exception ex){
-			System.out.println("Error: " + ex);
-		}
+	
+		writeObj = new FileWriter("savefile.txt" , false);
+		printObj = new PrintWriter(writeObj);
+		printObj.println("Save Tennis game");		
+		printObj.println(whoStart);		
+		printObj.println(score.getScores()[0]);		
+		printObj.println(score.getScores()[1]);
+		printObj.close();
 		
 	}
 
@@ -554,8 +548,10 @@ class Control {
 	
 	void disconnect()
 	{
-		net.sendExit();
-		net.disconnectAll();
+		if(net != null){
+			net.sendExit();
+			net.disconnectAll();
+		}
 	}
 	void exitGame() //ezzel kéne egyelõnek lennie ! Oldjátok meg !
 	{
