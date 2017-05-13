@@ -577,5 +577,13 @@ class Control {
 			field_panel.score_panel.setVisible(false);
 	        */
 	}
+	
+	public void waitClient(){
+		pause = 1;
+	}
+	
+	public void clientConnected(){
+		pause = 0;
+	}
 }
 

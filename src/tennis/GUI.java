@@ -285,6 +285,7 @@ public class GUI extends JFrame implements ActionListener
 			if(state == HOST)
 			{
 				control.resetGame();
+				control.waitClient();
         		try {
 					control.loadFile();
 				} catch (IOException e1) {
@@ -296,9 +297,6 @@ public class GUI extends JFrame implements ActionListener
 				 } catch (Exception exp) {
 					 //guibol hivni errort
 		         }				
-				menu.menu_offline_panel.setVisible(false);
-				start();
-				menu.host_wait_label.setVisible(true);
 			}
             break;
 
@@ -396,5 +394,12 @@ public class GUI extends JFrame implements ActionListener
 		//control.continueGame();
 		menu.pause_panel.setVisible(false);
 		time.start();		
+	}
+	
+	public void clientConnected(){
+		menu.menu_offline_panel.setVisible(false);
+		start();
+		menu.host_wait_label.setVisible(true);
+		control.clientConnected();
 	}
 }
