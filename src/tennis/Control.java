@@ -583,7 +583,8 @@ class Control {
 	}
 	
 	public void clientConnected(){
-		pause = 0;
+		if(gui.clientConnected())	
+			pause = 0;
 	}
 }
 

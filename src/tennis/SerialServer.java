@@ -22,79 +22,84 @@ public class SerialServer extends Network {
 	Boolean listenConnected = false;
 	Boolean startedListenConnection = false;
 	
-SerialServer(Control c) {
+	SerialServer(Control c) {
 		super(c);
 		sendPort=10007;
 		listenPort=10006;
 	}
 	private class connectThread implements Runnable {
-
 	public void run() {
-			try {
-				System.out.println("Waiting for Client ->to send");
-				sendSocket = serverSendSocket.accept();
-				
-				sendConnected=true;
-				startedSendConnection=false;
-				out = new DataOutputStream(sendSocket.getOutputStream());
-				System.out.println("Client connected ->to send");
-			} catch (IOException e) {
-				control.networkError(e,"SERVER_WAITING");
-				System.err.println("Accept failed.send");
-				disconnectSend();
-			}
+		try {
+			System.out.println("Waiting for Client ->to send");
+			sendSocket = serverSendSocket.accept();
+			
+			sendConnected=true;
+			startedSendConnection=false;
+			out = new DataOutputStream(sendSocket.getOutputStream());
+			control.clientConnected();
+			System.out.println("Client connected ->to send");
+		} catch (IOException e) {
+			control.networkError(e,"SERVER_WAITING");
+			System.err.println("Accept failed.send");
+			disconnectSend();
 		}
 	}
+	}
+	
 	private class ReceiverThread implements Runnable {
-
-		public void run() {
-			try {
-				System.out.println("Waiting for Client ->to receive");
-				listenSocket = serverListenSocket.accept();
-				listenConnected = true;
-				startedListenConnection =false;
-				System.out.println("Client connected ->to receive");
-			} catch (IOException ex) {
-				control.networkError(ex,"SERVER_WAITING");
-				System.err.println("Accept failed.listen");
-				disconnectListen();
-			}
-
-			try {
-				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
-			} catch (IOException ex) {
-				control.networkError(ex,"SERVER_CONSTRUCTOR");
-				System.err.println("Error in = new BufferedReader");
-				disconnectListen();
-				return;
-			}
-
-			try {
-				String received;
-				while (true) {
-					while((received = in.readLine()) == null);
-					switch(received.charAt(0))
-					{
-					case 'K':
-						got.setName(received.substring(1).trim());
-						received = in.readLine();
-						got.setState(Boolean.parseBoolean(received.trim()));
-						control.keyReceived(got);
-						break;
-					case 'E':
-						control.exitGame();
-						break;
-					default: break;
-					}
-				} 
-			}catch (IOException ex) {
-				//control.networkError(ex,"SERVER_READOBJECT");
-				System.out.println(ex.getMessage());
-				System.err.println("Client disconnected! - RecThread.Vege");
-				disconnectListen();
-				connect();
-			}
+	public void run() {
+		try {
+			System.out.println("Waiting for Client ->to receive");
+			listenSocket = serverListenSocket.accept();
+			listenConnected = true;
+			startedListenConnection =false;
+			System.out.println("Client connected ->to receive");
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_WAITING");
+			System.err.println("Accept failed.listen");
+			disconnectListen();
 		}
+
+		try {
+			in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
+		} catch (IOException ex) {
+			control.networkError(ex,"SERVER_CONSTRUCTOR");
+			System.err.println("Error in = new BufferedReader");
+			disconnectListen();
+			return;
+		}
+
+		try {
+			String received;
+			while (true) {
+				while((received = in.readLine()) == null);
+				switch(received.charAt(0))
+				{
+				case 'K':
+					got.setName(received.substring(1).trim());
+					received = in.readLine();
+					got.setState(Boolean.parseBoolean(received.trim()));
+					control.keyReceived(got);
+					break;
+				case 'E':
+					control.exitGame();
+					break;
+				case 'J':
+					Thread emergency = new Thread(new connectThread());
+					emergency.run();
+					break;
+						
+				default: break;
+				}
+			} 
+		}catch (IOException ex) {
+			//control.networkError(ex,"SERVER_READOBJECT");
+			System.out.println(ex.getMessage());
+			System.err.println("Client disconnected! - RecThread.Vege");
+			disconnectListen();
+			connect();
+		}
+	}
 	}
 
 	void sendBall(Ball ball_ins)

@@ -257,15 +257,9 @@ public class GUI extends JFrame implements ActionListener
 			}
 			if(state == HOST)
 			{
-    			control.resetGame();
-				try {
-					control.startServer();
-				 } catch (Exception exp) {
-					 //guibol hivni errort
-		         }				
-				menu.menu_offline_panel.setVisible(false);
-				start();		
-				menu.host_wait_label.setVisible(true);		
+				control.resetGame();
+				control.waitClient();
+				control.startServer();	
 			}
             break;
             
@@ -292,11 +286,7 @@ public class GUI extends JFrame implements ActionListener
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				try {
-					control.startServer();
-				 } catch (Exception exp) {
-					 //guibol hivni errort
-		         }				
+				control.startServer();		
 			}
             break;
 
@@ -396,10 +386,19 @@ public class GUI extends JFrame implements ActionListener
 		time.start();		
 	}
 	
-	public void clientConnected(){
-		menu.menu_offline_panel.setVisible(false);
-		start();
-		menu.host_wait_label.setVisible(true);
-		control.clientConnected();
+	public Boolean clientConnected(){
+		if(!time.isRunning())
+		{
+			if(state==HOST)
+			{
+				menu.menu_offline_panel.setVisible(false);
+				start();
+				menu.host_wait_label.setVisible(true);
+				return true;
+			}
+			else
+				control.disconnect();
+		}
+		return false;
 	}
 }

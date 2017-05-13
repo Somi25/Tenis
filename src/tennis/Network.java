@@ -21,6 +21,7 @@ abstract class Network {
 		control = c;
 	}
 	abstract void sendExit();
+	
 	abstract void disconnect();
 	abstract void disconnectListen();
 	abstract void disconnectSend();

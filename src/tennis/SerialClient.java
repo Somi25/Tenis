@@ -27,11 +27,12 @@ public class SerialClient extends Network {
 	}
 
 	private class ReceiverThread implements Runnable {
-
+		
 		public void run() {
 			try {
 				while (true) {
-					String received = in.readLine();
+					String received;
+					while((received = in.readLine()) == null);
 					switch(received.charAt(0))
 					{
 					case 'B':
@@ -66,6 +67,8 @@ public class SerialClient extends Network {
 						}
 						break;
 					case 'E': control.exitGame(); break;
+					default: 
+						System.out.println("Kapott: \""+received+"\"");
 					}
 				}
 			} catch (Exception ex) {
@@ -73,6 +76,8 @@ public class SerialClient extends Network {
 				System.out.println(ex.getMessage());
 				System.err.println("Server disconnected!");
 				disconnectListen();
+				System.out.println("Try to reconnect");
+				sendReconnect();
 				connect();
 			}
 		}
@@ -113,7 +118,6 @@ public class SerialClient extends Network {
 			if(!startedListenConnection && !listenConnected)
 			{
 				startedListenConnection = true;
-				System.out.println("out inicializalva");
 				listenSocket = new Socket(ip,listenPort);
 				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
 				
@@ -169,7 +173,19 @@ public class SerialClient extends Network {
 		disconnectListen();
 		disconnectSend();
 	}
-
+	void sendReconnect()
+	{
+		try {
+			if(out==null)
+				connect();
+			out.writeBytes("J\n");
+		} catch (IOException ex) {
+			control.networkError(ex,"CLIENT_SENDKEY");
+			System.err.println("Send error.");
+			disconnectSend();
+		}	
+	}
+	
 	@Override
 	void sendExit()
 	{
