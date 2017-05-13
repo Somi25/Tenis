@@ -306,6 +306,12 @@ class Control {
 	void sendScores() {
 		((SerialServer)net).sendScore(score);
 	}
+	
+	public void delNet(){
+		if(net != null){
+			net = null;
+		}
+	}
 
 	
 	public void keyReceived(Key e){
