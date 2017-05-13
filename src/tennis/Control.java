@@ -201,7 +201,7 @@ class Control {
 			continueBallDir = 1;
 			whoStart = 0;
 			if(gui.getState() == HOST)
-				((SerialServer)net).sendPause(pause);
+				((SerialServer)net).sendPause(0);
 		}
 	}
 	
@@ -424,11 +424,13 @@ class Control {
 		break;
 		
 		case "Pause": 		if(pressed){
-								pauseGame();
 			        			if(gui.getState() == CLIENT)
-			        				((SerialClient)net).send(new Key("Pause",true));
+			        				if(pause != 1)
+			        					((SerialClient)net).send(new Key("Pause",true));
 			        			if(gui.getState() == HOST)
-			        				((SerialServer)net).sendPause(pause);
+			        				if(pause != 1)
+			        					((SerialServer)net).sendPause(1);
+								pauseGame();
 							}
 		break;
 
@@ -556,12 +558,12 @@ class Control {
 	{
 		if(net != null){
 			net.sendExit();
-			net.disconnectAll();
+			net.disconnect();
 		}
 	}
-	void exitGame() //ezzel kéne egyelõnek lennie ! Oldjátok meg !
+	void exitGame() //recieved exit -  a kommentezett résszel kell egyelõnek lennie!
 	{
-		net.disconnectAll();
+		net.disconnect();
 		/*case "Kilépés a menübe":
 	    	time.stop();
 			control.stopGame();

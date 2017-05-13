@@ -22,6 +22,7 @@ abstract class Network {
 	}
 	abstract void sendExit();
 	abstract void disconnect();
-	abstract void disconnectAll();
+	abstract void disconnectListen();
+	abstract void disconnectSend();
 
 }

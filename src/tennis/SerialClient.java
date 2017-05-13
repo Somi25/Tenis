@@ -14,13 +14,10 @@ public class SerialClient extends Network {
 	private Float[] racketR_coord = new Float[2];
 	private Integer[] score = new Integer[2];
 	
-	private Boolean gotBall0 = false;
-	private Boolean gotBall1 = false;
-	
-	private Boolean gotScoreL = false;
-	private Boolean gotScoreR = false;
-	
-	private Boolean alreadyListen = false;
+	Boolean sendConnected = false;
+	Boolean startedSendConnection = false;
+	Boolean listenConnected = false;
+	Boolean startedListenConnection = false;
 	
 	public String joinedIP;
 	SerialClient(Control c) {
@@ -38,20 +35,10 @@ public class SerialClient extends Network {
 					switch(received.charAt(0))
 					{
 					case 'B':
-						if(received.charAt(1) == '0')
-						{
-							ball_coord[0]=Float.parseFloat(received.substring(2).trim());
-							gotBall0=true;
-						}
-						if(received.charAt(1) == '1')
-						{
-							ball_coord[1]=Float.parseFloat(received.substring(2).trim());
-							gotBall1=true;
-						}
-						if(gotBall0 && gotBall1)
-						{
-							gotBall0=false; gotBall1=false; control.setBall_inst(ball_coord);
-						}
+							ball_coord[0]=Float.parseFloat(received.substring(1).trim());
+							while((received = in.readLine()) == null);
+							ball_coord[1]=Float.parseFloat(received.trim());
+							control.setBall_inst(ball_coord);
 						break;
 						
 					case 'L':
@@ -65,20 +52,10 @@ public class SerialClient extends Network {
 						break;
 						
 					case 'S':
-						if(received.charAt(1) == 'L')
-						{
-							score[0]=Integer.parseInt(received.substring(2).trim());
-							gotScoreL=true;
-						}
-						if(received.charAt(1) == 'R')
-						{
-							score[1]=Integer.parseInt(received.substring(2).trim());
-							gotScoreR=true;
-						}
-						if(gotScoreL && gotScoreR)
-						{
-							gotScoreL=false; gotScoreR=false; control.setScore(score);
-						}
+						score[0]=Integer.parseInt(received.substring(1).trim());
+						while((received = in.readLine()) == null);
+						score[1]=Integer.parseInt(received.trim());
+						control.setScore(score);
 						break;
 					case 'G':
 						switch (Integer.parseInt(received.substring(1).trim()))
@@ -95,8 +72,8 @@ public class SerialClient extends Network {
 				control.networkError(ex,"CLIENT_READOBJECT");
 				System.out.println(ex.getMessage());
 				System.err.println("Server disconnected!");
-			} finally {
-				disconnect();
+				disconnectListen();
+				connect();
 			}
 		}
 	}
@@ -108,15 +85,13 @@ public class SerialClient extends Network {
 			String sentence;
 			System.out.println("sendKey");
 			
-			sentence = 'n'+toSend.getName();
-			out.writeBytes(sentence + '\n');
-			sentence = 's'+Boolean.toString(toSend.getState());
-			out.writeBytes(sentence + '\n');
+			sentence = 'K'+toSend.getName() + '\n' + Boolean.toString(toSend.getState())+ '\n';
+			out.writeBytes(sentence);
 			
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
-			disconnect();
+			disconnectSend();
 		}
 	}
 
@@ -124,24 +99,29 @@ public class SerialClient extends Network {
 		connect(joinedIP);
 	}
 	void connect(String ip) {
-		disconnect();
 		joinedIP=ip;
 		try {
-			if(!alreadyListen)
+			if(!startedSendConnection && !sendConnected)
 			{
+				startedSendConnection=true;
+				sendSocket = new Socket(ip,sendPort);
+				out = new DataOutputStream(sendSocket.getOutputStream());
+				
+				sendConnected=true;
+				startedSendConnection=false;
+			}
+			if(!startedListenConnection && !listenConnected)
+			{
+				startedListenConnection = true;
+				System.out.println("out inicializalva");
 				listenSocket = new Socket(ip,listenPort);
 				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
 				
-				alreadyListen = true;
+				listenConnected=true;
+				startedListenConnection = false;
 				
 				Thread rec = new Thread(new ReceiverThread());
 				rec.start();
-				}
-			else
-			{
-				sendSocket = new Socket(ip,sendPort);
-				out = new DataOutputStream(sendSocket.getOutputStream());
-				System.out.println("out inicializalva");
 			}
 		} catch (IllegalArgumentException ex) {
 			control.networkError(ex,"CLIENT_CONSTRUCT");
@@ -157,8 +137,9 @@ public class SerialClient extends Network {
 	}
 
 	@Override
-	void disconnect() {
+	void disconnectSend() {
 		try {
+			sendConnected=false;
 			if (out != null)
 				out.close();
 			if (sendSocket != null)
@@ -167,34 +148,39 @@ public class SerialClient extends Network {
 			control.networkError(ex,"CLIENT_DISCONNECT");
 			System.err.println("Error while closing conn.");
 		}
-		System.out.println("disconnected");
+		System.out.println("disconnectedSend");
 	}
 	@Override
-	void disconnectAll() {
-		try {
-			if (out != null)
-				out.close();
-			if (in != null)
-				in.close();
-			if (listenSocket != null)
-				listenSocket.close();
-			if (sendSocket != null)
-				sendSocket.close();
-		} catch (IOException ex) {
-			control.networkError(ex,"SERVER_DISCONNECT");
-			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
-		}
+	void disconnectListen() {
+	try{
+		listenConnected=false;
+		if (in != null)
+			in.close();
+		if (listenSocket != null)
+			listenSocket.close();
+	} catch (IOException ex) {
+		control.networkError(ex,"CLIENT_DISCONNECT");
+		System.err.println("Error while closing conn.");
+	}
+	System.out.println("disconnectedListen");
+}
+	@Override
+	void disconnect() {
+		disconnectListen();
+		disconnectSend();
 	}
 
 	@Override
 	void sendExit()
 	{
 		try {
+			if(out==null)
+				connect();
 			out.writeBytes("E\n");
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
-			disconnect();
+			disconnectSend();
 		}
 	}
 }

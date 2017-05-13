@@ -16,75 +16,83 @@ public class SerialServer extends Network {
 	private ServerSocket serverSendSocket = null;
 	
 	private Key got = new Key();
-	
-	private Boolean gotKeyName = false;
-	private Boolean gotKeyState = false;
 
-	private Boolean alreadySend = false;
-
-	private Thread rec;
+	Boolean sendConnected = false;
+	Boolean startedSendConnection = false;
+	Boolean listenConnected = false;
+	Boolean startedListenConnection = false;
 	
 SerialServer(Control c) {
 		super(c);
 		sendPort=10007;
 		listenPort=10006;
 	}
-	
+	private class connectThread implements Runnable {
+
+	public void run() {
+			try {
+				System.out.println("Waiting for Client ->to send");
+				sendSocket = serverSendSocket.accept();
+				
+				sendConnected=true;
+				startedSendConnection=false;
+				out = new DataOutputStream(sendSocket.getOutputStream());
+				System.out.println("Client connected ->to send");
+			} catch (IOException e) {
+				control.networkError(e,"SERVER_WAITING");
+				System.err.println("Accept failed.send");
+				disconnectSend();
+			}
+		}
+	}
 	private class ReceiverThread implements Runnable {
 
 		public void run() {
 			try {
 				System.out.println("Waiting for Client ->to receive");
 				listenSocket = serverListenSocket.accept();
+				listenConnected = true;
+				startedListenConnection =false;
 				System.out.println("Client connected ->to receive");
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_WAITING");
-				System.err.println("Accept failed.");
-				disconnect();
-				return;
+				System.err.println("Accept failed.listen");
+				disconnectListen();
 			}
 
-			System.out.println("OK1");
 			try {
 				in = new BufferedReader(new InputStreamReader(listenSocket.getInputStream()));
 			} catch (IOException ex) {
 				control.networkError(ex,"SERVER_CONSTRUCTOR");
-				System.err.println("Error while getting streams.");
-				disconnect();
+				System.err.println("Error in = new BufferedReader");
+				disconnectListen();
 				return;
 			}
 
 			try {
 				String received;
 				while (true) {
-					while((received = in.readLine()) != null)
+					while((received = in.readLine()) == null);
+					switch(received.charAt(0))
 					{
-						System.out.println(received);
-						switch(received.charAt(0))
-						{
-						case 'n':
-							got.setName(received.substring(1).trim());
-							gotKeyName=true;
-							break;
-						case 's':
-							got.setState(Boolean.parseBoolean(received.substring(1).trim()));
-							gotKeyState=true;
-							break;
-						case 'E': control.exitGame(); break;
-						default:
-						}
-						if(gotKeyName && gotKeyState)
-						{
-							gotKeyName=false; gotKeyState=false;
-							System.out.println("got key");
-							control.keyReceived(got);
-						}
+					case 'K':
+						got.setName(received.substring(1).trim());
+						received = in.readLine();
+						got.setState(Boolean.parseBoolean(received.trim()));
+						control.keyReceived(got);
+						break;
+					case 'E':
+						control.exitGame();
+						break;
+					default: break;
 					}
 				} 
 			}catch (IOException ex) {
 				//control.networkError(ex,"SERVER_READOBJECT");
 				System.out.println(ex.getMessage());
-				System.err.println("Client disconnected! - IO");
+				System.err.println("Client disconnected! - RecThread.Vege");
+				disconnectListen();
+				connect();
 			}
 		}
 	}
@@ -92,23 +100,23 @@ SerialServer(Control c) {
 	void sendBall(Ball ball_ins)
 	{
 		if (out == null)
-			return;
+			connect();
 		try {
 			String floatToString;
 			
-			floatToString = "B0"+Float.toString(ball_ins.getCoordinates()[0]) + '\n';
+			floatToString = "B"+Float.toString(ball_ins.getCoordinates()[0]) + '\n' + Float.toString(ball_ins.getCoordinates()[1]) + '\n';
 			out.writeBytes(floatToString);
-			floatToString = "B1"+Float.toString(ball_ins.getCoordinates()[1]) + '\n';
-			out.writeBytes(floatToString);
+
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSTATES");
 			System.err.println("Send error.");
+			disconnectSend();
 		}
 	}
 	void sendRacketL(Racket racketL)
 	{
 		if (out == null)
-			return;
+			connect();
 		try {
 			String floatToString;
 
@@ -118,12 +126,13 @@ SerialServer(Control c) {
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSTATES");
 			System.err.println("Send error.");
+			disconnectSend();
 		}
 	}
 	void sendRacketR(Racket racketR)
 	{
 		if (out == null)
-			return;
+			connect();
 		try {
 			String floatToString;	
 
@@ -133,24 +142,28 @@ SerialServer(Control c) {
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSTATES");
 			System.err.println("Send error.");
+			disconnectSend();
 		}
 	}
 	void sendScore(Scores toSend){
 		try {
+			if (out == null)
+				connect();
 			String intToString;
 			
-			intToString = "SL" + Integer.toString(toSend.getScores()[0]) + '\n';
-			out.writeBytes(intToString);
-			intToString = "SR" + Integer.toString(toSend.getScores()[1]) + '\n';
+			intToString = "S" + Integer.toString(toSend.getScores()[0]) + '\n'+ Integer.toString(toSend.getScores()[1]) + '\n';
 			out.writeBytes(intToString);
 			
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSCORE");
 			System.err.println("Send error.");
+			disconnectSend();
 		}
 	}
 	void sendPause(Integer toSend){
 		try {
+			if (out == null)
+				connect();
 			String intToString;
 			
 			intToString = "G" + Integer.toString(toSend) + '\n';
@@ -159,37 +172,43 @@ SerialServer(Control c) {
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_SENDSCORE");
 			System.err.println("Send error.");
+			disconnectSend();
 		}
 	}
 	
 	void connect() {
-		disconnect();
 		try {
-			if(!alreadySend)
+			if(!startedListenConnection && !listenConnected)
 			{
-				serverSendSocket = new ServerSocket(sendPort);
+				startedListenConnection=true;
 				serverListenSocket = new ServerSocket(listenPort);
-				System.out.println("Waiting for Client ->to send");
-				sendSocket = serverSendSocket.accept();
-				System.out.println("Connected Client ->to send");
-				out = new DataOutputStream(sendSocket.getOutputStream());
-				alreadySend = true;
-				rec = new Thread(new ReceiverThread());
-				rec.start();
-			}
-			else
-			{
-				rec.start();
+				Thread listen = new Thread(new ReceiverThread());
+				listen.start();
 			}
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_CONNECT");
 			System.err.println("Could not listen on port: 10007.");
+			disconnectListen();
+		}
+		try{
+			if(!startedSendConnection && !sendConnected)
+			{
+				startedSendConnection=true;
+				serverSendSocket = new ServerSocket(sendPort);
+				Thread sendConnect = new Thread(new connectThread());
+				sendConnect.start();
+			}
+		}catch (IOException ex) {
+			control.networkError(ex,"SERVER_CONNECT");
+			System.err.println("Could not send on port: 10006.");
+			disconnectSend();
 		}
 	}
 
 	@Override
-	void disconnect() {
+	void disconnectListen() {
 		try {
+			listenConnected = false;
 			if (in != null)
 				in.close();
 			if (listenSocket != null)
@@ -201,35 +220,41 @@ SerialServer(Control c) {
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
 		}
 	}
-	@Override	
-	void disconnectAll() {
+	
+	@Override
+	void disconnectSend() {
 		try {
+			
+			sendConnected=false;
+			
 			if (out != null)
 				out.close();
-			if (in != null)
-				in.close();
-			if (listenSocket != null)
-				listenSocket.close();
-			if (serverListenSocket != null)
-				serverListenSocket.close();
+			if (sendSocket != null)
+				sendSocket.close();
 			if (serverSendSocket != null)
-				listenSocket.close();
-			if (serverListenSocket != null)
-				serverListenSocket.close();
+				serverSendSocket.close();
 		} catch (IOException ex) {
 			control.networkError(ex,"SERVER_DISCONNECT");
 			Logger.getLogger(SerialServer.class.getName()).log(Level.SEVERE,null, ex);
 		}
+	}
+	
+	@Override	
+	void disconnect() {
+		disconnectListen();
+		disconnectSend();
 	}
 	@Override
 	void sendExit()
 	{
 		try {
+			if(out==null)
+				connect();
 			out.writeBytes("E\n");
 		} catch (IOException ex) {
 			control.networkError(ex,"CLIENT_SENDKEY");
 			System.err.println("Send error.");
-			disconnect();
+			disconnectSend();
 		}
 	}
 }
