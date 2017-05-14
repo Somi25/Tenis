@@ -284,8 +284,7 @@ class Control {
 	}
 
 	void networkError(Exception ex,String where) {
-		//TOVABBADHATO A GUINAK MINDEN,
-		//még nem töröltem a kiíratásokat (error message)
+		gui.ResetGui();
 	}
 	
 	Integer[] getScores(){

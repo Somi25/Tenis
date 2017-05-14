@@ -242,7 +242,7 @@ public class GUI extends JFrame implements ActionListener
         case "Kliens":
 			state = CLIENT;
 			control.resetGame();
-			menu.host_wait_label.setVisible(false);
+			//menu.host_wait_label.setVisible(false);
 			menu.menu_online_panel.setVisible(false);
 			menu.menu_client_panel.setVisible(true);
             break;
@@ -301,8 +301,8 @@ public class GUI extends JFrame implements ActionListener
 			{
 				menu.menu_offline_panel.setVisible(false);
 				menu.menu_online_panel.setVisible(true);
-				menu.host_wait_label.setVisible(false);
-				menu.client_error_label.setVisible(false);
+				//menu.host_wait_label.setVisible(false);
+				//menu.client_error_label.setVisible(false);
 			}
 			
             break;
@@ -310,8 +310,8 @@ public class GUI extends JFrame implements ActionListener
         case "Vissza - online":
         	menu.menu_online_panel.setVisible(false);
 			menu.menu_main_panel.setVisible(true);
-			menu.host_wait_label.setVisible(false);
-			menu.client_error_label.setVisible(false);
+			//menu.host_wait_label.setVisible(false);
+			//menu.client_error_label.setVisible(false);
 			state = 0;
             break;
             
@@ -361,13 +361,26 @@ public class GUI extends JFrame implements ActionListener
         case "Vissza - client":
         	menu.menu_client_panel.setVisible(false);
         	menu.menu_online_panel.setVisible(true);
-        	menu.client_error_label.setVisible(false);
+        	//menu.client_error_label.setVisible(false);
         	state = ONLINE;
         	break;
         default:
         	break;
     }  
     }
+	
+	public void ResetGui()
+	{
+		time.stop();		
+		state = 0;
+		menu.save_button.setVisible(true);
+		menu.pause_panel.setVisible(false);
+		menu.menu_main_panel.setVisible(true);
+		field_panel.setVisible(false);
+		field_panel.score_panel.setVisible(false);
+		control.stopGame();
+		control.resetGame();
+	}
 	
 	public void showPauseMenu()
 	{
@@ -393,7 +406,7 @@ public class GUI extends JFrame implements ActionListener
 			{
 				menu.menu_offline_panel.setVisible(false);
 				start();
-				menu.host_wait_label.setVisible(true);
+				//menu.host_wait_label.setVisible(true);
 				return true;
 			}
 			else
